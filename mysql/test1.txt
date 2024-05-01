@@ -1,0 +1,59 @@
+CREATE DATABASE IF NOT EXISTS TestDB;
+
+USE TestDB;
+
+
+CREATE TABLE User (
+  user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_name VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  pfp VARCHAR(500) NOT NULL
+);
+
+
+CREATE TABLE Movie (
+  movie_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  release_date DATE NOT NULL,
+  duration INT NOT NULL,
+  description TEXT,
+  trailer_URL VARCHAR(255),
+  poster_image VARCHAR(255),
+  wide_poster_image VARCHAR(255),
+  average_rating INT NOT NULL,
+  video VARCHAR(225) NOT NULL
+);
+
+CREATE TABLE Genre (
+  genre_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  genre_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE MovieGenre (
+  movie_genre_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  movie_id INT NOT NULL,
+  genre_id INT NOT NULL,
+  FOREIGN KEY (movie_id) REFERENCES Movie(movie_id),
+  FOREIGN KEY (genre_id) REFERENCES Genre(genre_id)
+);
+
+CREATE TABLE Rating (
+  user_movie_rating_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  movie_id INT NOT NULL,
+  rating INT NOT NULL,
+  rated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES User(user_id),
+  FOREIGN KEY (movie_id) REFERENCES Movie(movie_id)
+);
+
+CREATE TABLE Comment (
+  comment_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  movie_id INT NOT NULL,
+  comment_text TEXT NOT NULL,
+  comment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES User(user_id),
+  FOREIGN KEY (movie_id) REFERENCES Movie(movie_id)
+);

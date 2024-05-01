@@ -144,9 +144,9 @@ namespace WinFormsApp1
                     redPanel.Controls.Add(logoPictureBox);
 
                     genreLabel.Location = new Point(34, yPos); // Adjust spacing as needed
+                    genreLabel.MouseEnter += GenreLabel_MouseEnter;
+                    genreLabel.MouseLeave += GenreLabel_MouseLeave;
 
-                    genreLabel.MouseEnter += (sender, e) => GenreLabel_MouseEnter(sender, e, genreLabel);
-                    genreLabel.MouseLeave += (sender, e) => GenreLabel_MouseLeave(sender, e, genreLabel);
                     genreLabel.MouseClick += (sender, e) => GenreLabel_Click(sender, e, genreLabel);
                 }
 
@@ -156,6 +156,7 @@ namespace WinFormsApp1
 
 
             panel4.Controls.Add(redPanel);
+           
             //
             // panel1
             // 
@@ -319,7 +320,7 @@ namespace WinFormsApp1
             widePictureBox.Controls.Add(left);
             widePictureBox.Location = new Point(39, 88);
             widePictureBox.Name = "wide_panel";
-            widePictureBox.Size = new(1820, 660);
+            widePictureBox.Size = new(1820, 675);
             widePictureBox.TabIndex = 13;
 
             iconPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
@@ -354,12 +355,12 @@ namespace WinFormsApp1
             // 
             // title_label
             // 
-            title_label.AutoSize = true;
-            title_label.Font = new System.Drawing.Font("Segoe UI", 35F);
+          /*  title_label.AutoSize = true;
+            title_label.Font = new System.Drawing.Font("Impact", 55);
             title_label.ForeColor = Color.White;
             title_label.Location = new Point(3, 4);
             title_label.Name = "title_label";
-            title_label.Size = new Size(115, 62);
+            title_label.Size = new Size(150, 80);
             title_label.TabIndex = 0;
             title_label.Text = "Title";
             // 
@@ -372,7 +373,7 @@ namespace WinFormsApp1
             discription_label.Name = "discription_label";
             discription_label.Size = new Size(538, 30);
             discription_label.TabIndex = 1;
-            discription_label.Text = "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla ";
+            discription_label.Text = "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla ";*/
             // 
             // panel4
             // 
@@ -536,7 +537,7 @@ namespace WinFormsApp1
 
                 // Create Label for movie duration
                 Label durationLabel = new Label();
-                durationLabel.Text = duration + " min";
+                durationLabel.Text = duration + " min        HD";
                 durationLabel.TextAlign = ContentAlignment.MiddleLeft;
                 durationLabel.AutoSize = false;
                 durationLabel.Size = new Size(pictureBoxWidth, durationLabelHeight); // Set size
@@ -557,8 +558,6 @@ namespace WinFormsApp1
 
                 // Add container panel to the FlowLayoutPanel
                 flowLayoutPanel1.Controls.Add(moviePanel);
-
-
             }
 
 
@@ -715,6 +714,7 @@ namespace WinFormsApp1
 
             panel4.Visible = false;
 
+
             Video_class Vid = new Video_class(_form, movieData, int.Parse(movieId));
 
         }
@@ -786,19 +786,20 @@ namespace WinFormsApp1
 
 
             title_label.AutoSize = true;
-            title_label.Font = new System.Drawing.Font("Impact", 40F);
+            title_label.Font = new System.Drawing.Font("Segoe UI", 55F);
             title_label.ForeColor = Color.White;
-            title_label.Location = new Point(10, 170);
+            title_label.Location = new Point(10, 139);
             title_label.Name = "title_label";
             title_label.Size = new Size(5, 5);
             title_label.TabIndex = 0;
+           
             // 
             // discription_label
             // 
             discription_label.AutoSize = true;
             discription_label.Font = new System.Drawing.Font("Segoe UI", 18F);
             discription_label.ForeColor = Color.White;
-            discription_label.Location = new Point(17, 240);
+            discription_label.Location = new Point(30, 240);
             discription_label.Name = "discription_label";
             discription_label.Size = new Size(538, 30);
             discription_label.TabIndex = 1;
@@ -898,17 +899,23 @@ namespace WinFormsApp1
         }
 
 
-        private void GenreLabel_MouseEnter(object sender, EventArgs e, Label label)
-        {
-            label.ForeColor = Color.Teal;
-            label.Font = new System.Drawing.Font("Segoe UI", 30);
 
-        }
-        private void GenreLabel_MouseLeave(object sender, EventArgs e, Label label)
+        private void GenreLabel_MouseEnter(object sender, EventArgs e)
         {
-            label.ForeColor = Color.Gray;
-            label.Font = new System.Drawing.Font("Segoe UI", 20);
+            Label hoveredLabel = sender as Label;
+            hoveredLabel.Left += 30; // Shift the hovered label a little to the right
+            hoveredLabel.Font = new System.Drawing.Font("Segoe UI", 25); // Increase font size
+            hoveredLabel.ForeColor = Color.Teal; // Change font color
         }
+
+        private void GenreLabel_MouseLeave(object sender, EventArgs e)
+        {
+            Label hoveredLabel = sender as Label;
+            hoveredLabel.Left -= 30; // Reset the position of the hovered label when the mouse leaves
+            hoveredLabel.Font = new System.Drawing.Font("Segoe UI", 20); // Reset font size
+            hoveredLabel.ForeColor = Color.Gray; // Reset font color
+        }
+
         private void GenreLabel_Click(object sender, EventArgs e, Label label)
         {
               

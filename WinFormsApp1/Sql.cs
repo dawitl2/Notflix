@@ -217,6 +217,30 @@ namespace WinFormsApp1
 
             return imagePath;
         }
+        
+        public void PostComment(int movieId, String text, int userId)
+        {
+            userId = 1;
+            string imagePath = null;
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "INSERT INTO Comment (user_id, movie_id, comment_text) VALUES (@UserId, @MovieId, @Text);";
+
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@UserId", userId);
+                    command.Parameters.AddWithValue("@MovieId", movieId);
+                    command.Parameters.AddWithValue("@Text", text);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+
+        }
 
         public List<(string, string, string)> GetCommentsForMovie(int movieid)
         {
@@ -249,6 +273,7 @@ namespace WinFormsApp1
 
             return comments;
         }
+
 
         public List<string[]> GetTopRatedMoviesData()
         {

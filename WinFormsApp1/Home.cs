@@ -768,9 +768,10 @@ namespace WinFormsApp1
                 e.Graphics.FillRectangle(brush, rect);
             };
 
+
             widePictureBox.Controls.Add(left);
             widePictureBox.Controls.Add(right);
-       
+
 
 
 

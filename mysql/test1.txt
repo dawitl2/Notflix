@@ -1,8 +1,11 @@
+
+-- Create the TestDB database
 CREATE DATABASE IF NOT EXISTS TestDB;
 
+-- Switch to the TestDB database
 USE TestDB;
 
-
+-- Create the User table
 CREATE TABLE User (
   user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   user_name VARCHAR(255) NOT NULL,
@@ -11,25 +14,20 @@ CREATE TABLE User (
   pfp VARCHAR(500) NOT NULL
 );
 
-
-CREATE TABLE Movie (
-  movie_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  release_date DATE NOT NULL,
-  duration INT NOT NULL,
-  description TEXT,
-  trailer_URL VARCHAR(255),
-  poster_image VARCHAR(255),
-  wide_poster_image VARCHAR(255),
-  average_rating INT NOT NULL,
-  video VARCHAR(225) NOT NULL
+-- Insert a sample user into the User table
+INSERT INTO User (user_name, password, email, pfp) VALUES (
+  'dawitl2', 'pass', 'pass', 'C:\\Users\\enkud\\Desktop\\man.png'
 );
 
+-- Create the Genre table
 CREATE TABLE Genre (
   genre_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   genre_name VARCHAR(50) NOT NULL
 );
 
+
+
+-- Create the MovieGenre table
 CREATE TABLE MovieGenre (
   movie_genre_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   movie_id INT NOT NULL,
@@ -38,6 +36,7 @@ CREATE TABLE MovieGenre (
   FOREIGN KEY (genre_id) REFERENCES Genre(genre_id)
 );
 
+-- Create the Rating table
 CREATE TABLE Rating (
   user_movie_rating_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
@@ -48,6 +47,7 @@ CREATE TABLE Rating (
   FOREIGN KEY (movie_id) REFERENCES Movie(movie_id)
 );
 
+-- Create the Comment table
 CREATE TABLE Comment (
   comment_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
@@ -57,3 +57,49 @@ CREATE TABLE Comment (
   FOREIGN KEY (user_id) REFERENCES User(user_id),
   FOREIGN KEY (movie_id) REFERENCES Movie(movie_id)
 );
+
+-- Create the Director table
+CREATE TABLE Director (
+  director_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  director_name VARCHAR(255) NOT NULL,
+  director_image VARCHAR(255) NOT NULL
+);
+
+
+
+-- Create the Star table
+CREATE TABLE Star (
+  star_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  star_name VARCHAR(255) NOT NULL,
+  star_image VARCHAR(255) NOT NULL
+);
+
+-- Create the MovieStar table
+CREATE TABLE MovieStar (
+  movie_id INT NOT NULL,
+  star_id INT NOT NULL,
+  PRIMARY KEY (movie_id, star_id),
+  FOREIGN KEY (movie_id) REFERENCES Movie(movie_id),
+  FOREIGN KEY (star_id) REFERENCES Star(star_id)
+);
+
+
+
+-- Create the Movie table with the director_id column
+CREATE TABLE Movie (
+  movie_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  release_date DATE NOT NULL,
+  duration INT NOT NULL,
+  description TEXT,
+  trailer_URL VARCHAR(255),
+  poster_image VARCHAR(255),
+  wide_poster_image VARCHAR(255),
+  average_rating INT NOT NULL,
+  video VARCHAR(225) NOT NULL,
+  director_id INT,
+  FOREIGN KEY (director_id) REFERENCES Director(director_id)
+);
+
+--
+

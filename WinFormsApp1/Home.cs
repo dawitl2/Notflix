@@ -744,7 +744,6 @@ namespace WinFormsApp1
             // Populate UI elements with movie data
 
             // Create a panel to hold the text displaying panel and buttons
-
             Panel contentPanel = new Panel();
             contentPanel.Dock = DockStyle.Bottom;
             contentPanel.BackColor = Color.Transparent;
@@ -759,9 +758,8 @@ namespace WinFormsApp1
 
                 // Define the gradient stops
                 ColorBlend blend = new ColorBlend();
-                blend.Positions = new[] { 0.0f, 0.5f, 1.0f };
-                // blend.Colors = new[] { Color.Transparent, Color.Transparent, Color.FromArgb(24, 24, 24) };
-                blend.Colors = new[] { Color.Transparent, Color.FromArgb(24, 24, 24), Color.FromArgb(24, 24, 24) };
+                blend.Positions = new[] { 0.0f, 0.3f, 0.7f, 1.0f }; // Adjust positions for gradient transition
+                blend.Colors = new[] { Color.Transparent, Color.Transparent, Color.FromArgb(24, 24, 24), Color.FromArgb(24, 24, 24) }; // Start from solid color at the bottom to transparent at the top
 
                 // Set the gradient stops
                 brush.InterpolationColors = blend;
@@ -769,9 +767,6 @@ namespace WinFormsApp1
                 // Fill the rectangle with the gradient brush
                 e.Graphics.FillRectangle(brush, rect);
             };
-
-        
-
 
             widePictureBox.Controls.Add(left);
             widePictureBox.Controls.Add(right);

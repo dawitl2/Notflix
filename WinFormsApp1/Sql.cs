@@ -307,9 +307,40 @@ namespace WinFormsApp1
 
             return topRatedMoviesData;
         }
+        public List<(string, string)> GetMovieDirectorsAndStars(int movieId)
+        {
+            List<(string, string)> result = new List<(string, string)>();
 
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT d.director_name, d.director_image " +
+                               "FROM Director d " +
+                               "INNER JOIN Movie m ON d.director_id = m.director_id " +
+                               "WHERE m.movie_id = @movieId " +
+                               "UNION " +
+                               "SELECT s.star_name, s.star_image " +
+                               "FROM Star s " +
+                               "INNER JOIN MovieStar ms ON s.star_id = ms.star_id " +
+                               "WHERE ms.movie_id = @movieId";
 
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@movieId", movieId);
+                    connection.Open();
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string name = reader.GetString(0); // Name
+                            string image = reader.GetString(1); // Image
+                            result.Add((name, image));
+                        }
+                    }
+                }
+            }
 
+            return result;
+        }
 
     }
 }

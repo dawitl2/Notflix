@@ -256,7 +256,6 @@ namespace WinFormsApp1
             // label2
             // 
 
-
             iconPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
             iconPictureBox.Location = new(1171, 37);

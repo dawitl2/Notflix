@@ -48,6 +48,7 @@ namespace WinFormsApp1
         private Label label1;
         private RoundedPanel trailer_panel;
         private Panel data_panel;
+        private Panel rate_panel;
         private Label Trailer;
         private Label label3;
         private System.Threading.Timer timer;
@@ -78,6 +79,7 @@ namespace WinFormsApp1
             panel3 = new Panel();
             label3 = new Label();
             data_panel = new Panel();
+            rate_panel = new Panel();
             label2 = new Label();
             Comment_panel = new Panel();
             Trailer = new Label();
@@ -192,6 +194,7 @@ namespace WinFormsApp1
             //panel3.BackColor = Color.Transparent;
             panel3.Controls.Add(label3);
             panel3.Controls.Add(data_panel);
+            panel3.Controls.Add(rate_panel);
             panel3.Controls.Add(label2);
             panel3.Controls.Add(iconPictureBox);
             panel3.Controls.Add(iconPictureBox2);
@@ -221,11 +224,34 @@ namespace WinFormsApp1
             // 
             // data_panel.BackColor = Color.FromArgb(29, 47, 50);
             data_panel.BackColor = Color.Transparent;
+            //data_panel.BackColor = Color.Red;
             data_panel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             data_panel.Location = new Point(326, 80);
             data_panel.Name = "data_panel";
             data_panel.Size = new Size(827, 250);
             data_panel.TabIndex = 6;
+            // star
+            rate_panel.BackColor = Color.Transparent;
+            rate_panel.Location = new Point(900, 20);
+            rate_panel.Name = "rate_panel";
+            rate_panel.Size = new Size(230, 50);
+            rate_panel.TabIndex = 6;
+
+
+            for (int i = 1; i <= 5; i++)
+            {
+                PictureBox star = new PictureBox();
+                star.Name = "star" + i;
+                star.Size = new Size(40, 40); // Adjust the size of the stars as needed
+                star.Location = new Point(10 + (i - 1) * 40, 5); // Adjust the positioning of the stars as needed
+                star.ImageLocation = @"C:\Users\enkud\Desktop\Cinema\back_image\e_star.png"; // Path to the empty star image
+                star.Tag = i; // Set the tag to keep track of the star index
+                star.SizeMode = PictureBoxSizeMode.StretchImage;
+                star.MouseEnter += Star_MouseEnter;
+                star.MouseClick += Star_MouseClick;
+
+                rate_panel.Controls.Add(star);
+            }
             // 
             // label2
             // 
@@ -744,6 +770,45 @@ namespace WinFormsApp1
 
         }
 
+        int currentRating = 0;
+        /////////////////////// rate ////////////////////////////
+        private void Star_MouseEnter(object sender, EventArgs e)
+        {
+            PictureBox pictureBox = (PictureBox)sender;
+            int starIndex = int.Parse(pictureBox.Tag.ToString());
+
+            // Change the color of stars up to the current one
+            for (int i = 1; i <= starIndex; i++)
+            {
+                Control[] stars = ((Control)pictureBox.Parent).Controls.Find("star" + i, true);
+                PictureBox star = (PictureBox)stars[0];
+                star.ImageLocation = @"C:\Users\enkud\Desktop\Cinema\back_image\y_star.png";
+            }
+        }
+
+        private void Star_MouseClick(object sender, MouseEventArgs e)
+        {
+            PictureBox pictureBox = (PictureBox)sender;
+            currentRating = int.Parse(pictureBox.Tag.ToString());
+
+            // Change the color of stars up to the clicked one
+            for (int i = 1; i <= currentRating; i++)
+            {
+                Control[] stars = ((Control)pictureBox.Parent).Controls.Find("star" + i, true);
+                PictureBox star = (PictureBox)stars[0];
+                star.ImageLocation = @"C:\Users\enkud\Desktop\Cinema\back_image\y_star.png";
+            }
+
+            // Reset the color of stars after the clicked one
+            for (int i = currentRating + 1; i <= 5; i++)
+            {
+                Control[] stars = ((Control)pictureBox.Parent).Controls.Find("star" + i, true);
+                PictureBox star = (PictureBox)stars[0];
+                star.ImageLocation = @"C:\Users\enkud\Desktop\Cinema\back_image\e_star.png";
+            }
+
+            MessageBox.Show("You rated " + currentRating + " stars.");
+        }
 
     }
 }

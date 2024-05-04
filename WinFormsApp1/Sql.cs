@@ -35,6 +35,33 @@ namespace WinFormsApp1
             return movieData;
         }
 
+        public List<(string, string, string)> wideMoviePosters()
+        {
+            List<(string, string, string)> movieData = new List<(string, string, string)>();
+
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT title, wide_poster_image, duration FROM Movie";
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                con.Open();
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+
+                        string title = reader.GetString("title");
+                        string posterPath = reader.GetString("wide_poster_image");
+                        string duration = reader.GetInt32("duration").ToString(); // Retrieve duration as integer and convert to string
+                        //MessageBox.Show($"----: {title}");
+                        movieData.Add((title, posterPath, duration));
+                    }
+                }
+            }
+
+            return movieData;
+        }
+
+
         public List<(string, string, string)> GetMoviePostersByGenre(string genreName)
         {
           
@@ -48,6 +75,38 @@ namespace WinFormsApp1
                         INNER JOIN MovieGenre mg ON m.movie_id = mg.movie_id
                         INNER JOIN Genre g ON mg.genre_id = g.genre_id
                         WHERE g.genre_name = @genreName";
+
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@genreName", genreName.Trim());
+
+                con.Open();
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string title = reader.GetString("title");
+                        string posterPath = reader.GetString("poster_image");
+                        string duration = reader.GetInt32("duration").ToString(); // Retrieve duration as integer and convert to string
+                        //MessageBox.Show($"----: {title}");
+                        movieData.Add((title, posterPath, duration));
+                    }
+                }
+            }
+
+            return movieData;
+        }
+        
+        public List<(string, string, string)> GetMoviePostersname(string genreName)
+        {
+          
+            //MessageBox.Show(genreName);
+            List<(string, string, string)> movieData = new List<(string, string, string)>();
+
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                string query = @"SELECT title, poster_image, duration 
+                        FROM Movie
+                        WHERE title = @genreName";
 
                 MySqlCommand cmd = new MySqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@genreName", genreName.Trim());
@@ -341,6 +400,34 @@ namespace WinFormsApp1
 
             return result;
         }
+
+
+        public List<(string, string)> GetMovieTitlesAndImagesByTitle(string searchText)
+        {
+            List<(string, string)> movieData = new List<(string, string)>();
+
+
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT title, poster_image FROM Movie WHERE title LIKE @searchText";
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@searchText", "%" + searchText + "%");
+
+                con.Open();
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string title = reader.GetString("title");
+                        string posterPath = reader.GetString("poster_image");
+                        movieData.Add((title, posterPath));
+                    }
+                }
+            }
+
+            return movieData;
+        }
+
 
     }
 }

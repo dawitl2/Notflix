@@ -50,6 +50,7 @@ namespace WinFormsApp1
         private Panel data_panel;
         private Label Trailer;
         private Label label3;
+        private System.Threading.Timer timer;
         private System.Windows.Forms.TextBox newCommentTextBox;
 
         public Video_class(Form form, string[] array, int movieid)
@@ -58,6 +59,7 @@ namespace WinFormsApp1
             this.movie = array;
             this.movieid = movieid;
             InitializeComponent();
+
 
         }
 
@@ -100,6 +102,9 @@ namespace WinFormsApp1
             // axWindowsMediaPlayer1.OcxState = (AxHost.State)resources.GetObject("axWindowsMediaPlayer1.OcxState");
             axWindowsMediaPlayer1.Size = new Size(1100, 623);
             axWindowsMediaPlayer1.TabIndex = 1;
+
+           
+
             // 
             // panel1
             // 
@@ -246,7 +251,8 @@ namespace WinFormsApp1
             // 
             // Comment_panel.BackColor = Color.FromArgb(29, 47, 50);
             //Comment_panel.BackColor = Color.FromArgb(24, 24, 24);
-            Comment_panel.BackColor = Color.Red;
+            Comment_panel.BackColor = Color.Transparent;
+           // Comment_panel.BackColor = Color.Red;
             Comment_panel.Location = new Point(1171, 75);
             Comment_panel.Name = "Comment_panel";
             Comment_panel.Size = new Size(682, 376);
@@ -611,10 +617,10 @@ namespace WinFormsApp1
             }
 
             // Display directors
-            int verticalPosition = 50; // Initial vertical position
+            int verticalPosition = 50; // Initial vertical position for directors
             foreach ((string directorName, string directorImage) in directors)
             {
-                // Create PictureBox and Label controls for each 
+                // Create PictureBox and Label controls for each director
                 RoundedPictureBox pictureBox = new RoundedPictureBox();
                 pictureBox.CornerRadius = 30;
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -635,12 +641,12 @@ namespace WinFormsApp1
                 redpanel.Controls.Add(pictureBox);
                 redpanel.Controls.Add(label);
 
-                // Increment vertical position for the next control
+                // Increment vertical position for the next director
                 verticalPosition += 140; // Adjust as needed
             }
 
-            // Add some gap between directors and stars
-            verticalPosition += 20; // Adjust as needed
+            // Add a gap between directors and stars
+            verticalPosition += 40; // Adjust as needed
 
             // Display stars
             foreach ((string starName, string starImage) in stars)
@@ -666,9 +672,11 @@ namespace WinFormsApp1
                 redpanel.Controls.Add(pictureBox);
                 redpanel.Controls.Add(label);
 
-                // Increment vertical position for the next control
+                // Increment vertical position for the next star
                 verticalPosition += 140; // Adjust as needed
             }
+
+
         }
 
 
@@ -678,8 +686,26 @@ namespace WinFormsApp1
             // Handle adding a new comment
             string newComment = newCommentTextBox.Text; // Assuming newCommentTextBox is accessible here
             MessageBox.Show(newComment);
-            SqlInstance.PostComment(movieid, newComment, 1);
+            SqlInstance.PostComment(movieid, newComment, 1); // Post the comment to the database
+
+            // Fetch comments again from the database
+            List<(string, string, string)> comments = SqlInstance.GetCommentsForMovie(movieid);
+
+            // Clear existing comments from the UI
+            Comment_panel.Controls.Clear();
+
+            // Iterate over the new comments and add them to the UI
+            foreach (var comment in comments)
+            {
+                string username = comment.Item1;
+                string profilePicture = comment.Item2;
+                string commentText = comment.Item3;
+
+                // Add comment to the UI
+                AddComment(username, profilePicture, commentText);
+            }
         }
+
         private void PictureBox_MouseLeave(object sender, EventArgs e)
         {
             PictureBox pictureBox = (PictureBox)sender;
@@ -717,5 +743,7 @@ namespace WinFormsApp1
             //  _form.Visible = false;
 
         }
+
+
     }
 }

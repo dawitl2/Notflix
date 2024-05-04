@@ -8,7 +8,6 @@ using WMPLib;
 using System;
 using WinFormsApp1;
 
-
 namespace FullScreenApp
 {
     public class FullScreenForm : Form
@@ -30,7 +29,6 @@ namespace FullScreenApp
 
         private void InitializeForm()
         {
-
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(0, 0);
             this.FormBorderStyle = FormBorderStyle.None;
@@ -47,12 +45,7 @@ namespace FullScreenApp
             {
                 MessageBox.Show("Image not found at the specified path.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
         }
-
-
-
 
         private void InitializeLoginPanel()
         {
@@ -141,8 +134,6 @@ namespace FullScreenApp
             return button;
         }
 
-
-
         private void AddLinks(RoundedPanel panel, int buttonBottom)
         {
             Label forgotPasswordLabel = CreateLinkLabel("Forgot password.", new Point(39, buttonBottom));
@@ -155,9 +146,14 @@ namespace FullScreenApp
                 panel.Visible = false;
                 InitializeSignUpPanel(panel);
             };
+
+            LinkLabel loginAsAdminLabel = CreateLinkLabel("Login as an Admin", new Point(370, buttonBottom));
+            panel.Controls.Add(loginAsAdminLabel);
+            loginAsAdminLabel.LinkClicked += (sender, e) =>
+            {
+                // Handle login as admin action here
+            };
         }
-
-
 
         private LinkLabel CreateLinkLabel(string text, Point location)
         {
@@ -169,7 +165,6 @@ namespace FullScreenApp
             linkLabel.Location = location;
             return linkLabel;
         }
-
 
         private void InitializeSignUpPanel(RoundedPanel previousPanel)
         {
@@ -219,7 +214,6 @@ namespace FullScreenApp
             panel.Controls.Add(loginButton);
         }
 
-
         private void LoginButton_Click(object sender, EventArgs e)
         {
             panel.Visible = false;
@@ -232,7 +226,6 @@ namespace FullScreenApp
             LoginButtonClicked?.Invoke(this, e);
         }
 
-
         [STAThread]
         static void Main()
         {
@@ -241,9 +234,6 @@ namespace FullScreenApp
             FullScreenForm form = new FullScreenForm();
             Application.Run(form);
         }
-
-
-
 
     }
 }

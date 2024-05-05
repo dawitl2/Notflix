@@ -44,11 +44,12 @@ namespace WinFormsApp1
         private PictureBox iconPictureBox;
         private PictureBox iconPictureBox2;
         private PictureBox iconPictureBox3;
-        private Panel Comment_panel;
+        private PictureBox iconPictureBox4;
+        private RoundedPanel Comment_panel;
         private Label label1;
         private RoundedPanel trailer_panel;
         private Panel data_panel;
-        private Panel rate_panel;
+        private RoundedPanel rate_panel;
         private Label Trailer;
         private Label label3;
         private System.Threading.Timer timer;
@@ -76,12 +77,13 @@ namespace WinFormsApp1
             iconPictureBox = new PictureBox();
             iconPictureBox2 = new PictureBox();
             iconPictureBox3 = new PictureBox();
+            iconPictureBox4 = new PictureBox();
             panel3 = new Panel();
             label3 = new Label();
             data_panel = new Panel();
-            rate_panel = new Panel();
+            rate_panel = new RoundedPanel();
             label2 = new Label();
-            Comment_panel = new Panel();
+            Comment_panel = new RoundedPanel();
             Trailer = new Label();
             label1 = new Label();
             trailer_panel = new RoundedPanel();
@@ -186,7 +188,13 @@ namespace WinFormsApp1
             iconPictureBox3.Size = new Size(20, 30);
             iconPictureBox3.TabIndex = 13;
             redpanel.Controls.Add(iconPictureBox3);
-
+            // text
+            iconPictureBox4.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
+            iconPictureBox4.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\rate.png");
+            iconPictureBox4.Location = new(900, 20);
+            iconPictureBox4.Name = "wide_panel";
+            iconPictureBox4.Size = new Size(217, 35);
+            iconPictureBox4.TabIndex = 13;
             // 
             // panel3
             // 
@@ -198,6 +206,7 @@ namespace WinFormsApp1
             panel3.Controls.Add(label2);
             panel3.Controls.Add(iconPictureBox);
             panel3.Controls.Add(iconPictureBox2);
+            panel3.Controls.Add(iconPictureBox4);
             panel3.Controls.Add(Comment_panel);
             panel3.Controls.Add(Trailer);
             panel3.Controls.Add(label1);
@@ -232,10 +241,13 @@ namespace WinFormsApp1
             data_panel.TabIndex = 6;
             // star
             rate_panel.BackColor = Color.Transparent;
-            rate_panel.Location = new Point(900, 20);
+          //rate_panel.BackColor = Color.Black;
+            rate_panel.Location = new Point(900, 60);
             rate_panel.Name = "rate_panel";
-            rate_panel.Size = new Size(230, 50);
+            rate_panel.Size = new Size(220, 50);
             rate_panel.TabIndex = 6;
+            rate_panel.EdgeColor = Color.Transparent;
+            rate_panel.BringToFront();
 
 
             for (int i = 1; i <= 5; i++)
@@ -257,36 +269,19 @@ namespace WinFormsApp1
             // 
 
             iconPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
-            iconPictureBox.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
-            iconPictureBox.Location = new(1171, 37);
+            iconPictureBox.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\comments.png");
+            iconPictureBox.Location = new(1171, 16);
             iconPictureBox.Name = "wide_panel";
-            iconPictureBox.Size = new Size(20, 30);
+            iconPictureBox.Size = new Size(217, 35);
             iconPictureBox.TabIndex = 13;
 
-            label2.AutoSize = true;
-            label2.Font = new System.Drawing.Font("Segoe UI", 21F);
-            label2.ForeColor = Color.White;
-            label2.Location = new Point(1191, 32);
-            label2.Name = "label2";
-            label2.Size = new Size(118, 30);
-            label2.TabIndex = 5;
-            label2.Text = "Comments";
-            // 
-            // Comment_panel
-            // 
-            // Comment_panel.BackColor = Color.FromArgb(29, 47, 50);
-            //Comment_panel.BackColor = Color.FromArgb(24, 24, 24);
             Comment_panel.BackColor = Color.Transparent;
-           // Comment_panel.BackColor = Color.Red;
+            //Comment_panel.BackColor = Color.Red;
             Comment_panel.Location = new Point(1171, 75);
             Comment_panel.Name = "Comment_panel";
-            Comment_panel.Size = new Size(682, 376);
+            Comment_panel.Size = new Size(538, 376);
             Comment_panel.TabIndex = 4;
-
-            // 
-            // comment_textbox
-            //
-
+            Comment_panel.EdgeColor = Color.FromArgb(41, 172, 191);
 
             int commentY = 10;
             newCommentTextBox = new System.Windows.Forms.TextBox();
@@ -310,14 +305,13 @@ namespace WinFormsApp1
             addCommentButton.Location = new Point(newCommentTextBox.Width + 35, 5);
             addCommentButton.Click += AddCommentButton_Click;
 
-
             RoundedPanel roundedPanel1 = new RoundedPanel();
             roundedPanel1.BackColor = Color.FromArgb(29, 41, 43);
             roundedPanel1.Controls.Add(newCommentTextBox);
             roundedPanel1.Controls.Add(addCommentButton);
             roundedPanel1.CornerRadius = 10;
-            roundedPanel1.EdgeColor = Color.Black;
-            roundedPanel1.Location = new Point(5, Comment_panel.Height - 60);
+           // roundedPanel1.EdgeColor = Color.Black;
+            roundedPanel1.Location = new Point(10, Comment_panel.Height - 51);
             roundedPanel1.Name = "roundedPanel1";
             roundedPanel1.Size = new Size(519, 44);
             roundedPanel1.TabIndex = 13;
@@ -326,7 +320,6 @@ namespace WinFormsApp1
             // 
             // Trailer
             // 
-
             iconPictureBox2.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox2.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
             iconPictureBox2.Location = new(326, 349);
@@ -362,7 +355,6 @@ namespace WinFormsApp1
             trailer_panel.Name = "trailer_panel";
             trailer_panel.Size = new Size(241, 105);
             trailer_panel.TabIndex = 1;
-
             // 
             // poster_panel
             // 
@@ -390,8 +382,7 @@ namespace WinFormsApp1
             // _form.Controls.Add(panel4);
             back_panel.Controls.Add(panel3);
             back_panel.Controls.Add(panel1);
-            //  _form.Controls.Add(pictureBox1);
-
+            //  _form.Controls.Add(pictureBox1
             // 
             // Form1
             // 
@@ -399,15 +390,10 @@ namespace WinFormsApp1
             _form.AutoScaleMode = AutoScaleMode.Font;
             _form.ClientSize = new Size(1487, 931);
             _form.Controls.Add(back_panel);
-            /*     _form.Controls.Add(axWindowsMediaPlayer1);
-                // _form.Controls.Add(panel4);
-                 _form.Controls.Add(panel3);
-                 _form.Controls.Add(panel1);
-              //  _form.Controls.Add(pictureBox1);*/
             _form.Name = "Form1";
             _form.Text = "Form1";
             // _form.Load += Form1_Load;
-            //  ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            //((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer1).EndInit();
             panel1.ResumeLayout(false);
             panel3.ResumeLayout(false);

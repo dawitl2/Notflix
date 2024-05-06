@@ -45,6 +45,8 @@ namespace WinFormsApp1
         private PictureBox iconPictureBox2;
         private PictureBox iconPictureBox3;
         private PictureBox iconPictureBox4;
+        private PictureBox iconPictureBox5;
+        private PictureBox iconPictureBox6;
         private RoundedPanel Comment_panel;
         private Label label1;
         private RoundedPanel trailer_panel;
@@ -78,6 +80,8 @@ namespace WinFormsApp1
             iconPictureBox2 = new PictureBox();
             iconPictureBox3 = new PictureBox();
             iconPictureBox4 = new PictureBox();
+            iconPictureBox5 = new PictureBox();
+            iconPictureBox6 = new PictureBox();
             panel3 = new Panel();
             label3 = new Label();
             data_panel = new Panel();
@@ -106,9 +110,6 @@ namespace WinFormsApp1
             // axWindowsMediaPlayer1.OcxState = (AxHost.State)resources.GetObject("axWindowsMediaPlayer1.OcxState");
             axWindowsMediaPlayer1.Size = new Size(1100, 623);
             axWindowsMediaPlayer1.TabIndex = 1;
-
-           
-
             // 
             // panel1
             // 
@@ -122,6 +123,7 @@ namespace WinFormsApp1
             back_panel.TabIndex = 1;
 
             panel1.BackColor = SystemColors.ActiveCaptionText;
+            //panel1.BackColor = Color.Transparent;
             panel1.Controls.Add(button1);
             panel1.Controls.Add(panel2);
             //panel1.Dock = DockStyle.Top;
@@ -166,7 +168,7 @@ namespace WinFormsApp1
             panel2.Controls.Add(label_N);
             redpanel.Location = new Point(1200, 77);
             redpanel.BackColor = Color.Transparent;
-         // redpanel.BackColor = Color.Red;
+            //redpanel.BackColor = Color.Red;
             redpanel.Name = "start / director panel";
             redpanel.Size = new Size(700, 623);
             redpanel.TabIndex = 4;
@@ -195,9 +197,27 @@ namespace WinFormsApp1
             iconPictureBox4.Name = "wide_panel";
             iconPictureBox4.Size = new Size(217, 35);
             iconPictureBox4.TabIndex = 13;
+            // bar
+            iconPictureBox5.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
+            iconPictureBox5.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\mp4_bar.png");
+            iconPictureBox5.Location = new(70, 652);
+            iconPictureBox5.Name = "wide_panel";
+            iconPictureBox5.Size = new Size(1100, 48);
+            iconPictureBox5.TabIndex = 13;
+            iconPictureBox5.BringToFront();
+            // cast
+            iconPictureBox6.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
+            iconPictureBox6.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\cast.png");
+            //iconPictureBox6.Location = new(70, 652);
+            iconPictureBox6.Name = "wide_panel";
+            //iconPictureBox6.Size = new Size(1100, 48);
+            iconPictureBox6.TabIndex = 13;
+            iconPictureBox6.Size = new Size(700, 623);
+            iconPictureBox6.Location = new Point(1200, 77);
             // 
             // panel3
             // 
+            //panel3.BackColor = Color.Red;
             panel3.BackColor = Color.FromArgb(24, 24, 24);
             //panel3.BackColor = Color.Transparent;
             panel3.Controls.Add(label3);
@@ -270,24 +290,26 @@ namespace WinFormsApp1
 
             iconPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\comments.png");
-            iconPictureBox.Location = new(1171, 16);
+            iconPictureBox.Location = new(1244, 16);
+            //iconPictureBox.Location = new Point(1244, 75);
             iconPictureBox.Name = "wide_panel";
             iconPictureBox.Size = new Size(217, 35);
             iconPictureBox.TabIndex = 13;
 
             Comment_panel.BackColor = Color.Transparent;
             //Comment_panel.BackColor = Color.Red;
-            Comment_panel.Location = new Point(1171, 75);
+            Comment_panel.Location = new Point(1244, 75);
             Comment_panel.Name = "Comment_panel";
-            Comment_panel.Size = new Size(538, 376);
+            Comment_panel.Size = new Size(598, 376);
             Comment_panel.TabIndex = 4;
-            Comment_panel.EdgeColor = Color.FromArgb(41, 172, 191);
+            //Comment_panel.EdgeColor = Color.FromArgb(41, 172, 191);
+            Comment_panel.EdgeColor = Color.FromArgb(29, 41, 43);
 
             int commentY = 10;
             newCommentTextBox = new System.Windows.Forms.TextBox();
             newCommentTextBox.BorderStyle = BorderStyle.None;
             newCommentTextBox.Font = new System.Drawing.Font("Segoe UI", 15F);
-            newCommentTextBox.BackColor = Color.FromArgb(29, 41, 43);
+            newCommentTextBox.BackColor = Color.FromArgb(24, 24, 24);
             newCommentTextBox.ForeColor = Color.White;
             // newCommentTextBox.BackColor = Color.Red;
             newCommentTextBox.Location = new Point(20, 7); // Position below existing comments
@@ -295,34 +317,35 @@ namespace WinFormsApp1
 
             RoundedButton addCommentButton = new RoundedButton();
             addCommentButton.CornerRadius = 11;
-            addCommentButton.BackColor = Color.Teal;
+            addCommentButton.BackColor = Color.Gray;
             addCommentButton.UseVisualStyleBackColor = false;
             addCommentButton.FlatAppearance.BorderSize = 0;
             addCommentButton.FlatStyle = FlatStyle.Flat;
             addCommentButton.Text = "Post";
             addCommentButton.Width = 100;
             addCommentButton.Height = 33;
-            addCommentButton.Location = new Point(newCommentTextBox.Width + 35, 5);
+            addCommentButton.Location = new Point(newCommentTextBox.Width + 99, 5);
             addCommentButton.Click += AddCommentButton_Click;
 
             RoundedPanel roundedPanel1 = new RoundedPanel();
-            roundedPanel1.BackColor = Color.FromArgb(29, 41, 43);
+            //roundedPanel1.BackColor = Color.FromArgb(29, 41, 43);
+            roundedPanel1.BackColor = Color.Transparent;
             roundedPanel1.Controls.Add(newCommentTextBox);
             roundedPanel1.Controls.Add(addCommentButton);
             roundedPanel1.CornerRadius = 10;
            // roundedPanel1.EdgeColor = Color.Black;
             roundedPanel1.Location = new Point(10, Comment_panel.Height - 51);
             roundedPanel1.Name = "roundedPanel1";
-            roundedPanel1.Size = new Size(519, 44);
+            roundedPanel1.Size = new Size(580, 44);
             roundedPanel1.TabIndex = 13;
-            roundedPanel1.EdgeColor = Color.FromArgb(41, 172, 191);
+            roundedPanel1.EdgeColor = Color.FromArgb(29, 41, 43);
             Comment_panel.Controls.Add(roundedPanel1);
             // 
             // Trailer
             // 
             iconPictureBox2.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox2.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
-            iconPictureBox2.Location = new(326, 349);
+            iconPictureBox2.Location = new(326, 349); 
             iconPictureBox2.Name = "wide_panel";
             iconPictureBox2.Size = new Size(17, 27);
             iconPictureBox2.TabIndex = 13;
@@ -377,8 +400,11 @@ namespace WinFormsApp1
             DisplayDirectorsAndStars(movieid);
 
             // back_panel.Anchor
-            back_panel.Controls.Add(redpanel);
+            //back_panel.Controls.Add(redpanel);
+            back_panel.Controls.Add(iconPictureBox6);
+            back_panel.Controls.Add(iconPictureBox5);
             back_panel.Controls.Add(axWindowsMediaPlayer1);
+           
             // _form.Controls.Add(panel4);
             back_panel.Controls.Add(panel3);
             back_panel.Controls.Add(panel1);
@@ -524,8 +550,6 @@ namespace WinFormsApp1
 
             // Add PictureBox to the wide_panel
             poster_panel.Controls.Add(widePictureBox);
-
-
             string wideImagePath = movie[5];
 
             // Create a PictureBox to display the wide poster image
@@ -533,6 +557,23 @@ namespace WinFormsApp1
             widePicture.SizeMode = PictureBoxSizeMode.StretchImage; // Maintain aspect ratio
             widePicture.ImageLocation = wideImagePath; // Set image location to the retrieved image path
             widePicture.Dock = DockStyle.Fill; // Dock the PictureBox to fill the entire panel
+
+            widePicture.Paint += (sender, e) =>
+            {
+                int coloredAreaHeight = (widePicture.Height / 2) + 100;
+
+                // Draw fading teal color
+                for (int j = 0; j <= coloredAreaHeight; j++)
+                {
+                    int alpha = (int)(255 * ((double)j / coloredAreaHeight));
+                    Color color = Color.FromArgb(alpha, Color.Teal);
+                    Rectangle rect = new Rectangle(0, widePicture.Height - coloredAreaHeight + j, widePicture.Width, 1);
+                    using (SolidBrush brush = new SolidBrush(color))
+                    {
+                        e.Graphics.FillRectangle(brush, rect);
+                    }
+                }
+            };
 
             // Add PictureBox to the wide_panel
             trailer_panel.Controls.Add(widePicture);

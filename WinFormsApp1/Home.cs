@@ -208,7 +208,6 @@ namespace WinFormsApp1
             // 
             // textBox1
             // 
-            // Set up TextBox properties
             textBox1.BackColor = Color.FromArgb(29, 41, 43);
             textBox1.BorderStyle = BorderStyle.None;
             textBox1.Font = new System.Drawing.Font("Segoe UI", 15F);
@@ -551,10 +550,7 @@ namespace WinFormsApp1
             iconPictureBox2.Location = new Point(label6.Left - 20, 1045);
             iconPictureBox4.Location = new Point(label7.Left - 30, 740);
 
-           
         }
-
- 
 
 
         private void PopulatewideMovies()

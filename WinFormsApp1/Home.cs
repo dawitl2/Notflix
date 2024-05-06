@@ -116,8 +116,8 @@ namespace WinFormsApp1
 
             sidepanel.BackColor = Color.FromArgb(24, 24, 24);
             //sidepanel.BackColor = Color.Red;
-            sidepanel.Size = new Size(1900, 225); 
-            sidepanel.Location = new Point(0, 780);
+            sidepanel.Size = new Size(1840, 175); 
+            sidepanel.Location = new Point(60, 780);
             sidepanel.AutoScroll = true;
             //
             //
@@ -135,7 +135,13 @@ namespace WinFormsApp1
     "Romance",
     "Horror",
     "Fantasy",
-    "Mystery"
+    "Mystery",
+    "History",
+    "Lib Anteltay",
+    "Cartoon",
+    "Adult",
+    "Milf",
+    "Step Mom"
 
 };  
             int yPos = 14; // Starting Y position
@@ -190,8 +196,9 @@ namespace WinFormsApp1
             panel1.Font = new System.Drawing.Font("Segoe UI", 11F);
             panel1.Location = new Point(2, 1);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1858, 87);
+            panel1.Size = new Size(1858, 66);
             panel1.TabIndex = 1;
+            panel1.BringToFront();
             // 
             // roundedPanel1
             // 
@@ -205,6 +212,7 @@ namespace WinFormsApp1
             roundedPanel1.Size = new Size(519, 44);
             roundedPanel1.TabIndex = 13;
             roundedPanel1.EdgeColor = Color.FromArgb(29, 41, 43);
+           
             // 
             // textBox1
             // 
@@ -272,7 +280,7 @@ namespace WinFormsApp1
             right.FlatStyle = FlatStyle.Flat;
             right.Font = new System.Drawing.Font("Segoe UI", 11F);
             right.ForeColor = Color.Black;
-            right.Location = new Point(1730, 20);
+            right.Location = new Point(1810, 70);
             right.Name = "right_B";
             right.Size = new Size(50, 50);
             right.TabIndex = 6;
@@ -292,7 +300,7 @@ namespace WinFormsApp1
             left.FlatStyle = FlatStyle.Flat;
             left.Font = new System.Drawing.Font("Segoe UI", 11F);
             left.ForeColor = Color.Black;
-            left.Location = new Point(1660, 20);
+            left.Location = new Point(1740, 70);
             left.Name = "Left_B";
             left.Size = new Size(50, 50);
             left.TabIndex = 6;
@@ -337,10 +345,12 @@ namespace WinFormsApp1
             //widePictureBox.Controls.Add(panel5);
             widePictureBox.Controls.Add(right);
             widePictureBox.Controls.Add(left);
-            widePictureBox.Location = new Point(39, 88);
+            widePictureBox.Location = new Point(0, 40);
             widePictureBox.Name = "wide_panel";
-            widePictureBox.Size = new(1820, 675);
+            widePictureBox.Size = new(1900, 723);
             widePictureBox.TabIndex = 13;
+            //widePictureBox.BringToFront();
+            //roundedPanel1.BringToFront();
 
             iconPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
@@ -387,6 +397,7 @@ namespace WinFormsApp1
             panel4.AutoScroll = true;
             panel4.AutoSize = true;
             panel4.BackColor = Color.FromArgb(24, 24, 24);
+            panel4.Controls.Add(panel1);
             panel4.Controls.Add(widePictureBox);
             panel4.Controls.Add(iconPictureBox);
             panel4.Controls.Add(iconPictureBox2);
@@ -395,7 +406,7 @@ namespace WinFormsApp1
             panel4.Controls.Add(label3);
            
             panel4.Controls.Add(label6);
-            panel4.Controls.Add(panel1);
+        
             panel4.Dock = DockStyle.Fill;
             panel4.Location = new Point(0, 0);
             panel4.Name = "panel4";
@@ -525,29 +536,29 @@ namespace WinFormsApp1
 
 
             // Adjust the position of the FlowLayoutPanel
-            flowLayoutPanel1.Location = new Point(97, 1100);
+            flowLayoutPanel1.Location = new Point(97, 1040);
 
             // Adjust the position of the red panel
-            panel4.Location = new Point(0, 1170);
+            panel4.Location = new Point(0, 1110);
 
             // Adjust the position of the red panel
-            redPanel.Location = new Point(1410, 1095);
+            redPanel.Location = new Point(1410, 1035);
 
             // Adjust the position of the label "Recommended Movies"
-            label3.Location = new Point(115, 1035);
+            label3.Location = new Point(115, 965);
             label7.BringToFront();
             iconPictureBox4.BringToFront();
 
             label7.Location = new Point(115, 735);
 
             // Adjust the position of the icon beside "Recommended Movies"
-            iconPictureBox.Location = new Point(90, 1040);
+            iconPictureBox.Location = new Point(90, 960);
 
             // Adjust the position of the label "Recommended Genres"
-            label6.Location = new Point(1420, 1040);
+            label6.Location = new Point(1420, 960);
 
             // Adjust the position of the icon beside "Recommended Genres"
-            iconPictureBox2.Location = new Point(label6.Left - 20, 1045);
+            iconPictureBox2.Location = new Point(label6.Left - 20, 855);
             iconPictureBox4.Location = new Point(label7.Left - 30, 740);
 
         }
@@ -557,8 +568,8 @@ namespace WinFormsApp1
         {
             List<(string name, string posterPath, string man)> movies = SqlInstance.wideMoviePosters();
 
-            int pictureBoxWidth = 435; // Width of the PictureBox
-            int pictureBoxHeight = 180; // Height of the PictureBox
+            int pictureBoxWidth = 400; // Width of the PictureBox
+            int pictureBoxHeight = 136; // Height of the PictureBox
             int horizontalSpacing = 30; // Horizontal spacing between PictureBoxes
             int verticalSpacing = 20; // Vertical spacing between PictureBoxes
 
@@ -603,7 +614,7 @@ namespace WinFormsApp1
                     // Draw fading teal color
                     for (int j = 0; j <= coloredAreaHeight; j++)
                     {
-                        int alpha = (int)(255 * ((double)j / coloredAreaHeight));
+                        int alpha = (int)(150 * ((double)j / coloredAreaHeight));
                         Color color = Color.FromArgb(alpha, Color.Teal);
                         Rectangle rect = new Rectangle(0, pictureBox.Height - coloredAreaHeight + j, pictureBox.Width, 1);
                         using (SolidBrush brush = new SolidBrush(color))
@@ -615,6 +626,8 @@ namespace WinFormsApp1
                     // Determine title font and color based on mouse hover state
                     System.Drawing.Font font = new System.Drawing.Font("Arial", pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)) ? 35 : 23, FontStyle.Bold);
                     Color textColor = pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)) ? Color.White : Color.Black;
+                    pictureBox.EdgeColor = pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)) ? Color.Teal : Color.Transparent;
+                    pictureBox.CornerRadius = pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)) ? 30 : 10;
 
                     // Draw title text
                     using (Brush brush = new SolidBrush(textColor))
@@ -941,7 +954,11 @@ namespace WinFormsApp1
         private void DisplayMovieAtIndex(int index)
         {
             // Clear previous movie data
+         
             widePictureBox.Controls.Clear();
+
+            widePictureBox.Controls.Add(left);
+            widePictureBox.Controls.Add(right);
 
             // Retrieve data of the movie at the specified index
             string[] movieData = topRatedMoviesData[index];
@@ -982,11 +999,39 @@ namespace WinFormsApp1
             contentPanel.Controls.Add(pictureBox);
 
 
+            // Create a panel for the top fading effect
+            // Create a panel for the top fading effect
+            Panel topFadingPanel = new Panel();
+            topFadingPanel.Dock = DockStyle.Top;
+            topFadingPanel.BackColor = Color.Transparent;
+            topFadingPanel.Height = 150; // Adjust the height as needed
+            topFadingPanel.Paint += (sender, e) =>
+            {
+                // Define the rectangle to paint
+                Rectangle rect = new Rectangle(0, 0, topFadingPanel.Width, topFadingPanel.Height);
+
+                // Define the linear gradient brush
+                LinearGradientBrush brush = new LinearGradientBrush(rect, Color.FromArgb(24, 24, 24), Color.Transparent, LinearGradientMode.Vertical);
+
+                // Define the gradient stops
+                ColorBlend blend = new ColorBlend();
+                blend.Positions = new[] { 0.0f, 0.3f, 0.7f, 1.0f }; // Adjust positions for gradient transition
+                blend.Colors = new[] { Color.FromArgb(24, 24, 24), Color.FromArgb(24, 24, 24), Color.Transparent, Color.Transparent }; // Start from solid color at the bottom to transparent at the top
+
+                // Set the gradient stops
+                brush.InterpolationColors = blend;
+
+                // Fill the rectangle with the gradient brush
+                e.Graphics.FillRectangle(brush, rect);
+            };
+
+            widePictureBox.Controls.Add(topFadingPanel);
+
+
             // Retrieve data of the movie at the specified index
             string[] movieData1 = topRatedMoviesData[index];
 
-            widePictureBox.Controls.Add(left);
-            widePictureBox.Controls.Add(right);
+          
 
             // Create and set properties for title_label
 
@@ -1079,6 +1124,8 @@ namespace WinFormsApp1
             // Create PictureBox
             string widePosterImagePath = movieData[5];
             System.Drawing.Image widePosterImage = System.Drawing.Image.FromFile(widePosterImagePath);
+
+        
 
 
             widePictureBox.Image = widePosterImage;

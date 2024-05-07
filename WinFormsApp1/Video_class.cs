@@ -833,7 +833,7 @@ namespace WinFormsApp1
                 star.ImageLocation = @"C:\Users\enkud\Desktop\Cinema\back_image\e_star.png";
             }
 
-            MessageBox.Show("You rated " + currentRating + " stars.");
+            //MessageBox.Show("You rated " + currentRating + " stars.");
         }
 
     }

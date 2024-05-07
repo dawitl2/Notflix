@@ -23,7 +23,7 @@ namespace WinFormsApp1
         public Form _form;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-      
+
         private System.Windows.Forms.Label label1;
         private RoundedButton button1;
         private RoundedButton button2;
@@ -31,7 +31,7 @@ namespace WinFormsApp1
         private RoundedButton left;
         private TextBox textBox1;
         private Panel panel3;
-     
+
         PictureBox widePictureBox;
         PictureBox iconPictureBox;
         PictureBox iconPictureBox2;
@@ -40,7 +40,7 @@ namespace WinFormsApp1
         private Label discription_label;
         private Label title_label;
         private Panel panel4;
-     
+
         private Label label3;
         private Label label7;
         private Label label6;
@@ -59,7 +59,7 @@ namespace WinFormsApp1
         public Home(Form form)
         {
             _form = form;
-       
+
             InitializeComponent();
             PopulatewideMovies();
             PopulateMostRatedMovies();
@@ -69,7 +69,7 @@ namespace WinFormsApp1
 
         private void InitializeComponent()
         {
-     //
+            //
             panel1 = new Panel();
             roundedPanel1 = new RoundedPanel();
             textBox1 = new TextBox();
@@ -93,7 +93,7 @@ namespace WinFormsApp1
             title_label = new Label();
             discription_label = new Label();
             panel4 = new Panel();
-          
+
             label5 = new Label();
             label4 = new Label();
             panel8 = new Panel();
@@ -101,30 +101,25 @@ namespace WinFormsApp1
             label2 = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
             label3 = new Label();
-            label7= new Label();
+            label7 = new Label();
             label6 = new Label();
 
             panel1.SuspendLayout();
             roundedPanel1.SuspendLayout();
             panel2.SuspendLayout();
             widePictureBox.SuspendLayout();
-        
+
             panel4.SuspendLayout();
-          
+
             panel7.SuspendLayout();
             _form.SuspendLayout();
 
             sidepanel.BackColor = Color.FromArgb(24, 24, 24);
-            //sidepanel.BackColor = Color.Red;
-            sidepanel.Size = new Size(1840, 175); 
+            sidepanel.Size = new Size(1840, 175);
             sidepanel.Location = new Point(60, 780);
             sidepanel.AutoScroll = true;
-            //
-            //
             redPanel.BackColor = Color.FromArgb(24, 24, 24);
-           // redPanel.BackColor = Color.Red;
-            redPanel.Size = new Size(400, 550); // Adjust size as needed
-            //redPanel.Location = new Point(1390, 830); // Adjust position as needed
+            redPanel.Size = new Size(400, 700);
             List<string> genres = new List<string>
 {
     "Comedy",
@@ -143,31 +138,29 @@ namespace WinFormsApp1
     "Milf",
     "Step Mom"
 
-};  
-            int yPos = 14; // Starting Y position
-
+};
+            int yPos = 14;
             foreach (string genre in genres)
             {
-                // Genre Label
                 Label genreLabel = new Label();
                 genreLabel.Text = "  " + genre;
                 genreLabel.ForeColor = Color.Gray;
                 genreLabel.AutoSize = true;
                 genreLabel.Font = new System.Drawing.Font("Segoe UI", 20);
-                genreLabel.Location = new Point(10, yPos + 10); // Adjust spacing as needed
+                genreLabel.Location = new Point(10, yPos + 10);
                 redPanel.Controls.Add(genreLabel);
 
                 if (!genre.StartsWith("  "))
                 {
                     // Logo PictureBox
                     PictureBox logoPictureBox = new PictureBox();
-                    logoPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
+                    logoPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                     logoPictureBox.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\play.png");
-                    logoPictureBox.Location = new Point(10, yPos + 10); // Adjust positioning as needed
+                    logoPictureBox.Location = new Point(10, yPos + 10);
                     logoPictureBox.Size = new Size(25, 25);
                     redPanel.Controls.Add(logoPictureBox);
 
-                    genreLabel.Location = new Point(34, yPos); // Adjust spacing as needed
+                    genreLabel.Location = new Point(34, yPos);
                     genreLabel.MouseEnter += GenreLabel_MouseEnter;
                     genreLabel.MouseLeave += GenreLabel_MouseLeave;
 
@@ -177,20 +170,15 @@ namespace WinFormsApp1
                 yPos += 40; // Increase Y position for the next pair
             }
 
-
-
             panel4.Controls.Add(redPanel);
             panel4.Controls.Add(sidepanel);
-           
             //
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(24, 24, 24);
-            //panel1.BackColor = Color.Red;
             panel1.Controls.Add(roundedPanel1);
             panel1.Controls.Add(panel3);
             panel1.Controls.Add(panel2);
-            //panel1.Controls.Add(panel5);
             panel1.Controls.Add(iconPictureBox3);
             panel1.Controls.Add(button2);
             panel1.Font = new System.Drawing.Font("Segoe UI", 11F);
@@ -212,7 +200,6 @@ namespace WinFormsApp1
             roundedPanel1.Size = new Size(519, 44);
             roundedPanel1.TabIndex = 13;
             roundedPanel1.EdgeColor = Color.FromArgb(29, 41, 43);
-           
             // 
             // textBox1
             // 
@@ -226,7 +213,6 @@ namespace WinFormsApp1
             textBox1.TabIndex = 5;
             textBox1.Text = "Search movies...";
             textBox1.ForeColor = Color.Gray;
-
             textBox1.GotFocus += TextBox1_GotFocus;
             textBox1.KeyDown += TextBox1_KeyDown;
             //
@@ -286,11 +272,8 @@ namespace WinFormsApp1
             right.TabIndex = 6;
             right.Text = ">";
             right.UseVisualStyleBackColor = false;
-
-            // Assuming you have created the left and right buttons
             left.Click += left_Click;
             right.Click += right_Click;
-
             // left //
             left.BackColor = Color.Teal;
             left.BackgroundImageLayout = ImageLayout.None;
@@ -323,9 +306,6 @@ namespace WinFormsApp1
             panel2.Name = "panel2";
             panel2.Size = new Size(174, 50);
             panel2.TabIndex = 2;
-            // panel 5 // 
-
-
             // 
             // label1
             // 
@@ -341,57 +321,45 @@ namespace WinFormsApp1
             // wide_panel
             // 
             //
-
-            //widePictureBox.Controls.Add(panel5);
             widePictureBox.Controls.Add(right);
             widePictureBox.Controls.Add(left);
             widePictureBox.Location = new Point(0, 40);
             widePictureBox.Name = "wide_panel";
             widePictureBox.Size = new(1900, 723);
             widePictureBox.TabIndex = 13;
-            //widePictureBox.BringToFront();
-            //roundedPanel1.BringToFront();
 
-            iconPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
+            iconPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             iconPictureBox.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
-            //iconPictureBox.Location = new Point(90, 765);
             iconPictureBox.Name = "wide_panel";
             iconPictureBox.Size = new Size(20, 30);
             iconPictureBox.TabIndex = 13;
 
-            iconPictureBox2.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
+            iconPictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
             iconPictureBox2.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
-            //iconPictureBox2.Location = new(1395, 780);
             iconPictureBox2.Name = "wide_panel";
             iconPictureBox2.Size = new(20, 30);
             iconPictureBox2.TabIndex = 13;
-            
-            iconPictureBox4.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
+
+            iconPictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
             iconPictureBox4.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
-          //iconPictureBox4.Location = new(1395, 780);
             iconPictureBox4.Name = "wide_panel";
             iconPictureBox4.Size = new(20, 30);
             iconPictureBox4.TabIndex = 13;
 
-            iconPictureBox3.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
+            iconPictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
             iconPictureBox3.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\bars.png");
             iconPictureBox3.Location = new Point(37, 21);
             iconPictureBox3.Name = "wide_panel";
             iconPictureBox3.Size = new Size(50, 50);
             iconPictureBox3.TabIndex = 13;
-            iconPictureBox3.MouseEnter += bars_MouseEnter; // Attach MouseEnter event handler
+            iconPictureBox3.MouseEnter += bars_MouseEnter;
             iconPictureBox3.MouseLeave += bars_MouseLeave;
-            // wide_panel.Paint += wide_panel_Paint                                                                                                                                     
             // 
             // panel5
             // 
-            //   panel5.BackColor = Color.Transparent;
             widePictureBox.Controls.Add(title_label);
             widePictureBox.Controls.Add(discription_label);
             // 
-            // title_label
-            // 
-             // 
             // panel4
             // 
             panel4.AutoScroll = true;
@@ -404,16 +372,13 @@ namespace WinFormsApp1
             panel4.Controls.Add(iconPictureBox4);
             panel4.Controls.Add(flowLayoutPanel1);
             panel4.Controls.Add(label3);
-           
             panel4.Controls.Add(label6);
-        
             panel4.Dock = DockStyle.Fill;
             panel4.Location = new Point(0, 0);
             panel4.Name = "panel4";
             panel4.Size = new Size(1487, 931);
             panel4.TabIndex = 15;
             panel4.Controls.Add(label7);
-
             // 
             // label5
             // 
@@ -433,7 +398,6 @@ namespace WinFormsApp1
             label4.Name = "label4";
             label4.Size = new Size(1342, 15);
             label4.TabIndex = 5;
-            //label4.Text = resources.GetString("label4.Text");
             // 
             // panel8
             // 
@@ -457,7 +421,6 @@ namespace WinFormsApp1
             // label2
             // 
             label2.AutoSize = true;
-            //label2.Location = new Point(20, 3);
             label2.Name = "label2";
             label2.Size = new Size(130, 43);
             label2.TabIndex = 2;
@@ -472,10 +435,7 @@ namespace WinFormsApp1
             flowLayoutPanel1.TabIndex = 2;
             flowLayoutPanel1.Margin = new Padding(0, 350, 0, 0);
 
-            // Adjust the position of the red panel
             panel4.Margin = new Padding(0, 350, 0, 0);
-
-
             // 
             // label3
             // 
@@ -510,10 +470,7 @@ namespace WinFormsApp1
             // 
             _form.AutoScaleDimensions = new SizeF(7F, 15F);
             _form.AutoScaleMode = AutoScaleMode.Font;
-            //_form.ClientSize = new Size(1487, 931);
             _form.Controls.Add(panel4);
-            //_form.FormBorderStyle = FormBorderStyle.FixedSingle;
-            //_form.MaximizeBox = false;
             _form.Name = "Form1";
             _form.Text = "Form1";
             _form.TopMost = true;
@@ -523,99 +480,82 @@ namespace WinFormsApp1
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             widePictureBox.ResumeLayout(false);
-            // panel5.ResumeLayout(false);
-            // panel5.PerformLayout();
             panel4.ResumeLayout(false);
-  
+
             panel4.PerformLayout();
-          
+
             panel7.ResumeLayout(false);
             panel7.PerformLayout();
             _form.ResumeLayout(false);
             _form.PerformLayout();
 
-
-            // Adjust the position of the FlowLayoutPanel
+            // location fixing
             flowLayoutPanel1.Location = new Point(97, 1040);
-
-            // Adjust the position of the red panel
             panel4.Location = new Point(0, 1110);
-
-            // Adjust the position of the red panel
             redPanel.Location = new Point(1410, 1035);
-
-            // Adjust the position of the label "Recommended Movies"
             label3.Location = new Point(115, 965);
             label7.BringToFront();
             iconPictureBox4.BringToFront();
-
             label7.Location = new Point(115, 735);
-
-            // Adjust the position of the icon beside "Recommended Movies"
-            iconPictureBox.Location = new Point(90, 960);
-
-            // Adjust the position of the label "Recommended Genres"
+            iconPictureBox.Location = new Point(90, 967);
             label6.Location = new Point(1420, 960);
-
-            // Adjust the position of the icon beside "Recommended Genres"
-            iconPictureBox2.Location = new Point(label6.Left - 20, 855);
+            iconPictureBox2.Location = new Point(label6.Left - 20, 967); // gunra lable
             iconPictureBox4.Location = new Point(label7.Left - 30, 740);
 
         }
-
 
         private void PopulatewideMovies()
         {
             List<(string name, string posterPath, string man)> movies = SqlInstance.wideMoviePosters();
 
-            int pictureBoxWidth = 400; // Width of the PictureBox
-            int pictureBoxHeight = 136; // Height of the PictureBox
-            int horizontalSpacing = 30; // Horizontal spacing between PictureBoxes
-            int verticalSpacing = 20; // Vertical spacing between PictureBoxes
-
-            int x = horizontalSpacing; // Initial X coordinate for the first PictureBox
-            int y = verticalSpacing; // Initial Y coordinate for the PictureBox
-
-            int maxImagesToShow = 4; // Set the maximum number of images to display
-
+            int pictureBoxWidth = 400;
+            int pictureBoxHeight = 136;
+            int horizontalSpacing = 30;
+            int verticalSpacing = 20;
+            int x = horizontalSpacing;
+            int y = verticalSpacing;
+            int maxImagesToShow = 4;
             for (int i = 0; i < Math.Min(maxImagesToShow, movies.Count); i++)
             {
-                (string name, string posterPath, string man) = movies[i]; // Get movie details from the list
+               
+                (string name, string posterPath, string man) = movies[i];
 
-                // Create PictureBox
                 RoundedPictureBox pictureBox = new RoundedPictureBox();
-                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage; // Maintain aspect ratio
+                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBox.Image = System.Drawing.Image.FromFile(posterPath);
-                pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight); // Set size
-                pictureBox.Location = new Point(x, y); // Set position
-                pictureBox.Margin = new Padding(horizontalSpacing, verticalSpacing, 0, 0); // Add spacing between PictureBoxes
+                pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
+                pictureBox.Location = new Point(x, y);
+                pictureBox.Margin = new Padding(horizontalSpacing, verticalSpacing, 0, 0);
+                pictureBox.CornerRadius = 30;
 
-                // Add PictureBox to the side panel
-                sidepanel.Controls.Add(pictureBox);
+                Size normalSize = pictureBox.Size;
+                Size hoverSize = new Size(normalSize.Width + 36, normalSize.Height + 36); // Increase by 10 pixels
+                Padding normalMargin = pictureBox.Margin;
+                Padding hoverMargin = new Padding(normalMargin.Left + 30, normalMargin.Top - 30, normalMargin.Right, normalMargin.Bottom); // Increase by 5 pixels
 
-                // Subscribe to the MouseEnter and MouseLeave events
+                // Event handlers
                 pictureBox.MouseEnter += (sender, e) =>
                 {
-                    // Refresh to trigger repaint with updated title appearance
-                    pictureBox.Refresh();
+                    pictureBox.Size = hoverSize;
+                    pictureBox.Margin = hoverMargin;
+                    pictureBox.Refresh(); // Force refresh to update the appearance
                 };
 
                 pictureBox.MouseLeave += (sender, e) =>
                 {
-                    // Refresh to trigger repaint with updated title appearance
-                    pictureBox.Refresh();
+                    pictureBox.Size = normalSize;
+                    pictureBox.Margin = normalMargin;
+                    pictureBox.Refresh(); // Force refresh to update the appearance
                 };
 
-                // Subscribe to the Paint event for drawing the fading effect and title
                 pictureBox.Paint += (sender, e) =>
                 {
-                    int coloredAreaHeight = (pictureBox.Height / 2) + 100;
+                    int coloredAreaHeight = (pictureBox.Height / 2) + 70;
 
-                    // Draw fading teal color
                     for (int j = 0; j <= coloredAreaHeight; j++)
                     {
                         int alpha = (int)(150 * ((double)j / coloredAreaHeight));
-                        Color color = Color.FromArgb(alpha, Color.Teal);
+                        Color color = pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)) ? Color.FromArgb(alpha, Color.Teal) : Color.FromArgb(alpha, Color.Black);
                         Rectangle rect = new Rectangle(0, pictureBox.Height - coloredAreaHeight + j, pictureBox.Width, 1);
                         using (SolidBrush brush = new SolidBrush(color))
                         {
@@ -623,19 +563,13 @@ namespace WinFormsApp1
                         }
                     }
 
-                    // Determine title font and color based on mouse hover state
                     System.Drawing.Font font = new System.Drawing.Font("Arial", pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)) ? 35 : 23, FontStyle.Bold);
-                    Color textColor = pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)) ? Color.White : Color.Black;
-                    pictureBox.EdgeColor = pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)) ? Color.Teal : Color.Transparent;
-                    pictureBox.CornerRadius = pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)) ? 30 : 10;
-
-                    // Draw title text
+                    Color textColor = pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)) ? Color.White : Color.White;
+                  
                     using (Brush brush = new SolidBrush(textColor))
                     {
                         SizeF textSize = e.Graphics.MeasureString(name, font);
                         float titleX, titleY;
-
-                        // Adjust title position based on mouse hover
                         if (pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)))
                         {
                             titleX = (pictureBox.Width - textSize.Width) / 2;
@@ -648,21 +582,17 @@ namespace WinFormsApp1
                         }
 
                         PointF titleLocation = new PointF(titleX, titleY);
-
-                        // Draw the title text
                         e.Graphics.DrawString(name, font, brush, titleLocation);
                     }
                 };
 
                 pictureBox.Cursor = Cursors.Hand; // Change cursor to hand pointer
 
-                // Update X coordinate for the next PictureBox
+                sidepanel.Controls.Add(pictureBox);
+
                 x += pictureBoxWidth + horizontalSpacing;
             }
         }
-
-
-
 
 
 
@@ -670,44 +600,39 @@ namespace WinFormsApp1
         {
             List<(string, string, string)> movies = SqlInstance.GetMoviePosters();
 
-            int pictureBoxWidth = 200; // Width of the PictureBox
-            int pictureBoxHeight = 250; // Height of the PictureBox
-            int labelHeight = 20; // Height of the Label
-            int durationLabelHeight = 15; // Height of the duration Label
-            int verticalSpacing = 10; // Vertical spacing between PictureBox and Labels
+            int pictureBoxWidth = 200;
+            int pictureBoxHeight = 250;
+            int labelHeight = 20;
+            int durationLabelHeight = 15;
+            int verticalSpacing = 10;
 
             foreach ((string name, string posterPath, string duration) in movies)
             {
-                // Create PictureBox
                 RoundedPictureBox pictureBox = new RoundedPictureBox();
-                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage; // Maintain aspect ratio
+                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBox.Image = System.Drawing.Image.FromFile(posterPath);
-                pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight); // Set size
-                pictureBox.MouseEnter += PictureBox_MouseEnter; // Attach MouseEnter event handler
-                pictureBox.MouseLeave += PictureBox_MouseLeave; // Attach MouseLeave event handler
-                pictureBox.Click += (sender, e) => PictureBox_Click(sender, e, name, duration, posterPath); // Attach Click event handler
+                pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
+                pictureBox.MouseEnter += PictureBox_MouseEnter;
+                pictureBox.MouseLeave += PictureBox_MouseLeave;
+                pictureBox.Click += (sender, e) => PictureBox_Click(sender, e, name, duration, posterPath);
 
-                // Create Label for movie title
                 Label titleLabel = new Label();
                 titleLabel.Text = name;
                 titleLabel.TextAlign = ContentAlignment.MiddleLeft;
                 titleLabel.AutoSize = false;
-                titleLabel.Size = new Size(pictureBoxWidth, labelHeight); // Set size
+                titleLabel.Size = new Size(pictureBoxWidth, labelHeight);
 
-                // Create Label for movie duration
                 Label durationLabel = new Label();
                 durationLabel.Text = duration + " min        HD";
                 durationLabel.TextAlign = ContentAlignment.MiddleLeft;
                 durationLabel.AutoSize = false;
-                durationLabel.Size = new Size(pictureBoxWidth, durationLabelHeight); // Set size
+                durationLabel.Size = new Size(pictureBoxWidth, durationLabelHeight);
 
-                // Assuming you have a Label named "titleLabel" declared somewhere in your code
-                titleLabel.Font = new System.Drawing.Font("Arial", 14, FontStyle.Bold); // Change font size and style
-                titleLabel.ForeColor = Color.White; // Change font color
-                durationLabel.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold); // Change font size and style
-                durationLabel.ForeColor = Color.Teal; // Change font color
+                titleLabel.Font = new System.Drawing.Font("Arial", 14, FontStyle.Bold);
+                titleLabel.ForeColor = Color.White;
+                durationLabel.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+                durationLabel.ForeColor = Color.Teal;
 
-                // Create container panel to hold PictureBox and Labels
                 FlowLayoutPanel moviePanel = new FlowLayoutPanel();
                 moviePanel.FlowDirection = FlowDirection.TopDown;
                 moviePanel.Size = new Size(pictureBoxWidth, pictureBoxHeight + labelHeight + durationLabelHeight + verticalSpacing * 2); // Set size
@@ -715,7 +640,6 @@ namespace WinFormsApp1
                 moviePanel.Controls.Add(titleLabel);
                 moviePanel.Controls.Add(durationLabel);
 
-                // Add container panel to the FlowLayoutPanel
                 flowLayoutPanel1.Controls.Add(moviePanel);
             }
 
@@ -723,118 +647,97 @@ namespace WinFormsApp1
         }
         private void PopulateMovie(string type)
         {
-            // Clear existing movie panels
             flowLayoutPanel1.Controls.Clear();
-
-
-            // Retrieve movies for the specified genre
             List<(string, string, string)> movies = SqlInstance.GetMoviePostersByGenre(type);
 
-            // Set dimensions and spacing for movie controls
-            int pictureBoxWidth = 200; // Width of the PictureBox
-            int pictureBoxHeight = 250; // Height of the PictureBox
-            int labelHeight = 20; // Height of the Label
-            int durationLabelHeight = 15; // Height of the duration Label
-            int verticalSpacing = 10; // Vertical spacing between PictureBox and Labels
 
-            // Iterate over retrieved movies and populate the FlowLayoutPanel
+            int pictureBoxWidth = 200;
+            int pictureBoxHeight = 250;
+            int labelHeight = 20;
+            int durationLabelHeight = 15;
+            int verticalSpacing = 10;
+
             foreach ((string name, string posterPath, string duration) in movies)
             {
-                // Create PictureBox
                 RoundedPictureBox pictureBox = new RoundedPictureBox();
-                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage; // Maintain aspect ratio
+                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBox.Image = System.Drawing.Image.FromFile(posterPath);
-                pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight); // Set size#
-                pictureBox.MouseEnter += PictureBox_MouseEnter; // Attach MouseEnter event handler
-                pictureBox.MouseLeave += PictureBox_MouseLeave; // Attach MouseLeave event handler
-                pictureBox.Click += (sender, e) => PictureBox_Click(sender, e, name, duration, posterPath); // Attach Click event handler
+                pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
+                pictureBox.MouseEnter += PictureBox_MouseEnter;
+                pictureBox.MouseLeave += PictureBox_MouseLeave;
+                pictureBox.Click += (sender, e) => PictureBox_Click(sender, e, name, duration, posterPath);
 
-                // Create Label for movie title
                 Label titleLabel = new Label();
                 titleLabel.Text = name;
                 titleLabel.TextAlign = ContentAlignment.MiddleLeft;
                 titleLabel.AutoSize = false;
-                titleLabel.Size = new Size(pictureBoxWidth, labelHeight); // Set size
-                titleLabel.Font = new System.Drawing.Font("Arial", 14, FontStyle.Bold); // Change font size and style
-                titleLabel.ForeColor = Color.White; // Change font color
+                titleLabel.Size = new Size(pictureBoxWidth, labelHeight);
+                titleLabel.Font = new System.Drawing.Font("Arial", 14, FontStyle.Bold);
+                titleLabel.ForeColor = Color.White;
 
-                // Create Label for movie duration
                 Label durationLabel = new Label();
                 durationLabel.Text = duration + "'";
                 durationLabel.TextAlign = ContentAlignment.MiddleLeft;
                 durationLabel.AutoSize = false;
-                durationLabel.Size = new Size(pictureBoxWidth, durationLabelHeight); // Set size
-                durationLabel.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold); // Change font size and style
-                durationLabel.ForeColor = Color.Teal; // Change font color
+                durationLabel.Size = new Size(pictureBoxWidth, durationLabelHeight);
+                durationLabel.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+                durationLabel.ForeColor = Color.Teal;
 
-                // Create container panel to hold PictureBox and Labels
                 FlowLayoutPanel moviePanel = new FlowLayoutPanel();
                 moviePanel.FlowDirection = FlowDirection.TopDown;
-                moviePanel.Size = new Size(pictureBoxWidth, pictureBoxHeight + labelHeight + durationLabelHeight + verticalSpacing * 2); // Set size
+                moviePanel.Size = new Size(pictureBoxWidth, pictureBoxHeight + labelHeight + durationLabelHeight + verticalSpacing * 2);
                 moviePanel.Controls.Add(pictureBox);
                 moviePanel.Controls.Add(titleLabel);
                 moviePanel.Controls.Add(durationLabel);
 
-                // Add container panel to the FlowLayoutPanel
                 flowLayoutPanel1.Controls.Add(moviePanel);
             }
         }
-        
+
         private void PopulateMovie(string movie, int n)
         {
-            // Clear existing movie panels
             flowLayoutPanel1.Controls.Clear();
-
-
-            // Retrieve movies for the specified genre
             List<(string, string, string)> movies = SqlInstance.GetMoviePostersname(movie);
 
-            // Set dimensions and spacing for movie controls
-            int pictureBoxWidth = 200; // Width of the PictureBox
-            int pictureBoxHeight = 250; // Height of the PictureBox
-            int labelHeight = 20; // Height of the Label
-            int durationLabelHeight = 15; // Height of the duration Label
-            int verticalSpacing = 10; // Vertical spacing between PictureBox and Labels
+            int pictureBoxWidth = 200;
+            int pictureBoxHeight = 250;
+            int labelHeight = 20;
+            int durationLabelHeight = 15;
+            int verticalSpacing = 10;
 
-            // Iterate over retrieved movies and populate the FlowLayoutPanel
             foreach ((string name, string posterPath, string duration) in movies)
             {
-                // Create PictureBox
                 RoundedPictureBox pictureBox = new RoundedPictureBox();
-                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage; // Maintain aspect ratio
+                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBox.Image = System.Drawing.Image.FromFile(posterPath);
-                pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight); // Set size#
-                pictureBox.MouseEnter += PictureBox_MouseEnter; // Attach MouseEnter event handler
-                pictureBox.MouseLeave += PictureBox_MouseLeave; // Attach MouseLeave event handler
-                pictureBox.Click += (sender, e) => PictureBox_Click(sender, e, name, duration, posterPath); // Attach Click event handler
+                pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
+                pictureBox.MouseEnter += PictureBox_MouseEnter;
+                pictureBox.MouseLeave += PictureBox_MouseLeave;
+                pictureBox.Click += (sender, e) => PictureBox_Click(sender, e, name, duration, posterPath);
 
-                // Create Label for movie title
                 Label titleLabel = new Label();
                 titleLabel.Text = name;
                 titleLabel.TextAlign = ContentAlignment.MiddleLeft;
                 titleLabel.AutoSize = false;
-                titleLabel.Size = new Size(pictureBoxWidth, labelHeight); // Set size
-                titleLabel.Font = new System.Drawing.Font("Arial", 14, FontStyle.Bold); // Change font size and style
-                titleLabel.ForeColor = Color.White; // Change font color
+                titleLabel.Size = new Size(pictureBoxWidth, labelHeight);
+                titleLabel.Font = new System.Drawing.Font("Arial", 14, FontStyle.Bold);
+                titleLabel.ForeColor = Color.White;
 
-                // Create Label for movie duration
                 Label durationLabel = new Label();
                 durationLabel.Text = duration + "'";
                 durationLabel.TextAlign = ContentAlignment.MiddleLeft;
                 durationLabel.AutoSize = false;
-                durationLabel.Size = new Size(pictureBoxWidth, durationLabelHeight); // Set size
-                durationLabel.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold); // Change font size and style
-                durationLabel.ForeColor = Color.Teal; // Change font color
+                durationLabel.Size = new Size(pictureBoxWidth, durationLabelHeight);
+                durationLabel.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+                durationLabel.ForeColor = Color.Teal;
 
-                // Create container panel to hold PictureBox and Labels
                 FlowLayoutPanel moviePanel = new FlowLayoutPanel();
                 moviePanel.FlowDirection = FlowDirection.TopDown;
-                moviePanel.Size = new Size(pictureBoxWidth, pictureBoxHeight + labelHeight + durationLabelHeight + verticalSpacing * 2); // Set size
+                moviePanel.Size = new Size(pictureBoxWidth, pictureBoxHeight + labelHeight + durationLabelHeight + verticalSpacing * 2);
                 moviePanel.Controls.Add(pictureBox);
                 moviePanel.Controls.Add(titleLabel);
                 moviePanel.Controls.Add(durationLabel);
 
-                // Add container panel to the FlowLayoutPanel
                 flowLayoutPanel1.Controls.Add(moviePanel);
             }
         }
@@ -842,26 +745,18 @@ namespace WinFormsApp1
         private void PictureBox_MouseEnter(object sender, EventArgs e)
         {
             PictureBox pictureBox = (PictureBox)sender;
-            pictureBox.Cursor = Cursors.Hand; // Change cursor to hand pointer
-
-            // Define the height of the colored area (half of the picture box height)
+            pictureBox.Cursor = Cursors.Hand;
             int coloredAreaHeight = (pictureBox.Height / 2) + 100;
 
-            // Create a semi-transparent overlay with fading effect
             using (Graphics g = pictureBox.CreateGraphics())
             {
                 for (int i = 0; i <= coloredAreaHeight; i++)
                 {
-                    // Calculate the alpha value based on the current height position
                     int alpha = (int)(255 * ((double)i / coloredAreaHeight));
 
-                    // Define the color with the calculated alpha value
                     Color color = Color.FromArgb(alpha, Color.Teal);
-
-                    // Define the rectangle to paint (from top to current height position)
                     Rectangle rect = new Rectangle(0, pictureBox.Height - coloredAreaHeight + i, pictureBox.Width, 1);
 
-                    // Fill the rectangle with the semi-transparent color
                     using (SolidBrush brush = new SolidBrush(color))
                     {
                         g.FillRectangle(brush, rect);
@@ -869,12 +764,10 @@ namespace WinFormsApp1
                 }
             }
 
-            // Add play button icon in the middle
             int playButtonSize = 50; // Adjust size as needed
             int playButtonX = (pictureBox.Width - playButtonSize) / 2;
             int playButtonY = (pictureBox.Height - playButtonSize) / 2;
 
-            // Draw the play button icon
             using (Graphics g = pictureBox.CreateGraphics())
             using (System.Drawing.Font font = new System.Drawing.Font("Arial", 32))
             using (SolidBrush brush = new SolidBrush(Color.Black))
@@ -886,155 +779,89 @@ namespace WinFormsApp1
         private void PictureBox_MouseLeave(object sender, EventArgs e)
         {
             PictureBox pictureBox = (PictureBox)sender;
-            pictureBox.Cursor = Cursors.Default; // Revert cursor to default
-
-            // Clear the overlay by redrawing the PictureBox
+            pictureBox.Cursor = Cursors.Default;
             pictureBox.Invalidate();
         }
-
-
 
 
         private void bars_MouseEnter(object sender, EventArgs e)
         {
             PictureBox pictureBox = (PictureBox)sender;
-            pictureBox.Cursor = Cursors.Hand; // Change cursor to hand pointer
+            pictureBox.Cursor = Cursors.Hand;
         }
 
-        // Inside the MouseLeave event handler:
         private void bars_MouseLeave(object sender, EventArgs e)
         {
             PictureBox pictureBox = (PictureBox)sender;
-            pictureBox.Cursor = Cursors.Default; // Revert cursor to default
+            pictureBox.Cursor = Cursors.Default;
         }
 
         private void PictureBox_Click(object sender, EventArgs e, string movieName, string movieDuration, string posterPath)
         {
-            // Retrieve movie ID using the posterPath
             string movieId = SqlInstance.GetMovieIdFromImagePath(posterPath);
-
-            // Retrieve movie data using the movie ID
             string[] movieData = SqlInstance.GetMovieDataById(int.Parse(movieId));
-
-            // Display movie title in a message box
-            //  MessageBox.Show($"The ID of the clicked movie is: {movieData[0]}");
-
-            /*  panel1.Visible = false;
-              widePictureBox.Visible = false;
-              flowLayoutPanel1.Visible = false;
-              label3.Visible = false;
-              panel4.Visible = false;
-              label6.Visible = false;
-             // genreLabel.Visible = false;
-              iconPictureBox.Visible = false;
-              iconPictureBox2.Visible = false;
-              iconPictureBox3.Visible = false;*/
-
             panel4.Visible = false;
-
-
             Video_class Vid = new Video_class(_form, movieData, int.Parse(movieId));
-
         }
 
-        private List<string[]> topRatedMoviesData; // Store data of top rated movies
-        private int currentMovieIndex; // Index of the currently displayed movie in the topRatedMoviesData list
+        private List<string[]> topRatedMoviesData;
+        private int currentMovieIndex;
 
-        // Modify PopulateMostRatedMovie method to display top 3 rated movies
         private void PopulateMostRatedMovies()
         {
-            topRatedMoviesData = SqlInstance.GetTopRatedMoviesData(); // Get data of top rated movies
-
-            // Display the first movie initially
+            topRatedMoviesData = SqlInstance.GetTopRatedMoviesData();
             DisplayMovieAtIndex(0);
         }
 
-        // Helper method to display movie at a specific index in the topRatedMoviesData list
-        // Helper method to display movie at a specific index in the topRatedMoviesData list
         private void DisplayMovieAtIndex(int index)
         {
-            // Clear previous movie data
-         
             widePictureBox.Controls.Clear();
-
             widePictureBox.Controls.Add(left);
             widePictureBox.Controls.Add(right);
 
-            // Retrieve data of the movie at the specified index
             string[] movieData = topRatedMoviesData[index];
 
-            // Populate UI elements with movie data
-
-            // Create a panel to hold the text displaying panel and buttons
             Panel contentPanel = new Panel();
             contentPanel.Dock = DockStyle.Bottom;
             contentPanel.BackColor = Color.Transparent;
-            contentPanel.Height = 350; // Adjust the height as needed
+            contentPanel.Height = 350;
             contentPanel.Paint += (sender, e) =>
             {
-                // Define the rectangle to paint
                 Rectangle rect = new Rectangle(0, 0, contentPanel.Width, contentPanel.Height);
-
-                // Define the linear gradient brush
                 LinearGradientBrush brush = new LinearGradientBrush(rect, Color.Transparent, Color.FromArgb(24, 24, 24), LinearGradientMode.Vertical);
 
-                // Define the gradient stops
                 ColorBlend blend = new ColorBlend();
-                blend.Positions = new[] { 0.0f, 0.3f, 0.7f, 1.0f }; // Adjust positions for gradient transition
-                blend.Colors = new[] { Color.Transparent, Color.Transparent, Color.FromArgb(24, 24, 24), Color.FromArgb(24, 24, 24) }; // Start from solid color at the bottom to transparent at the top
-
-                // Set the gradient stops
+                blend.Positions = new[] { 0.0f, 0.3f, 0.7f, 1.0f };
+                blend.Colors = new[] { Color.Transparent, Color.Transparent, Color.FromArgb(24, 24, 24), Color.FromArgb(24, 24, 24) };
                 brush.InterpolationColors = blend;
-
-                // Fill the rectangle with the gradient brush
                 e.Graphics.FillRectangle(brush, rect);
             };
 
-            // Create PictureBox for the image
             PictureBox pictureBox = new PictureBox();
-            pictureBox.Location = new Point(10, 85); // Adjust the location as needed
-            pictureBox.Size = new Size(236, 82); // Adjust the size as needed
-            pictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Adjust the size mode as needed
-            pictureBox.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\stars.png"); 
+            pictureBox.Location = new Point(10, 85);
+            pictureBox.Size = new Size(236, 82);
+            pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\stars.png");
             contentPanel.Controls.Add(pictureBox);
 
-
-            // Create a panel for the top fading effect
-            // Create a panel for the top fading effect
             Panel topFadingPanel = new Panel();
             topFadingPanel.Dock = DockStyle.Top;
             topFadingPanel.BackColor = Color.Transparent;
-            topFadingPanel.Height = 150; // Adjust the height as needed
+            topFadingPanel.Height = 150;
             topFadingPanel.Paint += (sender, e) =>
             {
-                // Define the rectangle to paint
+
                 Rectangle rect = new Rectangle(0, 0, topFadingPanel.Width, topFadingPanel.Height);
-
-                // Define the linear gradient brush
                 LinearGradientBrush brush = new LinearGradientBrush(rect, Color.FromArgb(24, 24, 24), Color.Transparent, LinearGradientMode.Vertical);
-
-                // Define the gradient stops
                 ColorBlend blend = new ColorBlend();
-                blend.Positions = new[] { 0.0f, 0.3f, 0.7f, 1.0f }; // Adjust positions for gradient transition
-                blend.Colors = new[] { Color.FromArgb(24, 24, 24), Color.FromArgb(24, 24, 24), Color.Transparent, Color.Transparent }; // Start from solid color at the bottom to transparent at the top
-
-                // Set the gradient stops
+                blend.Positions = new[] { 0.0f, 0.3f, 0.7f, 1.0f };
+                blend.Colors = new[] { Color.FromArgb(24, 24, 24), Color.FromArgb(24, 24, 24), Color.Transparent, Color.Transparent };
                 brush.InterpolationColors = blend;
-
-                // Fill the rectangle with the gradient brush
                 e.Graphics.FillRectangle(brush, rect);
             };
 
             widePictureBox.Controls.Add(topFadingPanel);
-
-
-            // Retrieve data of the movie at the specified index
             string[] movieData1 = topRatedMoviesData[index];
-
-          
-
-            // Create and set properties for title_label
-
 
             this.title_label.AutoSize = true;
             this.title_label.Font = new System.Drawing.Font("Segoe UI", 55F);
@@ -1043,7 +870,6 @@ namespace WinFormsApp1
             this.title_label.Name = "title_label";
             this.title_label.Size = new Size(5, 5);
             this.title_label.TabIndex = 0;
-           
             // 
             // discription_label
             // 
@@ -1056,11 +882,8 @@ namespace WinFormsApp1
             discription_label.TabIndex = 1;
 
             this.title_label.Text = movieData[0];
-
-
             discription_label.Text = movieData[2];
 
-            // Create a new RoundedButton for the "Watch" button
             RoundedButton watchButton = new RoundedButton();
             watchButton.BackColor = Color.Teal;
             watchButton.BackgroundImageLayout = ImageLayout.None;
@@ -1070,8 +893,8 @@ namespace WinFormsApp1
             watchButton.FlatStyle = FlatStyle.Flat;
             watchButton.Font = new System.Drawing.Font("Impact", 21F);
             watchButton.ForeColor = Color.Black;
-            watchButton.Location = new Point(right.Left - 100, 220); // Adjust position as needed
-            watchButton.Size = new Size(160, 50); // Adjust size as needed
+            watchButton.Location = new Point(right.Left - 100, 220);
+            watchButton.Size = new Size(160, 50);
             watchButton.TabIndex = 7;
             watchButton.Text = "Watch";
             watchButton.UseVisualStyleBackColor = false;
@@ -1083,7 +906,7 @@ namespace WinFormsApp1
             {
                 AnimateButtonColor(watchButton, Color.Teal);
             };
-            
+
             RoundedButton trailerButton = new RoundedButton();
             trailerButton.BackColor = Color.Teal;
             trailerButton.BackgroundImageLayout = ImageLayout.None;
@@ -1093,8 +916,8 @@ namespace WinFormsApp1
             trailerButton.FlatStyle = FlatStyle.Flat;
             trailerButton.Font = new System.Drawing.Font("Impact", 21F);
             trailerButton.ForeColor = Color.Black;
-            trailerButton.Location = new Point(watchButton.Left - 170, 220); // Adjust position as needed
-            trailerButton.Size = new Size(160, 50); // Adjust size as needed
+            trailerButton.Location = new Point(watchButton.Left - 170, 220);
+            trailerButton.Size = new Size(160, 50);
             trailerButton.TabIndex = 7;
             trailerButton.Text = "Trailer";
             trailerButton.UseVisualStyleBackColor = false;
@@ -1107,39 +930,24 @@ namespace WinFormsApp1
                 AnimateButtonColor(trailerButton, Color.Teal);
             };
 
-
-            // Add the "Watch" button to the contentPanel
             contentPanel.Controls.Add(watchButton);
             contentPanel.Controls.Add(trailerButton);
-            // Assuming index 2 holds the movie description
-
-
-            // Add labels to contentPanel
             contentPanel.Controls.Add(this.title_label);
             contentPanel.Controls.Add(discription_label);
-
-            // Add contentPanel to the wide_panel
             widePictureBox.Controls.Add(contentPanel);
 
-            // Create PictureBox
             string widePosterImagePath = movieData[5];
             System.Drawing.Image widePosterImage = System.Drawing.Image.FromFile(widePosterImagePath);
-
-        
-
 
             widePictureBox.Image = widePosterImage;
             widePictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             widePictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-         
+
             currentMovieIndex = index;
         }
 
-      
-
         private async void AnimateButtonColor(RoundedButton button, Color targetColor)
         {
-            // Adjust the steps and duration as needed for the desired effect
             int steps = 20;
             int duration = 400; // in milliseconds
 
@@ -1158,7 +966,7 @@ namespace WinFormsApp1
 
             button.BackColor = targetColor;
         }
-        
+
         private void left_Click(object sender, EventArgs e)
         {
             if (currentMovieIndex > 0)
@@ -1180,42 +988,30 @@ namespace WinFormsApp1
         private void GenreLabel_MouseEnter(object sender, EventArgs e)
         {
             Label hoveredLabel = sender as Label;
-            hoveredLabel.Left += 30; // Shift the hovered label a little to the right
-            hoveredLabel.Font = new System.Drawing.Font("Segoe UI", 25); // Increase font size
-            hoveredLabel.ForeColor = Color.Teal; // Change font color
+            hoveredLabel.Left += 30;
+            hoveredLabel.Font = new System.Drawing.Font("Segoe UI", 25);
+            hoveredLabel.ForeColor = Color.Teal;
         }
 
         private void GenreLabel_MouseLeave(object sender, EventArgs e)
         {
             Label hoveredLabel = sender as Label;
-            hoveredLabel.Left -= 30; // Reset the position of the hovered label when the mouse leaves
-            hoveredLabel.Font = new System.Drawing.Font("Segoe UI", 20); // Reset font size
-            hoveredLabel.ForeColor = Color.Gray; // Reset font color
+            hoveredLabel.Left -= 30;
+            hoveredLabel.Font = new System.Drawing.Font("Segoe UI", 20);
+            hoveredLabel.ForeColor = Color.Gray;
         }
 
-        private void GenreLabel_Click(object sender, EventArgs e, Label label)
-        {
-              
+        private void GenreLabel_Click(object sender, EventArgs e, Label label) { 
+        
                 PopulateMovie(label.Text.ToLower());
-           
-            
         }
         private void exit_Click(object sender, EventArgs e)
         {
-            // Clear the controls of the current form
-             _form.Controls.Clear();
-
-            // Create a new instance of FullScreenForm
+            _form.Controls.Clear();
             FullScreenForm form = new FullScreenForm();
-
-            // Show the new form
             form.Show();
            //_form.Close();
         }
-
-        //////////////////////////////////////////////////////////////////////
-        //////////////////////////////// search ///////////////////////////////
-        //////////////////////////////////////////////////////////////////////
 
         private void TextBox1_GotFocus(object sender, EventArgs e)
         {

@@ -184,7 +184,7 @@ namespace WinFormsApp1
             panel1.Font = new System.Drawing.Font("Segoe UI", 11F);
             panel1.Location = new Point(2, 1);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1858, 66);
+            panel1.Size = new Size(1900, 66);
             panel1.TabIndex = 1;
             panel1.BringToFront();
             // 
@@ -246,7 +246,7 @@ namespace WinFormsApp1
             button2.TabIndex = 6;
             button2.Text = "Exit";
             button2.UseVisualStyleBackColor = false;
-            button2.Location = new Point(panel1.Width - 94, 21);
+            button2.Location = new Point(panel1.Width - 130, 21);
             button2.MouseEnter += (sender, e) =>
             {
                 AnimateButtonColor(button2, Color.Red);
@@ -815,6 +815,7 @@ namespace WinFormsApp1
 
         private void DisplayMovieAtIndex(int index)
         {
+            Color majorityColor;
             widePictureBox.Controls.Clear();
             widePictureBox.Controls.Add(left);
             widePictureBox.Controls.Add(right);
@@ -848,17 +849,7 @@ namespace WinFormsApp1
             topFadingPanel.Dock = DockStyle.Top;
             topFadingPanel.BackColor = Color.Transparent;
             topFadingPanel.Height = 150;
-            topFadingPanel.Paint += (sender, e) =>
-            {
-
-                Rectangle rect = new Rectangle(0, 0, topFadingPanel.Width, topFadingPanel.Height);
-                LinearGradientBrush brush = new LinearGradientBrush(rect, Color.FromArgb(24, 24, 24), Color.Transparent, LinearGradientMode.Vertical);
-                ColorBlend blend = new ColorBlend();
-                blend.Positions = new[] { 0.0f, 0.3f, 0.7f, 1.0f };
-                blend.Colors = new[] { Color.FromArgb(24, 24, 24), Color.FromArgb(24, 24, 24), Color.Transparent, Color.Transparent };
-                brush.InterpolationColors = blend;
-                e.Graphics.FillRectangle(brush, rect);
-            };
+          
 
             widePictureBox.Controls.Add(topFadingPanel);
             string[] movieData1 = topRatedMoviesData[index];
@@ -944,7 +935,77 @@ namespace WinFormsApp1
             widePictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
 
             currentMovieIndex = index;
+
+         
+
+            Bitmap resizedImage = new Bitmap(widePictureBox.Image, new Size(100, 100));
+
+            // Analyze the resized image to find the majority color
+             majorityColor = FindMajorityColor(resizedImage);
+
+            // Display the majority color in a message box
+            // MessageBox.Show($"The majority color of the movie image is: {majorityColor}");
+            topFadingPanel.Paint += (sender, e) =>
+            {
+
+                Rectangle rect = new Rectangle(0, 0, topFadingPanel.Width, topFadingPanel.Height);
+                LinearGradientBrush brush = new LinearGradientBrush(rect, Color.FromArgb(24, 24, 24), Color.Transparent, LinearGradientMode.Vertical);
+                ColorBlend blend = new ColorBlend();
+                blend.Positions = new[] { 0.0f, 0.3f, 0.7f, 1.0f };
+                blend.Colors = new[] { majorityColor, majorityColor, Color.Transparent, Color.Transparent };
+                brush.InterpolationColors = blend;
+                e.Graphics.FillRectangle(brush, rect);
+            };
+
+            panel1.BackColor = majorityColor;
         }
+
+        // ///////////////////// //////////////////////////////////////////
+        // ///////////////////// //////////////////////////////////////////
+
+
+
+
+
+        private Color FindMajorityColor(Bitmap image)
+        {
+            // Here, you can implement the logic to analyze the image and find the majority color.
+            // For simplicity, let's just get the average color of the entire image.
+            int totalRed = 0, totalGreen = 0, totalBlue = 0;
+            int pixelCount = 0;
+
+            for (int x = 0; x < image.Width; x++)
+            {
+                for (int y = 0; y < image.Height; y++)
+                {
+                    Color pixelColor = image.GetPixel(x, y);
+                    totalRed += pixelColor.R;
+                    totalGreen += pixelColor.G;
+                    totalBlue += pixelColor.B;
+                    pixelCount++;
+                }
+            }
+
+            // Calculate average color
+            int avgRed = totalRed / pixelCount;
+            int avgGreen = totalGreen / pixelCount;
+            int avgBlue = totalBlue / pixelCount;
+
+            return Color.FromArgb(avgRed, avgGreen, avgBlue);
+        }
+
+
+
+
+
+
+        // ///////////////////// //////////////////////////////////////////
+        // ///////////////////// //////////////////////////////////////////
+
+
+
+
+
 
         private async void AnimateButtonColor(RoundedButton button, Color targetColor)
         {

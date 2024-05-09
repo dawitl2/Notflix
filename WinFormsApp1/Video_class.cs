@@ -18,9 +18,6 @@ using System.Drawing.Drawing2D;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Microsoft.VisualBasic.ApplicationServices;
 
-
-
-
 namespace WinFormsApp1
 {
     public class Video_class
@@ -63,8 +60,8 @@ namespace WinFormsApp1
             this.movie = array;
             this.movieid = movieid;
             InitializeComponent();
-
-
+            PlayVideoFromDatabase();
+            PopulateMovieDataPanel();
         }
 
         void InitializeComponent()
@@ -428,8 +425,7 @@ namespace WinFormsApp1
 
 
 
-            PlayVideoFromDatabase();
-
+          
 
         }
 
@@ -470,7 +466,7 @@ namespace WinFormsApp1
                     label1.Text = movie[0];
 
 
-                    PopulateMovieDataPanel();
+                  
                 }
                 catch (Exception ex)
                 {

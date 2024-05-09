@@ -12,6 +12,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using FullScreenApp;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 
@@ -194,7 +195,7 @@ namespace WinFormsApp1
             roundedPanel1.Controls.Add(textBox1);
             roundedPanel1.Controls.Add(button1);
             roundedPanel1.CornerRadius = 10;
-            roundedPanel1.EdgeColor = Color.Black;
+            roundedPanel1.EdgeColor = Color.White;
             roundedPanel1.Location = new Point(700, 21);
             roundedPanel1.Name = "roundedPanel1";
             roundedPanel1.Size = new Size(519, 44);
@@ -232,6 +233,9 @@ namespace WinFormsApp1
             button1.TabIndex = 6;
             button1.Text = "filter";
             button1.UseVisualStyleBackColor = false;
+            button1.MouseClick += (sender, e) => filter_Click(sender, e);
+
+
             // button 2 //
             button2.BackColor = Color.Teal;
             button2.CornerRadius = 7;
@@ -526,7 +530,7 @@ namespace WinFormsApp1
                 pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
                 pictureBox.Location = new Point(x, y);
                 pictureBox.Margin = new Padding(horizontalSpacing, verticalSpacing, 0, 0);
-                pictureBox.CornerRadius = 30;
+                pictureBox.CornerRadius = 13;
 
                 Size normalSize = pictureBox.Size;
                 Size hoverSize = new Size(normalSize.Width + 36, normalSize.Height + 36); // Increase by 10 pixels
@@ -554,7 +558,7 @@ namespace WinFormsApp1
 
                     for (int j = 0; j <= coloredAreaHeight; j++)
                     {
-                        int alpha = (int)(150 * ((double)j / coloredAreaHeight));
+                        int alpha = (int)(200 * ((double)j / coloredAreaHeight));
                         Color color = pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)) ? Color.FromArgb(alpha, Color.Teal) : Color.FromArgb(alpha, Color.Black);
                         Rectangle rect = new Rectangle(0, pictureBox.Height - coloredAreaHeight + j, pictureBox.Width, 1);
                         using (SolidBrush brush = new SolidBrush(color))
@@ -693,6 +697,55 @@ namespace WinFormsApp1
                 flowLayoutPanel1.Controls.Add(moviePanel);
             }
         }
+
+        private void PopulateMovie(string Genre, string Release_Date, string Duration, string Rating)
+        {
+            flowLayoutPanel1.Controls.Clear();
+            List<(string, string, string, string)> movies = SqlInstance.filter_movies(Genre, Release_Date, Duration, Rating);
+
+            int pictureBoxWidth = 200;
+            int pictureBoxHeight = 250;
+            int labelHeight = 20;
+            int durationLabelHeight = 15;
+            int verticalSpacing = 10;
+
+            foreach ((string name, string posterPath, string duration, string videoPath) in movies)
+            {
+                RoundedPictureBox pictureBox = new RoundedPictureBox();
+                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox.Image = System.Drawing.Image.FromFile(posterPath);
+                pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
+                pictureBox.MouseEnter += PictureBox_MouseEnter;
+                pictureBox.MouseLeave += PictureBox_MouseLeave;
+               // pictureBox.Click += (sender, e) => PictureBox_Click(sender, e, name, duration, posterPath, videoPath);
+
+                Label titleLabel = new Label();
+                titleLabel.Text = name;
+                titleLabel.TextAlign = ContentAlignment.MiddleLeft;
+                titleLabel.AutoSize = false;
+                titleLabel.Size = new Size(pictureBoxWidth, labelHeight);
+                titleLabel.Font = new System.Drawing.Font("Arial", 14, FontStyle.Bold);
+                titleLabel.ForeColor = Color.White;
+
+                Label durationLabel = new Label();
+                durationLabel.Text = duration + "'";
+                durationLabel.TextAlign = ContentAlignment.MiddleLeft;
+                durationLabel.AutoSize = false;
+                durationLabel.Size = new Size(pictureBoxWidth, durationLabelHeight);
+                durationLabel.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+                durationLabel.ForeColor = Color.Teal;
+
+                FlowLayoutPanel moviePanel = new FlowLayoutPanel();
+                moviePanel.FlowDirection = FlowDirection.TopDown;
+                moviePanel.Size = new Size(pictureBoxWidth, pictureBoxHeight + labelHeight + durationLabelHeight + verticalSpacing * 2);
+                moviePanel.Controls.Add(pictureBox);
+                moviePanel.Controls.Add(titleLabel);
+                moviePanel.Controls.Add(durationLabel);
+
+                flowLayoutPanel1.Controls.Add(moviePanel);
+            }
+        }
+
 
         private void PopulateMovie(string movie, int n)
         {
@@ -1097,5 +1150,153 @@ namespace WinFormsApp1
           {
             PopulateMovie(searchText, 1); 
           }
+
+
+        ///////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////filter//////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////
+
+
+        private void filter_Click(object sender, EventArgs e)
+        {
+            panel1.BackColor = Color.FromArgb(24, 24, 24);
+            widePictureBox.Visible = false;
+            sidepanel.Visible = false;
+            label7.Visible = false;
+            iconPictureBox4.Visible = false;
+            //label7.Visible = false;
+            //panel4.Location = new Point(0, 1110); 
+            flowLayoutPanel1.Location = new Point(97, 400);
+            redPanel.Location = new Point(1410, 395);
+            label3.Location = new Point(115, 325);
+            iconPictureBox.Location = new Point(90, 327);
+            label6.Location = new Point(1420, 320);
+            iconPictureBox2.Location = new Point(label6.Left - 20, 327); // gunra lable
+
+            // Create and configure combo boxes
+            ComboBox genreComboBox = new ComboBox();
+            ComboBox releaseDateComboBox = new ComboBox();
+            ComboBox durationComboBox = new ComboBox();
+            ComboBox ratingComboBox = new ComboBox();
+            Button filter = new Button();
+            Button back = new Button();
+
+            // Set combo box properties
+            genreComboBox.Width = 150;
+            releaseDateComboBox.Width = 150;
+            durationComboBox.Width = 150;
+            ratingComboBox.Width = 150;
+            filter.Width = 100;
+            back.Width = 100;
+
+            // Position combo boxes
+            genreComboBox.Location = new Point(100, 100);
+            releaseDateComboBox.Location = new Point(300, 100);
+            durationComboBox.Location = new Point(500, 100);
+            ratingComboBox.Location = new Point(700, 100);
+            filter.Location = new Point(900, 100);
+            back.Location = new Point(1050, 100);
+
+            PictureBox iconPicture = new PictureBox();
+            iconPicture.SizeMode = PictureBoxSizeMode.Zoom;
+            iconPicture.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\filter.png");
+            iconPicture.Name = "wide_panel";
+            iconPicture.Size = new Size(1900, 189);
+            iconPicture.Location = new Point(0, 100);
+            iconPicture.TabIndex = 13;
+
+            // Add combo boxes to the form
+            iconPicture.Controls.Add(genreComboBox);
+            iconPicture.Controls.Add(releaseDateComboBox);
+            iconPicture.Controls.Add(durationComboBox);
+            iconPicture.Controls.Add(ratingComboBox);
+            iconPicture.Controls.Add(filter);
+            iconPicture.Controls.Add(back);
+            panel4.Controls.Add(iconPicture);
+
+            filter.BackColor = Color.Green;
+            back.BackColor = Color.Red;
+            filter.MouseClick += (sender, e) => filters_Click(sender, e);
+            back.MouseClick += (sender, e) => back_Click(sender, e);
+
+            // Populate combo boxes with data
+            PopulateGenreComboBox(genreComboBox);
+            PopulateReleaseDateComboBox(releaseDateComboBox);
+            PopulateDurationComboBox(durationComboBox);
+            PopulateRatingComboBox(ratingComboBox);
+
+            void filters_Click(object sender, EventArgs e)
+            {
+                // Define a global variable to store the selected values
+                string selectedValues = "";
+
+                // Reset selected values before appending
+                selectedValues = "";
+
+                // Get selected values from combo boxes
+                string selectedGenre = genreComboBox.SelectedItem?.ToString();
+                string selectedReleaseDate = releaseDateComboBox.SelectedItem?.ToString();
+                string selectedDuration = durationComboBox.SelectedItem?.ToString();
+                string selectedRating = ratingComboBox.SelectedItem?.ToString();
+
+                // Concatenate selected values into a single string
+                selectedValues += "Genre: " + selectedGenre + "\n";
+                selectedValues += "Release Date: " + selectedReleaseDate + "\n";
+                selectedValues += "Duration: " + selectedDuration + "\n";
+                selectedValues += "Rating: " + selectedRating + "\n";
+
+                // Display selected values in a message box
+                PopulateMovie(selectedGenre, selectedReleaseDate, selectedDuration, selectedRating);
+                //MessageBox.Show(selectedValues, "Selected Filters");
+            }
+
+            void back_Click(object sender, EventArgs e)
+            {
+                panel4.Visible = false;
+                Home home = new Home(_form);
+            }
+
+        }
+     
+        private void PopulateGenreComboBox(ComboBox comboBox)
+        {
+            Sql sql = new Sql();
+            List<string> genres = sql.GetGenres(); // Assuming you have a method in the Sql class to retrieve genres
+            comboBox.Items.AddRange(genres.ToArray());
+        }
+
+        // Method to populate release date combo box
+        private void PopulateReleaseDateComboBox(ComboBox comboBox)
+        {
+            Sql sql = new Sql();
+            List<string> releaseDates = sql.GetReleaseDates(); // Assuming you have a method in the Sql class to retrieve release dates
+            comboBox.Items.AddRange(releaseDates.ToArray());
+        }
+
+        // Method to populate duration combo box
+        private void PopulateDurationComboBox(ComboBox comboBox)
+        {
+            // You can populate the duration combo box with predefined values or ranges, depending on your application's requirements
+            comboBox.Items.Add("90 minutes");
+            comboBox.Items.Add("120 minutes");
+            comboBox.Items.Add("150 minutes");
+            // Add more durations as needed
+        }
+
+        // Method to populate rating combo box
+        private void PopulateRatingComboBox(ComboBox comboBox)
+        {
+            // You can populate the rating combo box with predefined values or ranges, depending on your application's requirements
+            comboBox.Items.Add("5 stars");
+            comboBox.Items.Add("4 stars");
+            comboBox.Items.Add("3 stars");
+            comboBox.Items.Add("2 stars");
+            comboBox.Items.Add("1 star");
+            // Add more ratings as needed
+        }
+
+       
+       
+
     }
 }

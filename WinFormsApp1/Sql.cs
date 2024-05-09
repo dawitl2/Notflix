@@ -35,6 +35,43 @@ namespace WinFormsApp1
             return movieData;
         }
 
+
+        public bool AuthenticateUser(string username, string password)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM User WHERE user_name = @username AND password = @password";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@password", password);
+
+                    connection.Open();
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+                    return count > 0;
+                }
+            }
+        }
+
+        public bool CreateUser(string username, string password, string email)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "INSERT INTO User (user_name, password, email) VALUES (@username, @password, @email)";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@password", password);
+                    command.Parameters.AddWithValue("@email", email);
+
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+        }
+
+
         public List<(string, string, string)> wideMoviePosters()
         {
             List<(string, string, string)> movieData = new List<(string, string, string)>();
@@ -95,7 +132,47 @@ namespace WinFormsApp1
 
             return movieData;
         }
-        
+        public List<(string, string, string, string)> filter_movies(string Genre, string Release_Date, string Duration, string Rating)
+        {
+            List<(string, string, string, string)> movieData = new List<(string, string, string, string)>();
+
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                string query = @"SELECT m.title, m.poster_image, m.duration, m.video
+                        FROM Movie m
+                        INNER JOIN MovieGenre mg ON m.movie_id = mg.movie_id
+                        INNER JOIN Genre g ON mg.genre_id = g.genre_id
+                        INNER JOIN Rating r ON m.movie_id = r.movie_id
+                        WHERE g.genre_name = @genreName
+                        AND m.release_date = @releaseDate
+                        AND m.duration = @duration
+                        AND r.rating = @rating";
+
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@genreName", Genre.Trim());
+                cmd.Parameters.AddWithValue("@releaseDate", Release_Date);
+                cmd.Parameters.AddWithValue("@duration", Duration);
+                cmd.Parameters.AddWithValue("@rating", Rating);
+
+                con.Open();
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string title = reader.GetString("title");
+                        string posterPath = reader.GetString("poster_image");
+                        string duration = reader.GetInt32("duration").ToString(); // Retrieve duration as integer and convert to string
+                        string videoPath = reader.GetString("video");
+
+                        movieData.Add((title, posterPath, duration, videoPath));
+                    }
+                }
+            }
+
+            return movieData;
+        }
+
+
         public List<(string, string, string)> GetMoviePostersname(string genreName)
         {
           
@@ -343,7 +420,7 @@ namespace WinFormsApp1
                 string query = "SELECT title, release_date, description, trailer_URL, poster_image, wide_poster_image, average_rating, video " +
                                "FROM Movie " +
                                "ORDER BY average_rating DESC " + // Order by average rating in descending order
-                               "LIMIT 3"; // Limit the result to top 3 rated movies
+                               "LIMIT 7"; // Limit the result to top 3 rated movies
                 MySqlCommand cmd = new MySqlCommand(query, con);
                 con.Open();
                 using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -428,6 +505,57 @@ namespace WinFormsApp1
             return movieData;
         }
 
+        // Add these methods to the Sql class
+
+        public List<string> GetGenres()
+        {
+            List<string> genres = new List<string>();
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT genre_name FROM Genre";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    connection.Open();
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string genre = reader.GetString("genre_name");
+                            genres.Add(genre);
+                        }
+                    }
+                }
+            }
+
+            return genres;
+        }
+
+        public List<string> GetReleaseDates()
+        {
+            List<string> releaseDates = new List<string>();
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT DISTINCT release_date FROM Movie";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    connection.Open();
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            DateTime releaseDate = reader.GetDateTime("release_date");
+                            releaseDates.Add(releaseDate.ToString("yyyy-MM-dd"));
+                        }
+                    }
+                }
+            }
+
+            return releaseDates;
+        }
 
     }
 }

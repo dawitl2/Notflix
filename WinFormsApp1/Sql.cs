@@ -71,26 +71,45 @@ namespace WinFormsApp1
             }
         }
 
-
-        public List<(string, string, string)> wideMoviePosters()
+        public List<(string, string, string, List<string>, int)> GetMovieDetailsWithGenresAndRatings()
         {
-            List<(string, string, string)> movieData = new List<(string, string, string)>();
+            List<(string, string, string, List<string>, int)> movieData = new List<(string, string, string, List<string>, int)>();
 
             using (MySqlConnection con = new MySqlConnection(connectionString))
             {
-                string query = "SELECT title, wide_poster_image, duration FROM Movie";
+                string query = @"
+            SELECT 
+                m.title, 
+                m.wide_poster_image, 
+                m.duration, 
+                GROUP_CONCAT(DISTINCT g.genre_name SEPARATOR ',') AS genres,
+                AVG(r.rating) AS average_rating
+            FROM 
+                Movie m
+            LEFT JOIN 
+                MovieGenre mg ON m.movie_id = mg.movie_id
+            LEFT JOIN 
+                Genre g ON mg.genre_id = g.genre_id
+            LEFT JOIN 
+                Rating r ON m.movie_id = r.movie_id
+            GROUP BY 
+                m.movie_id, m.title, m.wide_poster_image, m.duration
+        ";
+
                 MySqlCommand cmd = new MySqlCommand(query, con);
                 con.Open();
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-
                         string title = reader.GetString("title");
                         string posterPath = reader.GetString("wide_poster_image");
-                        string duration = reader.GetInt32("duration").ToString(); // Retrieve duration as integer and convert to string
-                        //MessageBox.Show($"----: {title}");
-                        movieData.Add((title, posterPath, duration));
+                        string duration = reader.GetInt32("duration").ToString();
+                        string genres = reader.IsDBNull(reader.GetOrdinal("genres")) ? "" : reader.GetString("genres");
+                        int averageRating = reader.IsDBNull(reader.GetOrdinal("average_rating")) ? 0 : Convert.ToInt32(reader.GetDouble("average_rating"));
+                        List<string> genreList = genres.Split(',').ToList();
+
+                        movieData.Add((title, posterPath, duration, genreList, averageRating));
                     }
                 }
             }
@@ -140,7 +159,7 @@ namespace WinFormsApp1
             {
                 string query = @"SELECT m.title, m.poster_image, m.duration, m.video
                         FROM Movie m
-                        INNER JOIN MovieGenre mg ON m.movie_id = mg.movie_id
+                            INNER JOIN MovieGenre mg ON m.movie_id = mg.movie_id
                         INNER JOIN Genre g ON mg.genre_id = g.genre_id
                         INNER JOIN Rating r ON m.movie_id = r.movie_id
                         WHERE g.genre_name = @genreName

@@ -510,7 +510,7 @@ namespace WinFormsApp1
 
         private void PopulatewideMovies()
         {
-            List<(string name, string posterPath, string man)> movies = SqlInstance.wideMoviePosters();
+            List<(string name, string posterPath, string man, List<string> genres, int rating)> movies = SqlInstance.GetMovieDetailsWithGenresAndRatings();
 
             int pictureBoxWidth = 400;
             int pictureBoxHeight = 136;
@@ -521,8 +521,7 @@ namespace WinFormsApp1
             int maxImagesToShow = 4;
             for (int i = 0; i < Math.Min(maxImagesToShow, movies.Count); i++)
             {
-               
-                (string name, string posterPath, string man) = movies[i];
+                (string name, string posterPath, string man, List<string> genres, int rating) = movies[i];
 
                 RoundedPictureBox pictureBox = new RoundedPictureBox();
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -569,7 +568,7 @@ namespace WinFormsApp1
 
                     System.Drawing.Font font = new System.Drawing.Font("Arial", pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)) ? 35 : 23, FontStyle.Bold);
                     Color textColor = pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)) ? Color.White : Color.White;
-                  
+
                     using (Brush brush = new SolidBrush(textColor))
                     {
                         SizeF textSize = e.Graphics.MeasureString(name, font);
@@ -587,6 +586,17 @@ namespace WinFormsApp1
 
                         PointF titleLocation = new PointF(titleX, titleY);
                         e.Graphics.DrawString(name, font, brush, titleLocation);
+
+                        if (pictureBox.ClientRectangle.Contains(pictureBox.PointToClient(Control.MousePosition)))
+                        {
+                            font = new System.Drawing.Font("Arial", 14, FontStyle.Regular);
+                            string details = $"{man} mins | Genres: {string.Join(", ", genres)} | Rating: {rating}";
+                            SizeF detailsSize = e.Graphics.MeasureString(details, font);
+                            float detailsX = (pictureBox.Width - detailsSize.Width) / 2;
+                            float detailsY = titleY + textSize.Height + 10; // Adjust the vertical position
+                            PointF detailsLocation = new PointF(detailsX, detailsY);
+                            e.Graphics.DrawString(details, font, brush, detailsLocation);
+                        }
                     }
                 };
 
@@ -597,6 +607,7 @@ namespace WinFormsApp1
                 x += pictureBoxWidth + horizontalSpacing;
             }
         }
+
 
 
 

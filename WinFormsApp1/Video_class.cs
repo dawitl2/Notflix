@@ -17,6 +17,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Drawing.Drawing2D;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Microsoft.VisualBasic.ApplicationServices;
+using System.Diagnostics;
 
 namespace WinFormsApp1
 {
@@ -543,8 +544,19 @@ namespace WinFormsApp1
             widePictureBox.SizeMode = PictureBoxSizeMode.StretchImage; // Maintain aspect ratio
             widePictureBox.ImageLocation = PosterImagePath; // Set image location to the retrieved image path
             widePictureBox.Dock = DockStyle.Fill; // Dock the PictureBox to fill the entire panel
+            
+            RoundedPictureBox iconPictureBox_YT = new RoundedPictureBox();
+            iconPictureBox_YT.CornerRadius = 10;
+            iconPictureBox_YT.SizeMode = PictureBoxSizeMode.StretchImage;
+            iconPictureBox_YT.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\YT_logo.png");
+            iconPictureBox_YT.Name = "wide_panel";
+            iconPictureBox_YT.Size = new Size(58, 33);
+            iconPictureBox_YT.Location = new Point(90, 35);
+            iconPictureBox_YT.TabIndex = 13;
+
 
             // Add PictureBox to the wide_panel
+            trailer_panel.Controls.Add(iconPictureBox_YT);
             poster_panel.Controls.Add(widePictureBox);
             string wideImagePath = movie[5];
 
@@ -575,6 +587,18 @@ namespace WinFormsApp1
             trailer_panel.Controls.Add(widePicture);
             widePicture.MouseEnter += PictureBox_MouseEnter; // Attach MouseEnter event handler
             widePicture.MouseLeave += PictureBox_MouseLeave;
+            widePicture.Click += bars_click;
+
+             void bars_click(object sender, EventArgs e)
+            {
+                  string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
+            }
 
             ///////// comments //////////////////
             int commentY = 10; // Initial y-coordinate for positioning comments

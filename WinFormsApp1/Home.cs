@@ -15,6 +15,7 @@ using FullScreenApp;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Google.Protobuf.WellKnownTypes;
 using System.IO;
+using System.Diagnostics;
 
 
 
@@ -333,6 +334,7 @@ namespace WinFormsApp1
             iconPictureBox3.TabIndex = 13;
             iconPictureBox3.MouseEnter += bars_MouseEnter;
             iconPictureBox3.MouseLeave += bars_MouseLeave;
+            iconPictureBox3.Click += bars_click;
             // 
             // panel5
             // 
@@ -452,7 +454,6 @@ namespace WinFormsApp1
             _form.Controls.Add(panel4);
             _form.Name = "Form1";
             _form.Text = "Form1";
-            _form.TopMost = true;
             panel1.ResumeLayout(false);
             roundedPanel1.ResumeLayout(false);
             roundedPanel1.PerformLayout();
@@ -833,6 +834,11 @@ namespace WinFormsApp1
             PictureBox pictureBox = (PictureBox)sender;
             pictureBox.Cursor = Cursors.Default;
         }
+        
+        private void bars_click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Bug");  
+        }
 
         private void PictureBox_Click(object sender, EventArgs e, string movieName, string movieDuration, string posterPath)
         {
@@ -964,7 +970,13 @@ namespace WinFormsApp1
             };
             trailerButton.Enter += (sender, e) =>
             {
-                MessageBox.Show("Bug");
+                string url = movieData[3];
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
             };
 
             contentPanel.Controls.Add(watchButton);

@@ -7,6 +7,7 @@ using System.Drawing;
 using WMPLib;
 using System;
 using WinFormsApp1;
+using System.Diagnostics;
 
 namespace FullScreenApp
 {
@@ -33,7 +34,6 @@ namespace FullScreenApp
             this.Location = new Point(0, 0);
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
-            this.TopMost = true;
             string imagePath = @"C:\Users\enkud\Desktop\Cinema\back_image\login_img.png"; // Provide your own file path here
 
             if (File.Exists(imagePath))

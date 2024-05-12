@@ -13,6 +13,8 @@ using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using FullScreenApp;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Google.Protobuf.WellKnownTypes;
+using System.IO;
 
 
 
@@ -23,9 +25,6 @@ namespace WinFormsApp1
         private readonly Sql SqlInstance = new Sql();
         public Form _form;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
-
-        private System.Windows.Forms.Label label1;
         private RoundedButton button1;
         private RoundedButton button2;
         private RoundedButton right;
@@ -87,10 +86,6 @@ namespace WinFormsApp1
             right = new RoundedButton();
             left = new RoundedButton();
             panel3 = new Panel();
-            panel2 = new Panel();
-            label1 = new Label();
-            // wide_panel = new Panel();
-            // panel5 = new Panel();
             title_label = new Label();
             discription_label = new Label();
             panel4 = new Panel();
@@ -107,7 +102,6 @@ namespace WinFormsApp1
 
             panel1.SuspendLayout();
             roundedPanel1.SuspendLayout();
-            panel2.SuspendLayout();
             widePictureBox.SuspendLayout();
 
             panel4.SuspendLayout();
@@ -119,6 +113,7 @@ namespace WinFormsApp1
             sidepanel.Size = new Size(1840, 175);
             sidepanel.Location = new Point(60, 780);
             sidepanel.AutoScroll = true;
+          
             redPanel.BackColor = Color.FromArgb(24, 24, 24);
             redPanel.Size = new Size(400, 700);
             List<string> genres = new List<string>
@@ -179,7 +174,6 @@ namespace WinFormsApp1
             panel1.BackColor = Color.FromArgb(24, 24, 24);
             panel1.Controls.Add(roundedPanel1);
             panel1.Controls.Add(panel3);
-            panel1.Controls.Add(panel2);
             panel1.Controls.Add(iconPictureBox3);
             panel1.Controls.Add(button2);
             panel1.Font = new System.Drawing.Font("Segoe UI", 11F);
@@ -200,7 +194,8 @@ namespace WinFormsApp1
             roundedPanel1.Name = "roundedPanel1";
             roundedPanel1.Size = new Size(519, 44);
             roundedPanel1.TabIndex = 13;
-            roundedPanel1.EdgeColor = Color.FromArgb(29, 41, 43);
+            roundedPanel1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            roundedPanel1.EdgeColor = Color.Teal;
             // 
             // textBox1
             // 
@@ -219,7 +214,8 @@ namespace WinFormsApp1
             //
             // button1
             // 
-            button1.BackColor = Color.FromArgb(32, 42, 38);
+            //button1.BackColor = Color.FromArgb(32, 42, 38);
+            button1.BackColor = Color.Teal;
             button1.BackgroundImageLayout = ImageLayout.None;
             button1.CornerRadius = 11;
             button1.Cursor = Cursors.Hand;
@@ -301,27 +297,6 @@ namespace WinFormsApp1
             panel3.Size = new Size(1472, 305);
             panel3.TabIndex = 12;
             // 
-            // panel2
-            // 
-            panel2.BackColor = Color.Teal;
-            panel2.Controls.Add(label1);
-            panel2.Enabled = false;
-            panel2.Location = new Point(100, 21);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(174, 50);
-            panel2.TabIndex = 2;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new System.Drawing.Font("Impact", 26.25F);
-            label1.ForeColor = Color.White;
-            label1.Location = new Point(21, 3);
-            label1.Name = "label1";
-            label1.Size = new Size(130, 43);
-            label1.TabIndex = 2;
-            label1.Text = "NOTFLIX";
-            // 
             // wide_panel
             // 
             //
@@ -351,10 +326,10 @@ namespace WinFormsApp1
             iconPictureBox4.TabIndex = 13;
 
             iconPictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
-            iconPictureBox3.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\bars.png");
+            iconPictureBox3.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\notflix.png");
             iconPictureBox3.Location = new Point(37, 21);
             iconPictureBox3.Name = "wide_panel";
-            iconPictureBox3.Size = new Size(50, 50);
+            iconPictureBox3.Size = new Size(160, 45);
             iconPictureBox3.TabIndex = 13;
             iconPictureBox3.MouseEnter += bars_MouseEnter;
             iconPictureBox3.MouseLeave += bars_MouseLeave;
@@ -481,8 +456,6 @@ namespace WinFormsApp1
             panel1.ResumeLayout(false);
             roundedPanel1.ResumeLayout(false);
             roundedPanel1.PerformLayout();
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
             widePictureBox.ResumeLayout(false);
             panel4.ResumeLayout(false);
 
@@ -606,6 +579,7 @@ namespace WinFormsApp1
 
                 x += pictureBoxWidth + horizontalSpacing;
             }
+
         }
 
 
@@ -728,7 +702,7 @@ namespace WinFormsApp1
                 pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
                 pictureBox.MouseEnter += PictureBox_MouseEnter;
                 pictureBox.MouseLeave += PictureBox_MouseLeave;
-               // pictureBox.Click += (sender, e) => PictureBox_Click(sender, e, name, duration, posterPath, videoPath);
+                pictureBox.Click += (sender, e) => PictureBox_Click(sender, e, name, duration, posterPath);
 
                 Label titleLabel = new Label();
                 titleLabel.Text = name;
@@ -849,7 +823,7 @@ namespace WinFormsApp1
 
 
         private void bars_MouseEnter(object sender, EventArgs e)
-        {
+        { 
             PictureBox pictureBox = (PictureBox)sender;
             pictureBox.Cursor = Cursors.Hand;
         }
@@ -885,7 +859,7 @@ namespace WinFormsApp1
             widePictureBox.Controls.Add(right);
 
             string[] movieData = topRatedMoviesData[index];
-
+            string path = movieData[4];
             Panel contentPanel = new Panel();
             contentPanel.Dock = DockStyle.Bottom;
             contentPanel.BackColor = Color.Transparent;
@@ -961,7 +935,11 @@ namespace WinFormsApp1
             {
                 AnimateButtonColor(watchButton, Color.Teal);
             };
-
+            watchButton.Enter += (sender, e) =>
+            {
+                 PictureBox_Click(sender, e, "name", "duration", path);
+            };
+       
             RoundedButton trailerButton = new RoundedButton();
             trailerButton.BackColor = Color.Teal;
             trailerButton.BackgroundImageLayout = ImageLayout.None;
@@ -983,6 +961,10 @@ namespace WinFormsApp1
             trailerButton.MouseLeave += (sender, e) =>
             {
                 AnimateButtonColor(trailerButton, Color.Teal);
+            };
+            trailerButton.Enter += (sender, e) =>
+            {
+                MessageBox.Show("Bug");
             };
 
             contentPanel.Controls.Add(watchButton);

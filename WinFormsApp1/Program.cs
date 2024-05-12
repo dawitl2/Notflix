@@ -148,11 +148,19 @@ namespace FullScreenApp
             };
 
             LinkLabel loginAsAdminLabel = CreateLinkLabel("Login as an Admin", new Point(370, buttonBottom));
+            LinkLabel ExitLink = CreateLinkLabel("Exit", new Point(370, loginAsAdminLabel.Bottom + 5));
             panel.Controls.Add(loginAsAdminLabel);
+            panel.Controls.Add(ExitLink);
             loginAsAdminLabel.LinkClicked += (sender, e) =>
             {
-                // Handle login as admin action here
+                MessageBox.Show("Comming Soon..");
             };
+
+            ExitLink.LinkClicked += (sender, e) =>
+            {
+                Application.Exit();
+                
+             };
         }
 
         private LinkLabel CreateLinkLabel(string text, Point location)

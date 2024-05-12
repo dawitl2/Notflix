@@ -1153,26 +1153,30 @@ namespace WinFormsApp1
         private void filter_Click(object sender, EventArgs e)
         {
             panel1.BackColor = Color.FromArgb(24, 24, 24);
+            roundedPanel1.Visible = false;
             widePictureBox.Visible = false;
             sidepanel.Visible = false;
             label7.Visible = false;
+            redPanel.Visible = false;
             iconPictureBox4.Visible = false;
+            iconPictureBox2.Visible = false;
+            label6.Visible = false;
             //label7.Visible = false;
             //panel4.Location = new Point(0, 1110); 
             flowLayoutPanel1.Location = new Point(97, 400);
-            redPanel.Location = new Point(1410, 395);
+            //redPanel.Location = new Point(1410, 395);
             label3.Location = new Point(115, 325);
             iconPictureBox.Location = new Point(90, 327);
-            label6.Location = new Point(1420, 320);
-            iconPictureBox2.Location = new Point(label6.Left - 20, 327); // gunra lable
+            //label6.Location = new Point(1420, 320);
+           // iconPictureBox2.Location = new Point(label6.Left - 20, 327); // gunra lable
 
             // Create and configure combo boxes
             ComboBox genreComboBox = new ComboBox();
             ComboBox releaseDateComboBox = new ComboBox();
             ComboBox durationComboBox = new ComboBox();
             ComboBox ratingComboBox = new ComboBox();
-            Button filter = new Button();
-            Button back = new Button();
+            RadioButton filter = new RadioButton();
+            RadioButton back = new RadioButton();
 
             // Set combo box properties
             genreComboBox.Width = 150;
@@ -1197,7 +1201,7 @@ namespace WinFormsApp1
             iconPicture.Size = new Size(1900, 189);
             iconPicture.Location = new Point(0, 100);
             iconPicture.TabIndex = 13;
-
+            
             // Add combo boxes to the form
             iconPicture.Controls.Add(genreComboBox);
             iconPicture.Controls.Add(releaseDateComboBox);
@@ -1206,9 +1210,34 @@ namespace WinFormsApp1
             iconPicture.Controls.Add(filter);
             iconPicture.Controls.Add(back);
             panel4.Controls.Add(iconPicture);
+          
 
-            filter.BackColor = Color.Green;
-            back.BackColor = Color.Red;
+            filter.BackgroundImageLayout = ImageLayout.None;
+            filter.Cursor = Cursors.Hand;
+            filter.FlatAppearance.BorderSize = 0;
+            filter.FlatStyle = FlatStyle.Flat;
+            filter.Font = new System.Drawing.Font("Segoe UI", 11F);
+            filter.ForeColor = Color.White;
+            filter.Name = "Filter";
+            filter.TabIndex = 6;
+            filter.Text = "filter";
+            filter.UseVisualStyleBackColor = false;
+            
+            back.BackgroundImageLayout = ImageLayout.None;
+            back.Cursor = Cursors.Hand;
+            back.FlatAppearance.BorderSize = 0;
+            back.FlatStyle = FlatStyle.Flat;
+            back.Font = new System.Drawing.Font("Segoe UI", 11F);
+            back.ForeColor = Color.White;
+            back.Name = "Back";
+            back.TabIndex = 6;
+            back.Text = "Back";
+            back.UseVisualStyleBackColor = false;
+
+            //filter.BackColor = Color.Green;
+            //back.BackColor = Color.Red;
+             filter.BackColor = Color.Transparent;
+            back.BackColor = Color.Transparent;
             filter.MouseClick += (sender, e) => filters_Click(sender, e);
             back.MouseClick += (sender, e) => back_Click(sender, e);
 

@@ -1152,8 +1152,11 @@ namespace WinFormsApp1
 
         private void filter_Click(object sender, EventArgs e)
         {
+            PictureBox iconPicture2 = new PictureBox();
+            panel4.Controls.Add(iconPicture2);
+
             panel1.BackColor = Color.FromArgb(24, 24, 24);
-            roundedPanel1.Visible = false;
+           // roundedPanel1.Visible = false;
             widePictureBox.Visible = false;
             sidepanel.Visible = false;
             label7.Visible = false;
@@ -1168,13 +1171,13 @@ namespace WinFormsApp1
             label3.Location = new Point(115, 325);
             iconPictureBox.Location = new Point(90, 327);
             //label6.Location = new Point(1420, 320);
-           // iconPictureBox2.Location = new Point(label6.Left - 20, 327); // gunra lable
+            // iconPictureBox2.Location = new Point(label6.Left - 20, 327); // gunra lable
 
             // Create and configure combo boxes
-            ComboBox genreComboBox = new ComboBox();
-            ComboBox releaseDateComboBox = new ComboBox();
-            ComboBox durationComboBox = new ComboBox();
-            ComboBox ratingComboBox = new ComboBox();
+            RoundedComboBox genreComboBox = new RoundedComboBox();
+            RoundedComboBox releaseDateComboBox = new RoundedComboBox();
+            RoundedComboBox durationComboBox = new RoundedComboBox();
+            RoundedComboBox ratingComboBox = new RoundedComboBox();
             RadioButton filter = new RadioButton();
             RadioButton back = new RadioButton();
 
@@ -1186,23 +1189,39 @@ namespace WinFormsApp1
             filter.Width = 100;
             back.Width = 100;
 
+            System.Drawing.Font font = new System.Drawing.Font("Segoe UI", 18F);
+
+            genreComboBox.Font = font;
+            releaseDateComboBox.Font = font;
+            durationComboBox.Font = font;
+            ratingComboBox.Font = font;
+       
             // Position combo boxes
-            genreComboBox.Location = new Point(100, 100);
-            releaseDateComboBox.Location = new Point(300, 100);
-            durationComboBox.Location = new Point(500, 100);
-            ratingComboBox.Location = new Point(700, 100);
-            filter.Location = new Point(900, 100);
-            back.Location = new Point(1050, 100);
+            genreComboBox.Location = new Point(90, 90);
+            releaseDateComboBox.Location = new Point(290, 90);
+            durationComboBox.Location = new Point(490,90);
+            ratingComboBox.Location = new Point(690, 90);
+            filter.Location = new Point(890, 100);
+            back.Location = new Point(1240, 100);
 
             PictureBox iconPicture = new PictureBox();
             iconPicture.SizeMode = PictureBoxSizeMode.Zoom;
             iconPicture.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\filter.png");
             iconPicture.Name = "wide_panel";
             iconPicture.Size = new Size(1900, 189);
-            iconPicture.Location = new Point(0, 100);
+            iconPicture.Location = new Point(0, 120);
             iconPicture.TabIndex = 13;
-            
+
+            iconPicture2.SizeMode = PictureBoxSizeMode.Zoom;
+            iconPicture2.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\payment.png");
+            iconPicture2.Name = "wide_panel";
+            iconPicture2.Size = new Size(480, 854);
+            iconPicture2.Location = new Point(1375, 160);
+            iconPicture2.TabIndex = 13;
+            iconPicture2.BringToFront();
+
             // Add combo boxes to the form
+       
             iconPicture.Controls.Add(genreComboBox);
             iconPicture.Controls.Add(releaseDateComboBox);
             iconPicture.Controls.Add(durationComboBox);
@@ -1210,7 +1229,6 @@ namespace WinFormsApp1
             iconPicture.Controls.Add(filter);
             iconPicture.Controls.Add(back);
             panel4.Controls.Add(iconPicture);
-          
 
             filter.BackgroundImageLayout = ImageLayout.None;
             filter.Cursor = Cursors.Hand;

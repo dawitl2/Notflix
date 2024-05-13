@@ -509,18 +509,20 @@ namespace WinFormsApp1
             ratingLabel.ForeColor = Color.White;
 
             // Set font size
-            titleLabel.Font = new System.Drawing.Font("Segoe UI", 17, FontStyle.Bold); // Example font size and style
-            releaseDateLabel.Font = new System.Drawing.Font("Segoe UI", 17); // Example font size
-            ratingLabel.Font = new System.Drawing.Font("Segoe UI", 17); // Example font size
+            titleLabel.Font = new System.Drawing.Font("Segoe UI", 15, FontStyle.Bold); // Example font size and style
+            releaseDateLabel.Font = new System.Drawing.Font("Segoe UI", 15); // Example font size
+            ratingLabel.Font = new System.Drawing.Font("Segoe UI", 15); // Example font size
 
             // Set label positions
             titleLabel.Location = new Point(10, y);
             releaseDateLabel.Location = new Point(10, y + 30); // Adjust vertical spacing as needed
             ratingLabel.Location = new Point(10, y + 60);
 
-            // Set description label width and enable word wrap
+             // Set description label width and enable word wrap
             descriptionLabel.AutoSize = false;
             descriptionLabel.Width = data_panel.Width - 20; // Adjust width as needed
+            releaseDateLabel.Width = data_panel.Width - 20; // Adjust width as needed
+            ratingLabel.Width = data_panel.Width - 20; // Adjust width as needed
             descriptionLabel.Height = 100; // Adjust height as needed
             descriptionLabel.Location = new Point(10, y + 90); // Adjust vertical spacing as needed
             descriptionLabel.Font = new System.Drawing.Font("Segoe UI", 17); // Example font size
@@ -532,7 +534,6 @@ namespace WinFormsApp1
             data_panel.AutoSize = true;
 
             // Add labels to the data_panel
-            data_panel.Controls.Add(titleLabel);
             data_panel.Controls.Add(releaseDateLabel);
             data_panel.Controls.Add(descriptionLabel);
             data_panel.Controls.Add(ratingLabel);

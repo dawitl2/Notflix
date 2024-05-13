@@ -16,6 +16,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using Google.Protobuf.WellKnownTypes;
 using System.IO;
 using System.Diagnostics;
+using System.Timers;
+using System.Windows.Forms;
+
 
 
 
@@ -32,6 +35,7 @@ namespace WinFormsApp1
         private RoundedButton left;
         private TextBox textBox1;
         private Panel panel3;
+        private RoundedPanel panel;
 
         PictureBox widePictureBox;
         PictureBox iconPictureBox;
@@ -70,7 +74,7 @@ namespace WinFormsApp1
 
         private void InitializeComponent()
         {
-            //
+
             panel1 = new Panel();
             roundedPanel1 = new RoundedPanel();
             textBox1 = new TextBox();
@@ -100,7 +104,7 @@ namespace WinFormsApp1
             label3 = new Label();
             label7 = new Label();
             label6 = new Label();
-
+         
             panel1.SuspendLayout();
             roundedPanel1.SuspendLayout();
             widePictureBox.SuspendLayout();
@@ -166,6 +170,7 @@ namespace WinFormsApp1
 
                 yPos += 40; // Increase Y position for the next pair
             }
+
 
             panel4.Controls.Add(redPanel);
             panel4.Controls.Add(sidepanel);
@@ -503,7 +508,7 @@ namespace WinFormsApp1
                 pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
                 pictureBox.Location = new Point(x, y);
                 pictureBox.Margin = new Padding(horizontalSpacing, verticalSpacing, 0, 0);
-                pictureBox.CornerRadius = 13;
+                pictureBox.CornerRadius = 9;
 
                 Size normalSize = pictureBox.Size;
                 Size hoverSize = new Size(normalSize.Width + 36, normalSize.Height + 36); // Increase by 10 pixels
@@ -602,6 +607,7 @@ namespace WinFormsApp1
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBox.Image = System.Drawing.Image.FromFile(posterPath);
                 pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
+                pictureBox.CornerRadius = 9;
                 pictureBox.MouseEnter += PictureBox_MouseEnter;
                 pictureBox.MouseLeave += PictureBox_MouseLeave;
                 pictureBox.Click += (sender, e) => PictureBox_Click(sender, e, name, duration, posterPath);
@@ -653,6 +659,7 @@ namespace WinFormsApp1
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBox.Image = System.Drawing.Image.FromFile(posterPath);
                 pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
+                pictureBox.CornerRadius = 9;
                 pictureBox.MouseEnter += PictureBox_MouseEnter;
                 pictureBox.MouseLeave += PictureBox_MouseLeave;
                 pictureBox.Click += (sender, e) => PictureBox_Click(sender, e, name, duration, posterPath);
@@ -698,6 +705,7 @@ namespace WinFormsApp1
             foreach ((string name, string posterPath, string duration, string videoPath) in movies)
             {
                 RoundedPictureBox pictureBox = new RoundedPictureBox();
+                pictureBox.CornerRadius = 9;
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBox.Image = System.Drawing.Image.FromFile(posterPath);
                 pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
@@ -822,9 +830,8 @@ namespace WinFormsApp1
             pictureBox.Invalidate();
         }
 
-
         private void bars_MouseEnter(object sender, EventArgs e)
-        { 
+        {
             PictureBox pictureBox = (PictureBox)sender;
             pictureBox.Cursor = Cursors.Hand;
         }
@@ -834,12 +841,117 @@ namespace WinFormsApp1
             PictureBox pictureBox = (PictureBox)sender;
             pictureBox.Cursor = Cursors.Default;
         }
-        
+
+        Button btn1 = new Button();
+        Button btn2 = new Button();
+        Button btn3 = new Button();
+        Button btn4 = new Button();
+
         private void bars_click(object sender, EventArgs e)
         {
-            MessageBox.Show("Bug");  
+            // Create and configure the panel
+            panel = new RoundedPanel();
+            panel4.Controls.Add(panel);
+            panel.BringToFront();
+            panel.Location = new Point(37 + iconPictureBox3.Width + 7, 21);
+            panel.Size = new Size(130, 190);
+            panel.BackColor = Color.Teal;
+            panel.EdgeColor = Color.Teal;
+
+            btn1.Size = new Size(panel.Width - 40, 30);
+            btn2.Size = new Size(panel.Width - 40, 30);
+            btn3.Size = new Size(panel.Width - 40, 30);
+            btn4.Size = new Size(panel.Width - 40, 30);
+
+            btn1.Location = new Point(20, 20);
+            btn2.Location = new Point(20, 60);
+            btn3.Location = new Point(20, 100);
+            btn4.Location = new Point(20, 140);
+
+            btn1.BackColor = Color.Teal;
+            btn2.BackColor = Color.Teal;
+            btn3.BackColor = Color.Teal;
+            btn4.BackColor = Color.Teal;
+
+            btn1.ForeColor = Color.FromArgb(24, 24, 24);
+            btn2.ForeColor = Color.FromArgb(24, 24, 24);
+            btn3.ForeColor = Color.FromArgb(24, 24, 24);
+            btn4.ForeColor = Color.FromArgb(24, 24, 24);
+
+            btn1.FlatAppearance.BorderSize = 0;
+            btn2.FlatAppearance.BorderSize = 0;
+            btn3.FlatAppearance.BorderSize = 0;
+            btn4.FlatAppearance.BorderSize = 0;
+
+            btn1.FlatStyle = FlatStyle.Flat;
+            btn2.FlatStyle = FlatStyle.Flat;
+            btn3.FlatStyle = FlatStyle.Flat;
+            btn4.FlatStyle = FlatStyle.Flat;
+
+            btn1.Font = new System.Drawing.Font(btn1.Font.FontFamily, 14, FontStyle.Regular);
+            btn2.Font = new System.Drawing.Font(btn2.Font.FontFamily, 14, FontStyle.Regular);
+            btn3.Font = new System.Drawing.Font(btn3.Font.FontFamily, 14, FontStyle.Regular);
+            btn4.Font = new System.Drawing.Font(btn3.Font.FontFamily, 14, FontStyle.Regular);
+
+            // Set names for the buttons
+            btn1.Text = "Profile";
+            btn2.Text = "Lang";
+            btn3.Text = "About";
+            btn4.Text = "Back";
+
+            panel.Controls.Add(btn1);
+            panel.Controls.Add(btn2);
+            panel.Controls.Add(btn3);
+            panel.Controls.Add(btn4);
+
+            // Attach mouse events to the panel
+            panel.MouseEnter += Panel_MouseEnter;
+            panel.MouseLeave += Panel_MouseLeave;
+
+            btn1.MouseEnter += Button_MouseEnter;
+            btn2.MouseEnter += Button_MouseEnter;
+            btn3.MouseEnter += Button_MouseEnter;
+            btn4.MouseEnter += Button_MouseEnter;
+
+            btn1.MouseLeave += Button_MouseLeave;
+            btn2.MouseLeave += Button_MouseLeave;
+            btn3.MouseLeave += Button_MouseLeave;
+            btn4.MouseLeave += Button_MouseLeave;
+
+            btn4.Click += Button_Click;
+    }
+
+
+        private void Button_Click(object sender, EventArgs e)
+        {
+            panel.Visible = false;
+        }
+        
+        private void Button_MouseEnter(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            button.BackColor = Color.FromArgb(24, 24, 24);
+            button.ForeColor = Color.White;
+            panel.Cursor = Cursors.Hand;
         }
 
+        private void Button_MouseLeave(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            button.BackColor = Color.Teal;
+            button.ForeColor = Color.Black;
+            panel.Cursor = Cursors.Default;
+        }
+
+        private void Panel_MouseEnter(object sender, EventArgs e)
+        {
+            panel.Cursor = Cursors.Hand;
+        }
+
+        private void Panel_MouseLeave(object sender, EventArgs e)
+        {
+            panel.Cursor = Cursors.Default;
+        }
         private void PictureBox_Click(object sender, EventArgs e, string movieName, string movieDuration, string posterPath)
         {
             string movieId = SqlInstance.GetMovieIdFromImagePath(posterPath);
@@ -1346,9 +1458,6 @@ namespace WinFormsApp1
             comboBox.Items.Add("1 star");
             // Add more ratings as needed
         }
-
-       
-       
 
     }
 }

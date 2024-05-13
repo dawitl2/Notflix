@@ -1,4 +1,10 @@
 
+-- -------------------------------- data ------------------------------- --
+
+
+-- Drop the TestDB database if it exists
+DROP DATABASE IF EXISTS TestDB;
+
 -- Create the TestDB database
 CREATE DATABASE IF NOT EXISTS TestDB;
 
@@ -14,10 +20,7 @@ CREATE TABLE User (
   pfp VARCHAR(500) NOT NULL
 );
 
--- Insert a sample user into the User table
-INSERT INTO User (user_name, password, email, pfp) VALUES (
-  'dawitl2', 'pass', 'pass', 'C:\\Users\\enkud\\Desktop\\man.png'
-);
+
 
 -- Create the Genre table
 CREATE TABLE Genre (
@@ -25,6 +28,34 @@ CREATE TABLE Genre (
   genre_name VARCHAR(50) NOT NULL
 );
 
+-- Create the Director table
+CREATE TABLE Director (
+  director_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  director_name VARCHAR(255) NOT NULL,
+  director_image VARCHAR(255) NOT NULL
+);
+
+-- Create the Star table
+CREATE TABLE Star (
+  star_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  star_name VARCHAR(255) NOT NULL,
+  star_image VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Movie (
+  movie_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  release_date DATE NOT NULL,
+  duration INT NOT NULL,
+  description TEXT,
+  trailer_URL VARCHAR(255),
+  poster_image VARCHAR(255),
+  wide_poster_image VARCHAR(255),
+  average_rating INT NOT NULL,
+  video VARCHAR(225) NOT NULL,
+  director_id INT,
+  FOREIGN KEY (director_id) REFERENCES Director(director_id)
+);
 
 
 -- Create the MovieGenre table
@@ -58,21 +89,6 @@ CREATE TABLE Comment (
   FOREIGN KEY (movie_id) REFERENCES Movie(movie_id)
 );
 
--- Create the Director table
-CREATE TABLE Director (
-  director_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  director_name VARCHAR(255) NOT NULL,
-  director_image VARCHAR(255) NOT NULL
-);
-
-
-
--- Create the Star table
-CREATE TABLE Star (
-  star_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  star_name VARCHAR(255) NOT NULL,
-  star_image VARCHAR(255) NOT NULL
-);
 
 -- Create the MovieStar table
 CREATE TABLE MovieStar (
@@ -84,22 +100,123 @@ CREATE TABLE MovieStar (
 );
 
 
-
--- Create the Movie table with the director_id column
-CREATE TABLE Movie (
-  movie_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  release_date DATE NOT NULL,
-  duration INT NOT NULL,
-  description TEXT,
-  trailer_URL VARCHAR(255),
-  poster_image VARCHAR(255),
-  wide_poster_image VARCHAR(255),
-  average_rating INT NOT NULL,
-  video VARCHAR(225) NOT NULL,
-  director_id INT,
-  FOREIGN KEY (director_id) REFERENCES Director(director_id)
+-- Insert a sample user into the User table
+INSERT INTO User (user_name, password, email, pfp) VALUES (
+  'dawitl2', 'pass', 'pass', 'C:\\Users\\enkud\\Desktop\\man.png'
 );
 
---
+INSERT INTO Genre (genre_name) VALUES
+('comedy'),
+('action'),
+('drama');
 
+-- Insert data into the Director table
+INSERT INTO Director (director_name, director_image) VALUES
+('Greg Mottola', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\director_images\\1.png'),
+('Todd Phillips', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\director_images\\2.png'),
+('Paul Feig','C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\director_images\\3.png'),
+('Yorgos Lanthimos', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\director_images\\4.png'),
+('Mark Osborne', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\director_images\\5.png');
+
+
+
+
+-- Insert data into the Star table
+INSERT INTO Star (star_name, star_image) VALUES
+('Brad Pitt', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\star_images\\1.png'),
+('Jennifer Lawrence', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\star_images\\2.png'),
+('Leonardo DiCaprio',  'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\star_images\\3.png'),
+('Scarlett Johansson', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\star_images\\4.png'),
+('Tom Hanks',          'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\star_images\\5.png'),
+('Angelina Jolie',     'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\star_images\\6.png'),
+('Will Smith',         'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\star_images\\7.png');
+
+-- Insert data into the Movie table
+INSERT INTO Movie (title, release_date, duration, description, trailer_URL, poster_image, wide_poster_image, average_rating, video, director_id) VALUES 
+('Superbad', '2007-08-17', 113, 'Two co-dependent high school seniors are forced to deal with separation .', 'https:\\www.youtube.com\\watch?v=4eaZ_48ZYog', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\Superbad.png',        'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\Superbad.png', 4, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\dune.mp4', 1),
+('The Hangover', '2009-06-05', 100, 'A Las Vegas-set comedy centered around three groomsmen.', 'https:\\www.youtube.com\\watch?v=tcdUhdOlz9M',               'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\The Hangover.png',                  'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\The Hangover.png', 5, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\5.mp4', 2),
+('Bridesmaids', '2011-05-13', 125, 'Competition between the maid of honor and a bridesmaid.', 'https:\\www.youtube.com\\watch?v=FNppLrmdyug',                'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\bridesmaids.png',                    'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\bridesmaids.png', 4, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\1.mp4', 3),
+('Poor Things', '2010-05-13', 125, 'An account of the fantastical evolution of Bella Baxter.', 'https:\\www.youtube.com\\watch?v=FNppLrmdyug',                'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\Poor Things.png',                    'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\Poor Things.png', 5, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\3.mp4', 4),
+('Kung Fu Panda', '2011-05-13', 100, 'In the Valley of Peace, Po the Panda finds himself chosen as the Dragon Warrior.', 'https:\\www.youtube.com\\watch?v=PXi3Mv6KMzY',                                 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\Kung Fu Panda.png', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\Kung Fu Panda.png', 4, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\2.mp4', 5),
+('Ghostbusters', '2011-05-13', 125, 'Three former parapsychology professors set up shop as a unique ghost removal service.', 'https:\\www.youtube.com\\watch?v=vntAEVjPBzQ',                             'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\Ghostbusters.png', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\Ghostbusters.png', 4, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\dune.mp4', 1),
+('The Fall Guy', '2011-05-13', 125, 'A television program starring Lee Majors as a stuntman who moonlights as a bounty hunter.', 'https:\\www.youtube.com\\watch?v=mpnzd9Sx3mU',                         'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\The Fall Guy.png', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\share.png', 5, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\4.mp4', 2),
+('Hit Man', '2011-05-13', 105, 'An assassin teams up with a woman to help her find her father and uncover the mysteries of her ancestry.', 'https:\\www.youtube.com\\watch?v=TK1k1_BjfiA',               'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\Hit Man.png', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\Hit Man.png.png', 1, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\dune.mp4', 3),
+('Deadpool', '2011-05-13', 125, 'A wisecracking mercenary gets experimented on and becomes immortal but ugly.', 'https:\\www.youtube.com\\watch?v=Xithigfg7dA', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\Deadpool.png',     'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\Deadpool_wide.png', 2, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\dune.mp4', 4),
+('Wonka', '2011-05-13', 225, 'Competition between the maid of honor and a bridesmaid, over who is the bride''s best friends.', 'https:\\www.youtube.com\\watch?v=otNh9bTjXWg', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\Wonka.png', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\Wonka_wide.png', 1, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\dune.mp4', 5);
+
+
+
+-- Insert data into the Comment table
+INSERT INTO Comment (user_id, movie_id, comment_text) VALUES (
+  1,
+  1,
+  'This movie was great! I really enjoyed it.'
+);
+
+-- Inserting MovieGenre mappings
+-- Superbad: Comedy
+INSERT INTO MovieGenre (movie_id, genre_id) 
+VALUES 
+(1, 1);
+
+-- The Hangover: Comedy
+INSERT INTO MovieGenre (movie_id, genre_id) 
+VALUES 
+(2, 1);
+
+-- Bridesmaids: Comedy
+INSERT INTO MovieGenre (movie_id, genre_id) 
+VALUES 
+(3, 1);
+
+-- Poor Things: Comedy, Drama
+INSERT INTO MovieGenre (movie_id, genre_id) 
+VALUES 
+(4, 1),
+(4, 3);
+
+-- Kung Fu Panda: Comedy, Action
+INSERT INTO MovieGenre (movie_id, genre_id) 
+VALUES 
+(5, 1),
+(5, 2);
+
+-- Ghostbusters: Comedy, Action
+INSERT INTO MovieGenre (movie_id, genre_id) 
+VALUES 
+(6, 1),
+(6, 2);
+
+-- The Fall Guy: Comedy, Action
+INSERT INTO MovieGenre (movie_id, genre_id) 
+VALUES 
+(7, 1),
+(7, 2);
+
+-- Hit Man: Action
+INSERT INTO MovieGenre (movie_id, genre_id) 
+VALUES 
+(8, 2);
+
+-- Deadpool: Action, Comedy
+INSERT INTO MovieGenre (movie_id, genre_id) 
+VALUES 
+(9, 1),
+(9, 2);
+
+-- Wonka: Comedy
+INSERT INTO MovieGenre (movie_id, genre_id) 
+VALUES 
+(10, 1);
+
+INSERT INTO MovieStar (movie_id, star_id) VALUES
+(1, 1),(1, 2),(1, 3), -- Using star IDs 1, 2, and 3
+(2, 3),(2, 4),(2, 5), -- Using star IDs 3, 4, and 5
+(3, 4),(3, 5),(3, 6), -- Using star IDs 4, 5, and 6
+(4, 2),(4, 3),(4, 4), -- Using star IDs 2, 3, and 4
+(5, 3),(5, 4),(5, 5), -- Using star IDs 3, 4, and 5
+(6, 5),(6, 6),(6, 7), -- Using star IDs 5, 6, and 7
+(7, 1),(7, 2),(7, 3), -- Using star IDs 1, 2, and 3
+(8, 2),(8, 3),(8, 4), -- Using star IDs 2, 3, and 4
+(9, 4),(9, 5),(9, 6), -- Using star IDs 4, 5, and 6
+(10, 5),(10, 6),(10, 7); -- Using star IDs 5, 6, and 7

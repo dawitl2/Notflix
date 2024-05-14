@@ -9,6 +9,43 @@ namespace WinFormsApp1
     {
         private string connectionString = "server=localhost;uid=root;pwd=password;database=TestDB";
 
+        public bool AuthenticateUser(string username, string password)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM User WHERE user_name = @username AND password = @password";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@password", password);
+
+                    connection.Open();
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+                    return count > 0;
+                }
+            }
+        }
+
+        public bool CreateUser(string username, string password, string email, string pfp)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "INSERT INTO User (user_name, password, email, pfp) VALUES (@username, @password, @email, @pfp)";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@password", password);
+                    command.Parameters.AddWithValue("@email", email);
+                    command.Parameters.AddWithValue("@pfp", pfp);
+
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+        }
+
+
         public List<(string, string, string)> GetMoviePosters()
         {
             List<(string, string, string)> movieData = new List<(string, string, string)>();
@@ -35,22 +72,7 @@ namespace WinFormsApp1
             return movieData;
         }
 
-        public bool AuthenticateUser(string username, string password)
-        {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                string query = "SELECT COUNT(*) FROM User WHERE user_name = @username AND password = @password";
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@username", username);
-                    command.Parameters.AddWithValue("@password", password);
-
-                    connection.Open();
-                    int count = Convert.ToInt32(command.ExecuteScalar());
-                    return count > 0;
-                }
-            }
-        }
+     
 
         public bool CreateUser(string username, string password, string email)
         {

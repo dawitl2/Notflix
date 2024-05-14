@@ -2,12 +2,10 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using WinFormsApp;
-using System.Drawing;
 using WMPLib;
-using System;
-using WinFormsApp1;
 using System.Diagnostics;
+using WinFormsApp;
+using WinFormsApp1;
 
 namespace FullScreenApp
 {
@@ -20,7 +18,9 @@ namespace FullScreenApp
         private TextBox emailTextBox;
         private TextBox passwordTextBox;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
-        private Button loginButton;
+        private RoundedButton loginButton;
+        private RoundedButton signUpButton;
+        private readonly Sql SqlInstance = new Sql();
 
         public FullScreenForm()
         {
@@ -88,7 +88,6 @@ namespace FullScreenApp
             AddLinks(panel, loginButton.Bottom + 10);
 
             loginButton.Click += LoginButton_Click;
-
         }
 
         private Label CreateLabel(string text, Point location, int fontSize, FontStyle fontStyle = FontStyle.Regular)
@@ -134,6 +133,19 @@ namespace FullScreenApp
             return button;
         }
 
+        private RoundedButton CreateSignUpButton(Point location, Size size)
+        {
+            RoundedButton button = new RoundedButton();
+            button.Text = "Sign up";
+            button.Font = new Font(button.Font.FontFamily, 17);
+            button.Location = location;
+            button.Size = size;
+            button.BackColor = Color.FromArgb(41, 172, 191);
+            button.FlatStyle = FlatStyle.Flat;
+            button.ForeColor = Color.Black;
+            return button;
+        }
+
         private void AddLinks(RoundedPanel panel, int buttonBottom)
         {
             Label forgotPasswordLabel = CreateLinkLabel("Forgot password.", new Point(39, buttonBottom));
@@ -153,14 +165,13 @@ namespace FullScreenApp
             panel.Controls.Add(ExitLink);
             loginAsAdminLabel.LinkClicked += (sender, e) =>
             {
-                MessageBox.Show("Comming Soon..");
+                MessageBox.Show("Coming Soon..");
             };
 
             ExitLink.LinkClicked += (sender, e) =>
             {
                 Application.Exit();
-                
-             };
+            };
         }
 
         private LinkLabel CreateLinkLabel(string text, Point location)
@@ -206,10 +217,10 @@ namespace FullScreenApp
             Label userLabel = CreateLabel("Username", new Point(39, 442), 12);
             panel.Controls.Add(userLabel);
 
-            nameTextBox = CreateTextBox(new Point(39, 249), new Size(452, 61));
+            nameTextBox = CreateTextBox(new Point(39, 124), new Size(452, 61));
             panel.Controls.Add(nameTextBox);
 
-            emailTextBox = CreateTextBox(new Point(39, 124), new Size(452, 61));
+            emailTextBox = CreateTextBox(new Point(39, 249), new Size(452, 61));
             panel.Controls.Add(emailTextBox);
 
             passwordTextBox = CreatePasswordTextBox(new Point(39, 356), new Size(452, 61));
@@ -218,15 +229,67 @@ namespace FullScreenApp
             userTextBox = CreateTextBox(new Point(39, 471), new Size(452, 61));
             panel.Controls.Add(userTextBox);
 
-            loginButton = CreateLoginButton(new Point(39, 570), new Size(452, 61));
-            panel.Controls.Add(loginButton);
+            signUpButton = CreateSignUpButton(new Point(39, 570), new Size(452, 61));
+            panel.Controls.Add(signUpButton);
+            signUpButton.Click += SignUpButton_Click;
+        }
+
+        private void SignUpButton_Click(object sender, EventArgs e)
+        {
+            // Retrieve the values from the text boxes
+            string username = userTextBox.Text;
+            string password = passwordTextBox.Text;
+            string email = emailTextBox.Text;
+            string pfp = ""; // Replace with the appropriate path or method to get profile picture path
+
+            // Call the create user method with the retrieved values
+            bool isCreated = SqlInstance.CreateUser(username, password, email, pfp);
+
+            if (isCreated)
+            {
+                MessageBox.Show("Account created successfully. Please sign in.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Optionally, clear the text boxes for the user to sign in
+                userTextBox.Text = "";
+                passwordTextBox.Text = "";
+                emailTextBox.Text = "";
+            }
+            else
+            {
+                MessageBox.Show("Failed to create account. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            panel.Visible = false;
-            OnLoginButtonClicked(EventArgs.Empty);
-            Home home = new Home(this);
+            // Retrieve the values from the text boxes
+            string username = nameTextBox.Text;
+            string password = passwordTextBox.Text;
+
+            // Call the authentication method with the retrieved values
+            bool isAuthenticated = Authenticate(username, password);
+
+            if (isAuthenticated)
+            {
+                panel.Visible = false;
+                OnLoginButtonClicked(EventArgs.Empty);
+                Home home = new Home(this);
+                //home.Show();
+            }
+            else
+            {
+                MessageBox.Show("Invalid username or password. Please try again.", "Authentication Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Optionally, clear the text boxes for the user to try again
+                nameTextBox.Text = "";
+                passwordTextBox.Text = "";
+            }
+        }
+
+        private bool Authenticate(string username, string password)
+        {
+            // Assuming 'sql' is an instance of the Sql class
+            bool isAuthenticated = SqlInstance.AuthenticateUser(username, password);
+
+            return isAuthenticated;
         }
 
         protected virtual void OnLoginButtonClicked(EventArgs e)
@@ -242,6 +305,5 @@ namespace FullScreenApp
             FullScreenForm form = new FullScreenForm();
             Application.Run(form);
         }
-
     }
 }

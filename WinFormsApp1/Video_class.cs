@@ -29,7 +29,7 @@ namespace WinFormsApp1
         int movieid;
         // private System.Windows.Forms.PictureBox pictureBox1;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
-        private Panel back_panel;
+        //private Panel back_panel;
         private Panel panel1;
         private Panel panel2;
         private RoundedButton button1;
@@ -45,7 +45,7 @@ namespace WinFormsApp1
         private PictureBox iconPictureBox4;
         private PictureBox iconPictureBox5;
         private PictureBox iconPictureBox6;
-        PictureBox iconPictureBox69;
+        private PictureBox iconPictureBox69;
         private RoundedPanel Comment_panel;
         private Label label1;
         private RoundedPanel trailer_panel;
@@ -84,10 +84,8 @@ namespace WinFormsApp1
         }
 
         void InitializeComponent()
-        { 
-            // pictureBox1 = new PictureBox();
+        {
             axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
-            back_panel = new Panel();
             panel1 = new Panel();
             panel2 = new Panel();
             button1 = new RoundedButton();
@@ -110,42 +108,23 @@ namespace WinFormsApp1
             poster_panel = new RoundedPanel();
             panel4 = new Panel();
             redpanel = new Panel();
-            panel1.SuspendLayout();
-            panel3.SuspendLayout();
-            _form.SuspendLayout();
-            // 
+
             // axWindowsMediaPlayer1
-            // 
             axWindowsMediaPlayer1.Enabled = true;
             axWindowsMediaPlayer1.Location = new Point(70, 77);
             axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
-            // axWindowsMediaPlayer1.OcxState = (AxHost.State)resources.GetObject("axWindowsMediaPlayer1.OcxState");
             axWindowsMediaPlayer1.Size = new Size(1100, 623);
             axWindowsMediaPlayer1.TabIndex = 1;
-            // 
-            // panel1
-            // 
-            // back_panel.BackColor = Color.FromArgb(24, 24, 24);
-            back_panel.BackColor = Color.Transparent;
-            back_panel.Dock = DockStyle.Fill;
-            back_panel.Location = new Point(0, 0);
-            back_panel.Name = "panel1";
-            // panel1.Size = new Size(1920, 64);
-            back_panel.Size = new Size(1487, 700);
-            back_panel.TabIndex = 1;
 
+            // panel1
             panel1.BackColor = Color.FromArgb(24, 24, 24);
-            //panel1.BackColor = Color.Transparent;
             panel1.Controls.Add(button1);
             panel1.Controls.Add(panel2);
             panel1.Dock = DockStyle.Top;
-           // panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(1920, 64);
-            //panel1.TabIndex = 2;
-            // 
+
             // button1
-            // 
             button1.BackColor = Color.Teal;
             button1.FlatAppearance.BorderSize = 0;
             button1.CornerRadius = 10;
@@ -159,32 +138,32 @@ namespace WinFormsApp1
             button1.Text = "Back";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
-            // -- 
+
+            // panel2
             panel2.BackColor = Color.Teal;
             panel2.Controls.Add(label1);
             panel2.Enabled = false;
             panel2.Location = new Point(20, 10);
             panel2.Name = "panel2";
             panel2.Size = new Size(174, 50);
-            panel2.TabIndex = 2;
 
+            // label_N
             label_N.AutoSize = true;
             label_N.Font = new System.Drawing.Font("Impact", 26.25F);
             label_N.ForeColor = Color.White;
             label_N.Location = new Point(21, 3);
             label_N.Name = "label1";
             label_N.Size = new Size(130, 43);
-            label_N.TabIndex = 2;
             label_N.Text = "NOTFLIX";
-
             panel2.Controls.Add(label_N);
+
+            // redpanel
             redpanel.Location = new Point(1200, 77);
-            redpanel.BackColor = Color.Transparent;
-            //redpanel.BackColor = Color.Red;
+            redpanel.BackColor = Color.Red;
             redpanel.Name = "start / director panel";
             redpanel.Size = new Size(700, 623);
-            redpanel.TabIndex = 4;
 
+            // redLabel
             Label redLabel = new Label();
             redLabel.Font = new System.Drawing.Font("Segoe UI", 21F);
             redLabel.ForeColor = Color.Teal;
@@ -195,43 +174,38 @@ namespace WinFormsApp1
             redLabel.Text = "Director / Stars";
             redpanel.Controls.Add(redLabel);
 
+            // iconPictureBox3
             iconPictureBox3.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox3.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
             iconPictureBox3.Location = new(20, 20);
             iconPictureBox3.Name = "wide_panel";
             iconPictureBox3.Size = new Size(20, 30);
-            iconPictureBox3.TabIndex = 13;
             redpanel.Controls.Add(iconPictureBox3);
-            // text
+
+            // iconPictureBox4
             iconPictureBox4.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox4.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\rate.png");
             iconPictureBox4.Location = new(900, 20);
             iconPictureBox4.Name = "wide_panel";
             iconPictureBox4.Size = new Size(217, 35);
-            iconPictureBox4.TabIndex = 13;
-            // bar
+
+            // iconPictureBox5
             iconPictureBox5.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox5.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\mp4_bar.png");
             iconPictureBox5.Location = new(70, 652);
             iconPictureBox5.Name = "wide_panel";
             iconPictureBox5.Size = new Size(1100, 48);
-            iconPictureBox5.TabIndex = 13;
             iconPictureBox5.BringToFront();
-            // cast
+
+            // iconPictureBox6
             iconPictureBox6.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox6.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\cast.png");
-            //iconPictureBox6.Location = new(70, 652);
             iconPictureBox6.Name = "wide_panel";
-            //iconPictureBox6.Size = new Size(1100, 48);
-            iconPictureBox6.TabIndex = 13;
             iconPictureBox6.Size = new Size(700, 623);
             iconPictureBox6.Location = new Point(1200, 77);
-            // 
+
             // panel3
-            // 
-            //panel3.BackColor = Color.Red;
             panel3.BackColor = Color.FromArgb(24, 24, 24);
-            //panel3.BackColor = Color.Transparent;
             panel3.Controls.Add(label3);
             panel3.Controls.Add(data_panel);
             panel3.Controls.Add(rate_panel);
@@ -244,44 +218,34 @@ namespace WinFormsApp1
             panel3.Controls.Add(label1);
             panel3.Controls.Add(trailer_panel);
             panel3.Controls.Add(poster_panel);
-            // panel3.Location = new Point(0, 720);
             panel3.Dock = DockStyle.Bottom;
-
             panel3.Name = "panel3";
             panel3.Size = new Size(1920, 473);
-            panel3.TabIndex = 3;
-            // 
+
             // label3
-            // 
             label3.AutoSize = true;
             label3.Font = new System.Drawing.Font("Segoe UI", 14F);
             label3.ForeColor = Color.Gray;
             label3.Location = new Point(328, 381);
             label3.Name = "label3";
             label3.Size = new Size(394, 25);
-            label3.TabIndex = 7;
-            label3.Text = "Final movie trailer on youtube //https;//gran...";
-            // 
+            label3.Text = "Final movie trailer on youtube //https://gran...";
+
             // data_panel
-            // 
             data_panel.BackColor = Color.FromArgb(24, 24, 24);
-            //data_panel.BackColor = Color.Transparent;
-            //data_panel.BackColor = Color.Red;
             data_panel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             data_panel.Location = new Point(326, 80);
             data_panel.Name = "data_panel";
             data_panel.Size = new Size(827, 250);
-            data_panel.TabIndex = 6;
-            // star
+
+            // rate_panel
             rate_panel.BackColor = Color.Transparent;
-          //rate_panel.BackColor = Color.Black;
             rate_panel.Location = new Point(900, 60);
             rate_panel.Name = "rate_panel";
             rate_panel.Size = new Size(220, 50);
             rate_panel.TabIndex = 6;
             rate_panel.EdgeColor = Color.Transparent;
             rate_panel.BringToFront();
-
 
             for (int i = 1; i <= 5; i++)
             {
@@ -297,25 +261,19 @@ namespace WinFormsApp1
 
                 rate_panel.Controls.Add(star);
             }
-            // 
-            // label2
-            // 
 
+            // iconPictureBox
             iconPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\comments.png");
-            iconPictureBox.Location = new(1244, 16);
-            //iconPictureBox.Location = new Point(1244, 75);
+            iconPictureBox.Location = new Point(1244, 16);
             iconPictureBox.Name = "wide_panel";
             iconPictureBox.Size = new Size(217, 35);
-            iconPictureBox.TabIndex = 13;
 
-            //Comment_panel.BackColor = Color.Transparent;
+            // Comment_panel
             Comment_panel.BackColor = Color.FromArgb(24, 24, 24);
             Comment_panel.Location = new Point(1244, 75);
             Comment_panel.Name = "Comment_panel";
-            Comment_panel.Size = new Size(458, 376);
-            Comment_panel.TabIndex = 4;
-            //Comment_panel.EdgeColor = Color.FromArgb(41, 172, 191);
+            Comment_panel.Size = new Size(608, 276);
             Comment_panel.EdgeColor = Color.FromArgb(29, 41, 43);
 
             int commentY = 10;
@@ -324,7 +282,6 @@ namespace WinFormsApp1
             newCommentTextBox.Font = new System.Drawing.Font("Segoe UI", 15F);
             newCommentTextBox.BackColor = Color.FromArgb(24, 24, 24);
             newCommentTextBox.ForeColor = Color.White;
-            // newCommentTextBox.BackColor = Color.Red;
             newCommentTextBox.Location = new Point(20, 7); // Position below existing comments
             newCommentTextBox.Width = 375;
 
@@ -337,111 +294,86 @@ namespace WinFormsApp1
             addCommentButton.Text = "Post";
             addCommentButton.Width = 100;
             addCommentButton.Height = 33;
-            addCommentButton.Location = new Point(newCommentTextBox.Width + 99, 5);
+            addCommentButton.Location = new Point(newCommentTextBox.Width + 127, 5);
             addCommentButton.Click += AddCommentButton_Click;
 
             RoundedPanel roundedPanel1 = new RoundedPanel();
-            //roundedPanel1.BackColor = Color.FromArgb(29, 41, 43);
             roundedPanel1.BackColor = Color.Transparent;
             roundedPanel1.Controls.Add(newCommentTextBox);
             roundedPanel1.Controls.Add(addCommentButton);
             roundedPanel1.CornerRadius = 10;
-           // roundedPanel1.EdgeColor = Color.Black;
-            roundedPanel1.Location = new Point(10, Comment_panel.Height - 51);
+            roundedPanel1.Location = new Point(Comment_panel.Left, Comment_panel.Bottom + 20); // Position relative to Comment_panel
             roundedPanel1.Name = "roundedPanel1";
-            roundedPanel1.Size = new Size(580, 44);
-            roundedPanel1.TabIndex = 13;
+            roundedPanel1.Size = new Size(610, 44);
             roundedPanel1.EdgeColor = Color.FromArgb(29, 41, 43);
-            Comment_panel.Controls.Add(roundedPanel1);
-            // 
-            // Trailer
-            // 
+            roundedPanel1.BringToFront();
+
+            panel3.Controls.Add(roundedPanel1);
+
+            // iconPictureBox2
             iconPictureBox2.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox2.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
-            iconPictureBox2.Location = new(326, 349); 
+            iconPictureBox2.Location = new Point(326, 349);
             iconPictureBox2.Name = "wide_panel";
             iconPictureBox2.Size = new Size(17, 27);
-            iconPictureBox2.TabIndex = 13;
 
+            // Trailer
             Trailer.AutoSize = true;
             Trailer.Font = new System.Drawing.Font("Segoe UI", 18F);
             Trailer.ForeColor = Color.White;
             Trailer.Location = new Point(346, 346);
             Trailer.Name = "Trailer";
             Trailer.Size = new Size(78, 32);
-            Trailer.TabIndex = 3;
-            Trailer.Text = "Trailer";
-            // 
+
             // label1
-            // 
             label1.AutoSize = true;
             label1.Font = new System.Drawing.Font("Segoe UI", 36F);
             label1.ForeColor = Color.White;
             label1.Location = new Point(324, 10);
             label1.Name = "label1";
             label1.Size = new Size(118, 65);
-            label1.TabIndex = 2;
             label1.Text = "Title";
-            // 
+
             // trailer_panel
-            // 
-            //trailer_panel.BackColor = Color.FromArgb(29, 47, 50);
             trailer_panel.BackColor = Color.FromArgb(24, 24, 24);
             trailer_panel.Location = new Point(66, 346);
             trailer_panel.Name = "trailer_panel";
             trailer_panel.Size = new Size(241, 105);
-            trailer_panel.TabIndex = 1;
-            // 
+
             // poster_panel
-            // 
-            //poster_panel.BackColor = Color.FromArgb(29, 47, 50);
             poster_panel.BackColor = Color.FromArgb(24, 24, 24);
             poster_panel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             poster_panel.Location = new Point(66, 18);
             poster_panel.Name = "poster_panel";
             poster_panel.Size = new Size(241, 312);
-            poster_panel.TabIndex = 0;
-            // 
+
             // panel4
-            // 
             panel4.Dock = DockStyle.Fill;
             panel4.Location = new Point(0, 64);
             panel4.Name = "panel4";
             panel4.Size = new Size(1920, 650);
-            panel4.TabIndex = 4;
 
             DisplayDirectorsAndStars(movieid);
 
-            // back_panel.Anchor
-            //back_panel.Controls.Add(redpanel);
-            // back_panel.Controls.Add(iconPictureBox6);
             iconPictureBox69.Controls.Add(iconPictureBox5);
             iconPictureBox69.Controls.Add(axWindowsMediaPlayer1);
-
-            // _form.Controls.Add(panel4);
             iconPictureBox69.Controls.Add(panel3);
             iconPictureBox69.Controls.Add(panel1);
-            //  _form.Controls.Add(pictureBox1
-            // 
-            // Form1
-            // 
+
             _form.AutoScaleDimensions = new SizeF(7F, 15F);
             _form.AutoScaleMode = AutoScaleMode.Font;
             _form.ClientSize = new Size(1487, 931);
-            _form.Controls.Add(back_panel);
             _form.Name = "Form1";
             _form.Text = "Form1";
-            // _form.Load += Form1_Load;
-            //((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer1).EndInit();
             panel1.ResumeLayout(false);
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             _form.ResumeLayout(false);
-
         }
 
-          private void ColorDetectorForm_ColorUpdated(object sender, ColorEventArgs e)
+
+        private void ColorDetectorForm_ColorUpdated(object sender, ColorEventArgs e)
    {
        // Update form colors
        UpdateFormColors(e.Color);
@@ -780,15 +712,17 @@ namespace WinFormsApp1
         private void AddCommentButton_Click(object sender, EventArgs e)
         {
             // Handle adding a new comment
-            string newComment = newCommentTextBox.Text; // Assuming newCommentTextBox is accessible here
-            MessageBox.Show(newComment);
+            string newComment = newCommentTextBox.Text;
             SqlInstance.PostComment(movieid, newComment, 1); // Post the comment to the database
+
+            // Clear existing comments from the UI
+            Comment_panel.Controls.Clear();
 
             // Fetch comments again from the database
             List<(string, string, string)> comments = SqlInstance.GetCommentsForMovie(movieid);
 
-            // Clear existing comments from the UI
-            Comment_panel.Controls.Clear();
+            // Reset the last comment bottom position
+            lastCommentBottom = 10;
 
             // Iterate over the new comments and add them to the UI
             foreach (var comment in comments)
@@ -801,6 +735,7 @@ namespace WinFormsApp1
                 AddComment(username, profilePicture, commentText);
             }
         }
+
 
         private void PictureBox_MouseLeave(object sender, EventArgs e)
         {
@@ -824,20 +759,29 @@ namespace WinFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            //panel1.Visible = false;
-            //panel4.Visible = false;
-            //panel3.Visible = false;
-            //axWindowsMediaPlayer1.Visible = false;
+            // Close the media player
             axWindowsMediaPlayer1.close();
-            _form.Controls.Clear();
-            //  pictureBox1.Visible = false;
-            Home h = new Home(_form);
-            h._form.Show();
-            h._form.Refresh();
-            //  _form.Visible = false;
 
+            // Dispose of all controls and clear the form
+            foreach (Control control in _form.Controls)
+            {
+                control.Dispose();
+            }
+            _form.Controls.Clear();
+
+            // Create a new instance of the Home class and initialize it
+            Home homePage = new Home(_form);
+
+            // Ensure the form is set to fullscreen mode
+            _form.WindowState = FormWindowState.Maximized;
+
+            // Show and refresh the form
+            homePage._form.Show();
+            homePage._form.Refresh();
         }
+
+
+
 
         int currentRating = 0;
         /////////////////////// rate ////////////////////////////

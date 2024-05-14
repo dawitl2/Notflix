@@ -13,11 +13,11 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 using AxWMPLib;
-using System.ComponentModel.DataAnnotations;
 using System.Drawing.Drawing2D;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using Microsoft.VisualBasic.ApplicationServices;
 using System.Diagnostics;
+using Org.BouncyCastle.Asn1.X509;
+//using ScreenColorDetector;
 
 namespace WinFormsApp1
 {
@@ -45,6 +45,7 @@ namespace WinFormsApp1
         private PictureBox iconPictureBox4;
         private PictureBox iconPictureBox5;
         private PictureBox iconPictureBox6;
+        PictureBox iconPictureBox69;
         private RoundedPanel Comment_panel;
         private Label label1;
         private RoundedPanel trailer_panel;
@@ -54,19 +55,36 @@ namespace WinFormsApp1
         private Label label3;
         private System.Threading.Timer timer;
         private System.Windows.Forms.TextBox newCommentTextBox;
+        private ColorDetectorForm _colorDetectorForm;
 
         public Video_class(Form form, string[] array, int movieid)
         {
             _form = form;
+            _form.BackColor = Color.Black;
             this.movie = array;
             this.movieid = movieid;
+
+            _colorDetectorForm = new ColorDetectorForm();
+            _colorDetectorForm.ColorUpdated += ColorDetectorForm_ColorUpdated;
+
+            iconPictureBox69 = new PictureBox();
+            iconPictureBox69.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
+            iconPictureBox69.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\opacity.png");
+            iconPictureBox69.Name = "wide_panel";
+            iconPictureBox69.Dock = DockStyle.Fill;
+            iconPictureBox69.TabIndex = 13;
+            _form.Controls.Add(iconPictureBox69);
+            //_form.BackgroundImage = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\opacity.png");
+
             InitializeComponent();
             PlayVideoFromDatabase();
             PopulateMovieDataPanel();
+            _form.BackgroundImage = null;
+          
         }
 
         void InitializeComponent()
-        {
+        { 
             // pictureBox1 = new PictureBox();
             axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             back_panel = new Panel();
@@ -96,10 +114,6 @@ namespace WinFormsApp1
             panel3.SuspendLayout();
             _form.SuspendLayout();
             // 
-            // pictureBox1
-            // 
-
-            // 
             // axWindowsMediaPlayer1
             // 
             axWindowsMediaPlayer1.Enabled = true;
@@ -120,15 +134,15 @@ namespace WinFormsApp1
             back_panel.Size = new Size(1487, 700);
             back_panel.TabIndex = 1;
 
-            panel1.BackColor = SystemColors.ActiveCaptionText;
+            panel1.BackColor = Color.FromArgb(24, 24, 24);
             //panel1.BackColor = Color.Transparent;
             panel1.Controls.Add(button1);
             panel1.Controls.Add(panel2);
-            //panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(0, 0);
+            panel1.Dock = DockStyle.Top;
+           // panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(1920, 64);
-            panel1.TabIndex = 2;
+            //panel1.TabIndex = 2;
             // 
             // button1
             // 
@@ -230,8 +244,9 @@ namespace WinFormsApp1
             panel3.Controls.Add(label1);
             panel3.Controls.Add(trailer_panel);
             panel3.Controls.Add(poster_panel);
-            //  panel3.Dock = DockStyle.Bottom;
-            panel3.Location = new Point(0, 720);
+            // panel3.Location = new Point(0, 720);
+            panel3.Dock = DockStyle.Bottom;
+
             panel3.Name = "panel3";
             panel3.Size = new Size(1920, 473);
             panel3.TabIndex = 3;
@@ -249,8 +264,8 @@ namespace WinFormsApp1
             // 
             // data_panel
             // 
-            // data_panel.BackColor = Color.FromArgb(29, 47, 50);
-            data_panel.BackColor = Color.Transparent;
+            data_panel.BackColor = Color.FromArgb(24, 24, 24);
+            //data_panel.BackColor = Color.Transparent;
             //data_panel.BackColor = Color.Red;
             data_panel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             data_panel.Location = new Point(326, 80);
@@ -294,11 +309,11 @@ namespace WinFormsApp1
             iconPictureBox.Size = new Size(217, 35);
             iconPictureBox.TabIndex = 13;
 
-            Comment_panel.BackColor = Color.Transparent;
-            //Comment_panel.BackColor = Color.Red;
+            //Comment_panel.BackColor = Color.Transparent;
+            Comment_panel.BackColor = Color.FromArgb(24, 24, 24);
             Comment_panel.Location = new Point(1244, 75);
             Comment_panel.Name = "Comment_panel";
-            Comment_panel.Size = new Size(598, 376);
+            Comment_panel.Size = new Size(458, 376);
             Comment_panel.TabIndex = 4;
             //Comment_panel.EdgeColor = Color.FromArgb(41, 172, 191);
             Comment_panel.EdgeColor = Color.FromArgb(29, 41, 43);
@@ -399,13 +414,13 @@ namespace WinFormsApp1
 
             // back_panel.Anchor
             //back_panel.Controls.Add(redpanel);
-            back_panel.Controls.Add(iconPictureBox6);
-            back_panel.Controls.Add(iconPictureBox5);
-            back_panel.Controls.Add(axWindowsMediaPlayer1);
-           
+            // back_panel.Controls.Add(iconPictureBox6);
+            iconPictureBox69.Controls.Add(iconPictureBox5);
+            iconPictureBox69.Controls.Add(axWindowsMediaPlayer1);
+
             // _form.Controls.Add(panel4);
-            back_panel.Controls.Add(panel3);
-            back_panel.Controls.Add(panel1);
+            iconPictureBox69.Controls.Add(panel3);
+            iconPictureBox69.Controls.Add(panel1);
             //  _form.Controls.Add(pictureBox1
             // 
             // Form1
@@ -424,11 +439,19 @@ namespace WinFormsApp1
             panel3.PerformLayout();
             _form.ResumeLayout(false);
 
-
-
-          
-
         }
+
+          private void ColorDetectorForm_ColorUpdated(object sender, ColorEventArgs e)
+   {
+       // Update form colors
+       UpdateFormColors(e.Color);
+   }
+
+   private void UpdateFormColors(Color color)
+   {
+       _form.BackColor = color;
+   }
+
 
         private void PlayVideoFromDatabase()
         {
@@ -812,7 +835,6 @@ namespace WinFormsApp1
             Home h = new Home(_form);
             h._form.Show();
             h._form.Refresh();
-
             //  _form.Visible = false;
 
         }

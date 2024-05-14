@@ -35,7 +35,6 @@ namespace WinFormsApp1
             return movieData;
         }
 
-
         public bool AuthenticateUser(string username, string password)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))

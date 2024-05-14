@@ -18,6 +18,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Timers;
 using System.Windows.Forms;
+//using ScreenColorDetector;
 
 
 
@@ -183,7 +184,8 @@ namespace WinFormsApp1
             panel1.Controls.Add(iconPictureBox3);
             panel1.Controls.Add(button2);
             panel1.Font = new System.Drawing.Font("Segoe UI", 11F);
-            panel1.Location = new Point(2, 1);
+            panel1.Dock = DockStyle.Top;
+            //panel1.Location = new Point(2, 1);
             panel1.Name = "panel1";
             panel1.Size = new Size(1900, 66);
             panel1.TabIndex = 1;
@@ -853,10 +855,10 @@ namespace WinFormsApp1
             panel = new RoundedPanel();
             panel4.Controls.Add(panel);
             panel.BringToFront();
-            panel.Location = new Point(37 + iconPictureBox3.Width + 7, 21);
+            panel.Location = new Point(37 + iconPictureBox3.Width - 8, 19);
             panel.Size = new Size(130, 190);
-            panel.BackColor = Color.Teal;
-            panel.EdgeColor = Color.Teal;
+            panel.BackColor = Color.FromArgb(41, 172, 191);
+            panel.EdgeColor = Color.FromArgb(41, 172, 191);
 
             btn1.Size = new Size(panel.Width - 40, 30);
             btn2.Size = new Size(panel.Width - 40, 30);
@@ -868,10 +870,10 @@ namespace WinFormsApp1
             btn3.Location = new Point(20, 100);
             btn4.Location = new Point(20, 140);
 
-            btn1.BackColor = Color.Teal;
-            btn2.BackColor = Color.Teal;
-            btn3.BackColor = Color.Teal;
-            btn4.BackColor = Color.Teal;
+            btn1.BackColor = Color.FromArgb(41, 172, 191);
+            btn2.BackColor = Color.FromArgb(41, 172, 191);
+            btn3.BackColor = Color.FromArgb(41, 172, 191);
+            btn4.BackColor = Color.FromArgb(41, 172, 191);
 
             btn1.ForeColor = Color.FromArgb(24, 24, 24);
             btn2.ForeColor = Color.FromArgb(24, 24, 24);
@@ -882,17 +884,16 @@ namespace WinFormsApp1
             btn2.FlatAppearance.BorderSize = 0;
             btn3.FlatAppearance.BorderSize = 0;
             btn4.FlatAppearance.BorderSize = 0;
-
             btn1.FlatStyle = FlatStyle.Flat;
             btn2.FlatStyle = FlatStyle.Flat;
             btn3.FlatStyle = FlatStyle.Flat;
             btn4.FlatStyle = FlatStyle.Flat;
 
-            btn1.Font = new System.Drawing.Font(btn1.Font.FontFamily, 14, FontStyle.Regular);
-            btn2.Font = new System.Drawing.Font(btn2.Font.FontFamily, 14, FontStyle.Regular);
-            btn3.Font = new System.Drawing.Font(btn3.Font.FontFamily, 14, FontStyle.Regular);
-            btn4.Font = new System.Drawing.Font(btn3.Font.FontFamily, 14, FontStyle.Regular);
-
+            btn1.Font = new System.Drawing.Font(btn1.Font.FontFamily, 15, FontStyle.Regular);
+            btn2.Font = new System.Drawing.Font(btn2.Font.FontFamily, 15, FontStyle.Regular);
+            btn3.Font = new System.Drawing.Font(btn3.Font.FontFamily, 15, FontStyle.Regular);
+            btn4.Font = new System.Drawing.Font(btn3.Font.FontFamily, 15, FontStyle.Regular);
+        
             // Set names for the buttons
             btn1.Text = "Profile";
             btn2.Text = "Lang";
@@ -938,9 +939,10 @@ namespace WinFormsApp1
         private void Button_MouseLeave(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            button.BackColor = Color.Teal;
+            button.BackColor = Color.FromArgb(41, 172, 191);
             button.ForeColor = Color.Black;
             panel.Cursor = Cursors.Default;
+          
         }
 
         private void Panel_MouseEnter(object sender, EventArgs e)
@@ -1005,7 +1007,6 @@ namespace WinFormsApp1
             topFadingPanel.Dock = DockStyle.Top;
             topFadingPanel.BackColor = Color.Transparent;
             topFadingPanel.Height = 150;
-          
 
             widePictureBox.Controls.Add(topFadingPanel);
             string[] movieData1 = topRatedMoviesData[index];

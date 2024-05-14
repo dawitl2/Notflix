@@ -62,55 +62,20 @@ namespace WinFormsApp1
         private FlowLayoutPanel sidepanel;
         private List<(string, string)> movieDataList;
 
-        /*  public Home(Form form)
-          {
-              _form = form;
-
-              // Call this to remove any previous controls
-              _form.Controls.Clear();
-
-              // Initialize components
-              InitializeComponent();
-
-              // Populate data for the home page
-              PopulatewideMovies();
-              PopulateMostRatedMovies();
-              PopulateMovies();
-          }*/
-
-
         public Home(Form form)
         {
             _form = form;
 
-            // Call this to remove any previous controls
-            foreach (Control control in _form.Controls)
-            {
-                control.Dispose();
-            }
-            _form.Controls.Clear();
-
-            // Initialize components
             InitializeComponent();
-
-            // Populate data for the home page
             PopulatewideMovies();
             PopulateMostRatedMovies();
             PopulateMovies();
 
-            // Force a full refresh
-            _form.Invalidate();
-            _form.Update();
-            _form.Refresh();
-
-            // Ensure the form is set to fullscreen mode
-            _form.WindowState = FormWindowState.Maximized;
         }
-
-
 
         private void InitializeComponent()
         {
+
             panel1 = new Panel();
             roundedPanel1 = new RoundedPanel();
             textBox1 = new TextBox();
@@ -140,31 +105,42 @@ namespace WinFormsApp1
             label3 = new Label();
             label7 = new Label();
             label6 = new Label();
-
+         
             panel1.SuspendLayout();
             roundedPanel1.SuspendLayout();
             widePictureBox.SuspendLayout();
+
             panel4.SuspendLayout();
+
             panel7.SuspendLayout();
             _form.SuspendLayout();
 
-            // Initialize sidepanel
             sidepanel.BackColor = Color.FromArgb(24, 24, 24);
             sidepanel.Size = new Size(1840, 175);
             sidepanel.Location = new Point(60, 780);
             sidepanel.AutoScroll = true;
-
-            // Initialize redPanel
+          
             redPanel.BackColor = Color.FromArgb(24, 24, 24);
             redPanel.Size = new Size(400, 700);
-
             List<string> genres = new List<string>
-    {
-        "Comedy", "Action", "Drama", "Science Fiction", "Thriller", "Romance",
-        "Horror", "Fantasy", "Mystery", "History", "Lib Anteltay", "Cartoon",
-        "Adult", "Milf", "Step Mom"
-    };
+{
+    "Comedy",
+    "Action",
+    "Drama",
+    "Science Fiction",
+    "Thriller",
+    "Romance",
+    "Horror",
+    "Fantasy",
+    "Mystery",
+    "History",
+    "Lib Anteltay",
+    "Cartoon",
+    "Adult",
+    "Milf",
+    "Step Mom"
 
+};
             int yPos = 14;
             foreach (string genre in genres)
             {
@@ -178,6 +154,7 @@ namespace WinFormsApp1
 
                 if (!genre.StartsWith("  "))
                 {
+                    // Logo PictureBox
                     PictureBox logoPictureBox = new PictureBox();
                     logoPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                     logoPictureBox.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\play.png");
@@ -192,12 +169,15 @@ namespace WinFormsApp1
                     genreLabel.MouseClick += (sender, e) => GenreLabel_Click(sender, e, genreLabel);
                 }
 
-                yPos += 40;
+                yPos += 40; // Increase Y position for the next pair
             }
+
 
             panel4.Controls.Add(redPanel);
             panel4.Controls.Add(sidepanel);
-
+            //
+            // panel1
+            // 
             panel1.BackColor = Color.FromArgb(24, 24, 24);
             panel1.Controls.Add(roundedPanel1);
             panel1.Controls.Add(panel3);
@@ -205,31 +185,44 @@ namespace WinFormsApp1
             panel1.Controls.Add(button2);
             panel1.Font = new System.Drawing.Font("Segoe UI", 11F);
             panel1.Dock = DockStyle.Top;
+            //panel1.Location = new Point(2, 1);
+            panel1.Name = "panel1";
             panel1.Size = new Size(1900, 66);
+            panel1.TabIndex = 1;
             panel1.BringToFront();
-
+            // 
+            // roundedPanel1
+            // 
             roundedPanel1.BackColor = Color.FromArgb(29, 41, 43);
             roundedPanel1.Controls.Add(textBox1);
             roundedPanel1.Controls.Add(button1);
             roundedPanel1.CornerRadius = 10;
             roundedPanel1.EdgeColor = Color.White;
             roundedPanel1.Location = new Point(700, 21);
+            roundedPanel1.Name = "roundedPanel1";
             roundedPanel1.Size = new Size(519, 44);
-            roundedPanel1.BorderStyle = BorderStyle.None;
+            roundedPanel1.TabIndex = 13;
+            roundedPanel1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             roundedPanel1.EdgeColor = Color.Teal;
-
+            // 
+            // textBox1
+            // 
             textBox1.BackColor = Color.FromArgb(29, 41, 43);
             textBox1.BorderStyle = BorderStyle.None;
             textBox1.Font = new System.Drawing.Font("Segoe UI", 15F);
             textBox1.ForeColor = Color.White;
             textBox1.Location = new Point(78, 6);
+            textBox1.Name = "textBox1";
             textBox1.Size = new Size(420, 32);
             textBox1.TabIndex = 5;
             textBox1.Text = "Search movies...";
             textBox1.ForeColor = Color.Gray;
             textBox1.GotFocus += TextBox1_GotFocus;
             textBox1.KeyDown += TextBox1_KeyDown;
-
+            //
+            // button1
+            // 
+            //button1.BackColor = Color.FromArgb(32, 42, 38);
             button1.BackColor = Color.Teal;
             button1.BackgroundImageLayout = ImageLayout.None;
             button1.CornerRadius = 11;
@@ -238,12 +231,16 @@ namespace WinFormsApp1
             button1.FlatStyle = FlatStyle.Flat;
             button1.Font = new System.Drawing.Font("Segoe UI", 11F);
             button1.ForeColor = Color.White;
+            button1.Location = new Point(9, 7);
+            button1.Name = "button1";
             button1.Size = new Size(54, 31);
             button1.TabIndex = 6;
             button1.Text = "filter";
             button1.UseVisualStyleBackColor = false;
             button1.MouseClick += (sender, e) => filter_Click(sender, e);
 
+
+            // button 2 //
             button2.BackColor = Color.Teal;
             button2.CornerRadius = 7;
             button2.BackgroundImageLayout = ImageLayout.None;
@@ -252,15 +249,23 @@ namespace WinFormsApp1
             button2.FlatStyle = FlatStyle.Flat;
             button2.Font = new System.Drawing.Font("Segoe UI", 11F);
             button2.ForeColor = Color.Black;
+            button2.Name = "button1";
             button2.Size = new Size(90, 45);
             button2.TabIndex = 6;
             button2.Text = "Exit";
             button2.UseVisualStyleBackColor = false;
             button2.Location = new Point(panel1.Width - 130, 21);
-            button2.MouseEnter += (sender, e) => AnimateButtonColor(button2, Color.Red);
-            button2.MouseLeave += (sender, e) => AnimateButtonColor(button2, Color.Teal);
+            button2.MouseEnter += (sender, e) =>
+            {
+                AnimateButtonColor(button2, Color.Red);
+            };
+            button2.MouseLeave += (sender, e) =>
+            {
+                AnimateButtonColor(button2, Color.Teal);
+            };
             button2.MouseClick += (sender, e) => exit_Click(sender, e);
 
+            // right //
             right.BackColor = Color.Teal;
             right.BackgroundImageLayout = ImageLayout.None;
             right.CornerRadius = 26;
@@ -269,13 +274,15 @@ namespace WinFormsApp1
             right.FlatStyle = FlatStyle.Flat;
             right.Font = new System.Drawing.Font("Segoe UI", 11F);
             right.ForeColor = Color.Black;
+            right.Location = new Point(1810, 70);
+            right.Name = "right_B";
             right.Size = new Size(50, 50);
             right.TabIndex = 6;
             right.Text = ">";
             right.UseVisualStyleBackColor = false;
             left.Click += left_Click;
             right.Click += right_Click;
-
+            // left //
             left.BackColor = Color.Teal;
             left.BackgroundImageLayout = ImageLayout.None;
             left.CornerRadius = 26;
@@ -284,48 +291,65 @@ namespace WinFormsApp1
             left.FlatStyle = FlatStyle.Flat;
             left.Font = new System.Drawing.Font("Segoe UI", 11F);
             left.ForeColor = Color.Black;
+            left.Location = new Point(1740, 70);
+            left.Name = "Left_B";
             left.Size = new Size(50, 50);
             left.TabIndex = 6;
             left.Text = "<";
             left.UseVisualStyleBackColor = false;
-
+            //
+            // panel3
+            // 
             panel3.Location = new Point(3, 93);
+            panel3.Name = "panel3";
             panel3.Size = new Size(1472, 305);
             panel3.TabIndex = 12;
-
+            // 
+            // wide_panel
+            // 
+            //
             widePictureBox.Controls.Add(right);
             widePictureBox.Controls.Add(left);
             widePictureBox.Location = new Point(0, 40);
-            widePictureBox.Size = new Size(1900, 723);
+            widePictureBox.Name = "wide_panel";
+            widePictureBox.Size = new(1900, 723);
             widePictureBox.TabIndex = 13;
 
             iconPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             iconPictureBox.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
+            iconPictureBox.Name = "wide_panel";
             iconPictureBox.Size = new Size(20, 30);
             iconPictureBox.TabIndex = 13;
 
             iconPictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
             iconPictureBox2.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
-            iconPictureBox2.Size = new Size(20, 30);
+            iconPictureBox2.Name = "wide_panel";
+            iconPictureBox2.Size = new(20, 30);
             iconPictureBox2.TabIndex = 13;
 
             iconPictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
             iconPictureBox4.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
-            iconPictureBox4.Size = new Size(20, 30);
+            iconPictureBox4.Name = "wide_panel";
+            iconPictureBox4.Size = new(20, 30);
             iconPictureBox4.TabIndex = 13;
 
             iconPictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
             iconPictureBox3.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\notflix.png");
             iconPictureBox3.Location = new Point(37, 21);
+            iconPictureBox3.Name = "wide_panel";
             iconPictureBox3.Size = new Size(160, 45);
             iconPictureBox3.TabIndex = 13;
             iconPictureBox3.MouseEnter += bars_MouseEnter;
             iconPictureBox3.MouseLeave += bars_MouseLeave;
             iconPictureBox3.Click += bars_click;
-
+            // 
+            // panel5
+            // 
             widePictureBox.Controls.Add(title_label);
             widePictureBox.Controls.Add(discription_label);
-
+            // 
+            // panel4
+            // 
             panel4.AutoScroll = true;
             panel4.AutoSize = true;
             panel4.BackColor = Color.FromArgb(24, 24, 24);
@@ -338,86 +362,119 @@ namespace WinFormsApp1
             panel4.Controls.Add(label3);
             panel4.Controls.Add(label6);
             panel4.Dock = DockStyle.Fill;
+            panel4.Location = new Point(0, 0);
+            panel4.Name = "panel4";
             panel4.Size = new Size(1487, 931);
             panel4.TabIndex = 15;
             panel4.Controls.Add(label7);
-
+            // 
+            // label5
+            // 
             label5.AutoSize = true;
             label5.ForeColor = Color.FromArgb(0, 192, 192);
+            label5.Location = new Point(531, 144);
+            label5.Name = "label5";
             label5.Size = new Size(301, 15);
             label5.TabIndex = 6;
             label5.Text = "Follow us on social medias https//:/Adress/webflix.com";
-
+            // 
+            // label4
+            // 
             label4.AutoSize = true;
             label4.ForeColor = SystemColors.ButtonFace;
+            label4.Location = new Point(41, 122);
+            label4.Name = "label4";
             label4.Size = new Size(1342, 15);
             label4.TabIndex = 5;
-
+            // 
+            // panel8
+            // 
             panel8.BackColor = Color.Teal;
             panel8.Enabled = false;
+            panel8.Location = new Point(26, 110);
+            panel8.Name = "panel8";
             panel8.Size = new Size(1810, 2);
             panel8.TabIndex = 4;
-
+            // 
+            // panel7
+            // 
             panel7.BackColor = Color.Teal;
             panel7.Controls.Add(label2);
             panel7.Enabled = false;
+            panel7.Location = new Point(602, 47);
+            panel7.Name = "panel7";
             panel7.Size = new Size(174, 50);
             panel7.TabIndex = 3;
-
+            // 
+            // label2
+            // 
             label2.AutoSize = true;
+            label2.Name = "label2";
             label2.Size = new Size(130, 43);
             label2.TabIndex = 2;
             label2.Text = "WebFlix";
-
+            // 
+            // flowLayoutPanel1
+            // 
             flowLayoutPanel1.BackColor = Color.FromArgb(24, 24, 24);
             flowLayoutPanel1.Location = new Point(97, 820);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(1354, 967);
             flowLayoutPanel1.TabIndex = 2;
             flowLayoutPanel1.Margin = new Padding(0, 350, 0, 0);
 
             panel4.Margin = new Padding(0, 350, 0, 0);
-
+            // 
+            // label3
+            // 
             label3.AutoSize = true;
             label3.Font = new System.Drawing.Font("Segoe UI", 19F);
             label3.ForeColor = Color.White;
+            //label3.Location = new Point(115, 760);
             label3.Name = "label3";
             label3.Size = new Size(283, 36);
             label3.TabIndex = 0;
             label3.Text = "Recommended Movies!";
-
+            //////////
             label7.AutoSize = true;
             label7.Font = new System.Drawing.Font("Segoe UI", 19F);
             label7.ForeColor = Color.White;
+            //label7.Location = new Point(115, 760);
             label7.Name = "label3";
             label7.Size = new Size(283, 36);
             label7.TabIndex = 0;
             label7.Text = "Latest updates.";
-
+            // lable 6
             label6.AutoSize = true;
             label6.Font = new System.Drawing.Font("Segoe UI", 19F);
             label6.ForeColor = Color.White;
+            //label6.Location = new Point(1420, 775);
             label6.Name = "label3";
             label6.Size = new Size(283, 36);
             label6.TabIndex = 0;
             label6.Text = "Recommended Genres!";
-
+            // 
+            // Form1
+            // 
             _form.AutoScaleDimensions = new SizeF(7F, 15F);
             _form.AutoScaleMode = AutoScaleMode.Font;
             _form.Controls.Add(panel4);
             _form.Name = "Form1";
             _form.Text = "Form1";
-
             panel1.ResumeLayout(false);
             roundedPanel1.ResumeLayout(false);
             roundedPanel1.PerformLayout();
             widePictureBox.ResumeLayout(false);
             panel4.ResumeLayout(false);
+
             panel4.PerformLayout();
+
             panel7.ResumeLayout(false);
             panel7.PerformLayout();
             _form.ResumeLayout(false);
             _form.PerformLayout();
 
+            // location fixing
             flowLayoutPanel1.Location = new Point(97, 1040);
             panel4.Location = new Point(0, 1110);
             redPanel.Location = new Point(1410, 1035);
@@ -427,10 +484,10 @@ namespace WinFormsApp1
             label7.Location = new Point(115, 735);
             iconPictureBox.Location = new Point(90, 967);
             label6.Location = new Point(1420, 960);
-            iconPictureBox2.Location = new Point(label6.Left - 20, 967);
+            iconPictureBox2.Location = new Point(label6.Left - 20, 967); // gunra lable
             iconPictureBox4.Location = new Point(label7.Left - 30, 740);
-        }
 
+        }
 
         private void PopulatewideMovies()
         {
@@ -639,7 +696,7 @@ namespace WinFormsApp1
         private void PopulateMovie(string Genre, string Release_Date, string Duration, string Rating)
         {
             flowLayoutPanel1.Controls.Clear();
-            List<(string, string, string, string)> movies = SqlInstance.filter_movies(Genre, Release_Date, Duration, Rating);
+            List<(string, string, string, string)> movies = SqlInstance.FilterMovies(Genre, Release_Date, Duration, Rating); // this is super old need updating
 
             int pictureBoxWidth = 200;
             int pictureBoxHeight = 250;
@@ -1218,13 +1275,15 @@ namespace WinFormsApp1
         ///////////////////////////////////////////////////////////////////////////////
 
 
+
+
         private void filter_Click(object sender, EventArgs e)
         {
             PictureBox iconPicture2 = new PictureBox();
             panel4.Controls.Add(iconPicture2);
 
+            // Hide and reposition elements for the filter view
             panel1.BackColor = Color.FromArgb(24, 24, 24);
-           // roundedPanel1.Visible = false;
             widePictureBox.Visible = false;
             sidepanel.Visible = false;
             label7.Visible = false;
@@ -1232,45 +1291,39 @@ namespace WinFormsApp1
             iconPictureBox4.Visible = false;
             iconPictureBox2.Visible = false;
             label6.Visible = false;
-            //label7.Visible = false;
-            //panel4.Location = new Point(0, 1110); 
             flowLayoutPanel1.Location = new Point(97, 400);
-            //redPanel.Location = new Point(1410, 395);
             label3.Location = new Point(115, 325);
             iconPictureBox.Location = new Point(90, 327);
-            //label6.Location = new Point(1420, 320);
-            // iconPictureBox2.Location = new Point(label6.Left - 20, 327); // gunra lable
 
             // Create and configure combo boxes
             RoundedComboBox genreComboBox = new RoundedComboBox();
             RoundedComboBox releaseDateComboBox = new RoundedComboBox();
             RoundedComboBox durationComboBox = new RoundedComboBox();
             RoundedComboBox ratingComboBox = new RoundedComboBox();
-            RadioButton filter = new RadioButton();
-            RadioButton back = new RadioButton();
+            RadioButton filterButton = new RadioButton();
+            RadioButton backButton = new RadioButton();
 
             // Set combo box properties
             genreComboBox.Width = 150;
             releaseDateComboBox.Width = 150;
             durationComboBox.Width = 150;
             ratingComboBox.Width = 150;
-            filter.Width = 100;
-            back.Width = 100;
+            filterButton.Width = 100;
+            backButton.Width = 100;
 
             System.Drawing.Font font = new System.Drawing.Font("Segoe UI", 18F);
-
             genreComboBox.Font = font;
             releaseDateComboBox.Font = font;
             durationComboBox.Font = font;
             ratingComboBox.Font = font;
-       
+
             // Position combo boxes
             genreComboBox.Location = new Point(90, 90);
             releaseDateComboBox.Location = new Point(290, 90);
-            durationComboBox.Location = new Point(490,90);
+            durationComboBox.Location = new Point(490, 90);
             ratingComboBox.Location = new Point(690, 90);
-            filter.Location = new Point(890, 100);
-            back.Location = new Point(1240, 100);
+            filterButton.Location = new Point(890, 100);
+            backButton.Location = new Point(1240, 100);
 
             PictureBox iconPicture = new PictureBox();
             iconPicture.SizeMode = PictureBoxSizeMode.Zoom;
@@ -1289,43 +1342,41 @@ namespace WinFormsApp1
             iconPicture2.BringToFront();
 
             // Add combo boxes to the form
-       
             iconPicture.Controls.Add(genreComboBox);
             iconPicture.Controls.Add(releaseDateComboBox);
             iconPicture.Controls.Add(durationComboBox);
             iconPicture.Controls.Add(ratingComboBox);
-            iconPicture.Controls.Add(filter);
-            iconPicture.Controls.Add(back);
+            iconPicture.Controls.Add(filterButton);
+            iconPicture.Controls.Add(backButton);
             panel4.Controls.Add(iconPicture);
 
-            filter.BackgroundImageLayout = ImageLayout.None;
-            filter.Cursor = Cursors.Hand;
-            filter.FlatAppearance.BorderSize = 0;
-            filter.FlatStyle = FlatStyle.Flat;
-            filter.Font = new System.Drawing.Font("Segoe UI", 11F);
-            filter.ForeColor = Color.White;
-            filter.Name = "Filter";
-            filter.TabIndex = 6;
-            filter.Text = "filter";
-            filter.UseVisualStyleBackColor = false;
-            
-            back.BackgroundImageLayout = ImageLayout.None;
-            back.Cursor = Cursors.Hand;
-            back.FlatAppearance.BorderSize = 0;
-            back.FlatStyle = FlatStyle.Flat;
-            back.Font = new System.Drawing.Font("Segoe UI", 11F);
-            back.ForeColor = Color.White;
-            back.Name = "Back";
-            back.TabIndex = 6;
-            back.Text = "Back";
-            back.UseVisualStyleBackColor = false;
+            // Configure filter and back buttons
+            filterButton.BackgroundImageLayout = ImageLayout.None;
+            filterButton.Cursor = Cursors.Hand;
+            filterButton.FlatAppearance.BorderSize = 0;
+            filterButton.FlatStyle = FlatStyle.Flat;
+            filterButton.Font = new System.Drawing.Font("Segoe UI", 11F);
+            filterButton.ForeColor = Color.White;
+            filterButton.Name = "Filter";
+            filterButton.TabIndex = 6;
+            filterButton.Text = "filter";
+            filterButton.UseVisualStyleBackColor = false;
 
-            //filter.BackColor = Color.Green;
-            //back.BackColor = Color.Red;
-             filter.BackColor = Color.Transparent;
-            back.BackColor = Color.Transparent;
-            filter.MouseClick += (sender, e) => filters_Click(sender, e);
-            back.MouseClick += (sender, e) => back_Click(sender, e);
+            backButton.BackgroundImageLayout = ImageLayout.None;
+            backButton.Cursor = Cursors.Hand;
+            backButton.FlatAppearance.BorderSize = 0;
+            backButton.FlatStyle = FlatStyle.Flat;
+            backButton.Font = new System.Drawing.Font("Segoe UI", 11F);
+            backButton.ForeColor = Color.White;
+            backButton.Name = "Back";
+            backButton.TabIndex = 6;
+            backButton.Text = "Back";
+            backButton.UseVisualStyleBackColor = false;
+
+            filterButton.BackColor = Color.Transparent;
+            backButton.BackColor = Color.Transparent;
+            filterButton.MouseClick += (sender, e) => filters_Click(sender, e);
+            backButton.MouseClick += (sender, e) => back_Click(sender, e);
 
             // Populate combo boxes with data
             PopulateGenreComboBox(genreComboBox);
@@ -1335,27 +1386,22 @@ namespace WinFormsApp1
 
             void filters_Click(object sender, EventArgs e)
             {
-                // Define a global variable to store the selected values
-                string selectedValues = "";
-
-                // Reset selected values before appending
-                selectedValues = "";
-
                 // Get selected values from combo boxes
                 string selectedGenre = genreComboBox.SelectedItem?.ToString();
                 string selectedReleaseDate = releaseDateComboBox.SelectedItem?.ToString();
                 string selectedDuration = durationComboBox.SelectedItem?.ToString();
                 string selectedRating = ratingComboBox.SelectedItem?.ToString();
 
-                // Concatenate selected values into a single string
-                selectedValues += "Genre: " + selectedGenre + "\n";
-                selectedValues += "Release Date: " + selectedReleaseDate + "\n";
-                selectedValues += "Duration: " + selectedDuration + "\n";
-                selectedValues += "Rating: " + selectedRating + "\n";
+                // If no filters are selected, display a message and return
+                if (string.IsNullOrEmpty(selectedGenre) && string.IsNullOrEmpty(selectedReleaseDate) &&
+                    string.IsNullOrEmpty(selectedDuration) && string.IsNullOrEmpty(selectedRating))
+                {
+                    MessageBox.Show("Please select at least one filter.", "No Filters Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
 
                 // Display selected values in a message box
                 PopulateMovie(selectedGenre, selectedReleaseDate, selectedDuration, selectedRating);
-                //MessageBox.Show(selectedValues, "Selected Filters");
             }
 
             void back_Click(object sender, EventArgs e)
@@ -1363,21 +1409,18 @@ namespace WinFormsApp1
                 panel4.Visible = false;
                 Home home = new Home(_form);
             }
-
         }
-     
+
         private void PopulateGenreComboBox(ComboBox comboBox)
         {
-            Sql sql = new Sql();
-            List<string> genres = sql.GetGenres(); // Assuming you have a method in the Sql class to retrieve genres
+            List<string> genres = SqlInstance.GetGenres(); // Assuming you have a method in the Sql class to retrieve genres
             comboBox.Items.AddRange(genres.ToArray());
         }
 
         // Method to populate release date combo box
         private void PopulateReleaseDateComboBox(ComboBox comboBox)
         {
-            Sql sql = new Sql();
-            List<string> releaseDates = sql.GetReleaseDates(); // Assuming you have a method in the Sql class to retrieve release dates
+            List<string> releaseDates = SqlInstance.GetReleaseDates(); // Assuming you have a method in the Sql class to retrieve release dates
             comboBox.Items.AddRange(releaseDates.ToArray());
         }
 
@@ -1402,6 +1445,7 @@ namespace WinFormsApp1
             comboBox.Items.Add("1 star");
             // Add more ratings as needed
         }
+
 
     }
 }

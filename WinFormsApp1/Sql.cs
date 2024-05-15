@@ -31,6 +31,23 @@ namespace WinFormsApp1
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
+                // Check if the username already exists
+                string checkQuery = "SELECT COUNT(*) FROM User WHERE user_name = @username";
+                using (MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection))
+                {
+                    checkCommand.Parameters.AddWithValue("@username", username);
+
+                    connection.Open();
+                    int userCount = Convert.ToInt32(checkCommand.ExecuteScalar());
+
+                    if (userCount > 0)
+                    {
+                        MessageBox.Show("Username is already taken. Please choose a different username.", "Username Taken", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
+                    }
+                }
+
+                // If username is not taken, proceed to create the user
                 string query = "INSERT INTO User (user_name, password, email, pfp) VALUES (@username, @password, @email, @pfp)";
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
@@ -39,12 +56,21 @@ namespace WinFormsApp1
                     command.Parameters.AddWithValue("@email", email);
                     command.Parameters.AddWithValue("@pfp", pfp);
 
-                    connection.Open();
                     int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("User created successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error creating user.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                     return rowsAffected > 0;
                 }
             }
         }
+
+
 
 
         public List<(string, string, string)> GetMoviePosters()

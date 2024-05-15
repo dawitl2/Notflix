@@ -196,7 +196,6 @@ namespace WinFormsApp1
             roundedPanel1.Controls.Add(textBox1);
             roundedPanel1.Controls.Add(button1);
             roundedPanel1.CornerRadius = 10;
-            roundedPanel1.EdgeColor = Color.White;
             roundedPanel1.Location = new Point(700, 21);
             roundedPanel1.Name = "roundedPanel1";
             roundedPanel1.Size = new Size(519, 44);
@@ -742,7 +741,7 @@ namespace WinFormsApp1
         }
 
 
-        private void PopulateMovie(string movie, int n)
+        public void PopulateMovie(string movie, int n)
         {
             flowLayoutPanel1.Controls.Clear();
             List<(string, string, string)> movies = SqlInstance.GetMoviePostersname(movie);
@@ -1312,10 +1311,10 @@ namespace WinFormsApp1
             durationComboBox.Font = font;
             ratingComboBox.Font = font;
 
-            genreComboBox.Location = new Point(90, 90);
-            releaseDateComboBox.Location = new Point(290, 90);
-            durationComboBox.Location = new Point(490, 90);
-            ratingComboBox.Location = new Point(690, 90);
+            genreComboBox.Location = new Point(90, 89);
+            releaseDateComboBox.Location = new Point(290, 89);
+            durationComboBox.Location = new Point(490, 89);
+            ratingComboBox.Location = new Point(690, 89);
             filterButton.Location = new Point(890, 100);
             clearButton.Location = new Point(958, 100);
             backButton.Location = new Point(1240, 100);

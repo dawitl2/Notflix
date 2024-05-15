@@ -46,6 +46,8 @@ namespace WinFormsApp1
         private PictureBox iconPictureBox5;
         private PictureBox iconPictureBox6;
         private PictureBox iconPictureBox69;
+        private RoundedPanel roundedPanelTop;
+        private System.Windows.Forms.TextBox textBox1;
         private RoundedPanel Comment_panel;
         private Label label1;
         private RoundedPanel trailer_panel;
@@ -96,6 +98,8 @@ namespace WinFormsApp1
             iconPictureBox4 = new PictureBox();
             iconPictureBox5 = new PictureBox();
             iconPictureBox6 = new PictureBox();
+            roundedPanelTop = new RoundedPanel();
+            textBox1 = new System.Windows.Forms.TextBox();
             panel3 = new Panel();
             label3 = new Label();
             data_panel = new Panel();
@@ -123,6 +127,71 @@ namespace WinFormsApp1
             panel1.Dock = DockStyle.Top;
             panel1.Name = "panel1";
             panel1.Size = new Size(1920, 64);
+
+            textBox1.BackColor = Color.FromArgb(29, 41, 43);
+            textBox1.BorderStyle = BorderStyle.None;
+            textBox1.Font = new System.Drawing.Font("Segoe UI", 15F);
+            textBox1.ForeColor = Color.White;
+            textBox1.Location = new Point(20, 6);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(420, 32);
+            textBox1.TabIndex = 5;
+            textBox1.Text = "Search movies...";
+            textBox1.ForeColor = Color.Gray;
+            textBox1.GotFocus += TextBox1_GotFocus;
+            textBox1.KeyDown += TextBox1_KeyDown;
+
+             void TextBox1_GotFocus(object sender, EventArgs e)
+            {
+                if (textBox1.Text == "Search movies...")
+                {
+                    textBox1.Text = "";
+                    textBox1.ForeColor = Color.White;
+                }
+            }
+
+             void TextBox1_KeyDown(object sender, KeyEventArgs e)
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+
+                    string searchText = textBox1.Text;
+                    PerformSearch(searchText);
+                }
+            }
+
+             void PerformSearch(string searchText)
+            {
+                axWindowsMediaPlayer1.close();
+
+                // Dispose of all controls and clear the form
+                foreach (Control control in _form.Controls)
+                {
+                    control.Dispose();
+                }
+                _form.Controls.Clear();
+
+                // Create a new instance of the Home class and initialize it
+                Home homePage = new Home(_form);
+                homePage.PopulateMovie(searchText, 1);
+
+                _form.WindowState = FormWindowState.Maximized;
+
+                // Show and refresh the form
+                homePage._form.Show();
+                homePage._form.Refresh();
+             }
+
+            roundedPanelTop.BackColor = Color.FromArgb(29, 41, 43);
+            roundedPanelTop.Controls.Add(textBox1);
+            roundedPanelTop.CornerRadius = 10;
+            roundedPanelTop.Location = new Point(700, 10);
+            roundedPanelTop.Name = "roundedPanel1";
+            roundedPanelTop.Size = new Size(519, 44);
+            roundedPanelTop.TabIndex = 13;
+            roundedPanelTop.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            roundedPanelTop.EdgeColor = Color.Teal;
+            panel1.Controls.Add(roundedPanelTop);
 
             // button1
             button1.BackColor = Color.Teal;

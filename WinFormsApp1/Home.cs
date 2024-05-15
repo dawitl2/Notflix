@@ -65,7 +65,6 @@ namespace WinFormsApp1
         public Home(Form form)
         {
             _form = form;
-
             InitializeComponent();
             PopulatewideMovies();
             PopulateMostRatedMovies();
@@ -1274,15 +1273,11 @@ namespace WinFormsApp1
         ///////////////////////////////////filter//////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////
 
-
-
-
         private void filter_Click(object sender, EventArgs e)
         {
             PictureBox iconPicture2 = new PictureBox();
             panel4.Controls.Add(iconPicture2);
 
-            // Hide and reposition elements for the filter view
             panel1.BackColor = Color.FromArgb(24, 24, 24);
             widePictureBox.Visible = false;
             sidepanel.Visible = false;
@@ -1295,20 +1290,20 @@ namespace WinFormsApp1
             label3.Location = new Point(115, 325);
             iconPictureBox.Location = new Point(90, 327);
 
-            // Create and configure combo boxes
             RoundedComboBox genreComboBox = new RoundedComboBox();
             RoundedComboBox releaseDateComboBox = new RoundedComboBox();
             RoundedComboBox durationComboBox = new RoundedComboBox();
             RoundedComboBox ratingComboBox = new RoundedComboBox();
             RadioButton filterButton = new RadioButton();
+            RadioButton clearButton = new RadioButton();
             RadioButton backButton = new RadioButton();
 
-            // Set combo box properties
             genreComboBox.Width = 150;
             releaseDateComboBox.Width = 150;
             durationComboBox.Width = 150;
             ratingComboBox.Width = 150;
-            filterButton.Width = 100;
+            filterButton.Width = 67;
+            clearButton.Width = 100;
             backButton.Width = 100;
 
             System.Drawing.Font font = new System.Drawing.Font("Segoe UI", 18F);
@@ -1317,12 +1312,12 @@ namespace WinFormsApp1
             durationComboBox.Font = font;
             ratingComboBox.Font = font;
 
-            // Position combo boxes
             genreComboBox.Location = new Point(90, 90);
             releaseDateComboBox.Location = new Point(290, 90);
             durationComboBox.Location = new Point(490, 90);
             ratingComboBox.Location = new Point(690, 90);
             filterButton.Location = new Point(890, 100);
+            clearButton.Location = new Point(958, 100);
             backButton.Location = new Point(1240, 100);
 
             PictureBox iconPicture = new PictureBox();
@@ -1341,16 +1336,15 @@ namespace WinFormsApp1
             iconPicture2.TabIndex = 13;
             iconPicture2.BringToFront();
 
-            // Add combo boxes to the form
             iconPicture.Controls.Add(genreComboBox);
             iconPicture.Controls.Add(releaseDateComboBox);
             iconPicture.Controls.Add(durationComboBox);
             iconPicture.Controls.Add(ratingComboBox);
             iconPicture.Controls.Add(filterButton);
+            iconPicture.Controls.Add(clearButton);
             iconPicture.Controls.Add(backButton);
             panel4.Controls.Add(iconPicture);
 
-            // Configure filter and back buttons
             filterButton.BackgroundImageLayout = ImageLayout.None;
             filterButton.Cursor = Cursors.Hand;
             filterButton.FlatAppearance.BorderSize = 0;
@@ -1361,6 +1355,17 @@ namespace WinFormsApp1
             filterButton.TabIndex = 6;
             filterButton.Text = "filter";
             filterButton.UseVisualStyleBackColor = false;
+            
+            clearButton.BackgroundImageLayout = ImageLayout.None;
+            clearButton.Cursor = Cursors.Hand;
+            clearButton.FlatAppearance.BorderSize = 0;
+            clearButton.FlatStyle = FlatStyle.Flat;
+            clearButton.Font = new System.Drawing.Font("Segoe UI", 11F);
+            clearButton.ForeColor = Color.White;
+            clearButton.Name = "Clear";
+            clearButton.TabIndex = 6;
+            clearButton.Text = "Clear";
+            clearButton.UseVisualStyleBackColor = false;
 
             backButton.BackgroundImageLayout = ImageLayout.None;
             backButton.Cursor = Cursors.Hand;
@@ -1374,11 +1379,12 @@ namespace WinFormsApp1
             backButton.UseVisualStyleBackColor = false;
 
             filterButton.BackColor = Color.Transparent;
+            clearButton.BackColor = Color.Transparent;
             backButton.BackColor = Color.Transparent;
             filterButton.MouseClick += (sender, e) => filters_Click(sender, e);
+            clearButton.MouseClick += (sender, e) => Clear_Click(sender, e);
             backButton.MouseClick += (sender, e) => back_Click(sender, e);
-
-            // Populate combo boxes with data
+           
             PopulateGenreComboBox(genreComboBox);
             PopulateReleaseDateComboBox(releaseDateComboBox);
             PopulateDurationComboBox(durationComboBox);
@@ -1386,22 +1392,26 @@ namespace WinFormsApp1
 
             void filters_Click(object sender, EventArgs e)
             {
-                // Get selected values from combo boxes
                 string selectedGenre = genreComboBox.SelectedItem?.ToString();
                 string selectedReleaseDate = releaseDateComboBox.SelectedItem?.ToString();
                 string selectedDuration = durationComboBox.SelectedItem?.ToString();
                 string selectedRating = ratingComboBox.SelectedItem?.ToString();
 
-                // If no filters are selected, display a message and return
                 if (string.IsNullOrEmpty(selectedGenre) && string.IsNullOrEmpty(selectedReleaseDate) &&
                     string.IsNullOrEmpty(selectedDuration) && string.IsNullOrEmpty(selectedRating))
                 {
                     MessageBox.Show("Please select at least one filter.", "No Filters Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
+                    PopulateMovie(selectedGenre, selectedReleaseDate, selectedDuration, selectedRating);
+            }
 
-                // Display selected values in a message box
-                PopulateMovie(selectedGenre, selectedReleaseDate, selectedDuration, selectedRating);
+            void Clear_Click(object sender, EventArgs e)
+            {
+                genreComboBox.SelectedItem = null;
+                releaseDateComboBox.SelectedItem = null;
+                durationComboBox.SelectedItem = null;
+                ratingComboBox.SelectedItem = null;
             }
 
             void back_Click(object sender, EventArgs e)
@@ -1413,37 +1423,32 @@ namespace WinFormsApp1
 
         private void PopulateGenreComboBox(ComboBox comboBox)
         {
-            List<string> genres = SqlInstance.GetGenres(); // Assuming you have a method in the Sql class to retrieve genres
+            List<string> genres = SqlInstance.GetGenres(); 
             comboBox.Items.AddRange(genres.ToArray());
         }
 
-        // Method to populate release date combo box
-        private void PopulateReleaseDateComboBox(ComboBox comboBox)
+          private void PopulateReleaseDateComboBox(ComboBox comboBox)
         {
-            List<string> releaseDates = SqlInstance.GetReleaseDates(); // Assuming you have a method in the Sql class to retrieve release dates
+            List<string> releaseDates = SqlInstance.GetReleaseDates(); 
             comboBox.Items.AddRange(releaseDates.ToArray());
         }
 
-        // Method to populate duration combo box
         private void PopulateDurationComboBox(ComboBox comboBox)
         {
-            // You can populate the duration combo box with predefined values or ranges, depending on your application's requirements
             comboBox.Items.Add("90 minutes");
-            comboBox.Items.Add("120 minutes");
-            comboBox.Items.Add("150 minutes");
-            // Add more durations as needed
+            comboBox.Items.Add("100 minutes");
+            comboBox.Items.Add("113 minutes");
+            comboBox.Items.Add("125 minutes");
+            comboBox.Items.Add("225 minutes");
         }
-
-        // Method to populate rating combo box
+      
         private void PopulateRatingComboBox(ComboBox comboBox)
         {
-            // You can populate the rating combo box with predefined values or ranges, depending on your application's requirements
             comboBox.Items.Add("5 stars");
             comboBox.Items.Add("4 stars");
             comboBox.Items.Add("3 stars");
             comboBox.Items.Add("2 stars");
             comboBox.Items.Add("1 star");
-            // Add more ratings as needed
         }
 
 

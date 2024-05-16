@@ -457,13 +457,13 @@ namespace WinFormsApp1
 
         }
 
-        public List<(string, string, string)> GetCommentsForMovie(int movieid)
+        public List<(string, string, string, DateTime)> GetCommentsForMovie(int movieid)
         {
-            List<(string, string, string)> comments = new List<(string, string, string)>();
+            List<(string, string, string, DateTime)> comments = new List<(string, string, string, DateTime)>();
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT c.comment_text, u.user_name, u.pfp " +
+                string query = "SELECT c.comment_text, u.user_name, u.pfp, c.comment_date " +
                                "FROM Comment c " +
                                "INNER JOIN User u ON c.user_id = u.user_id " +
                                "WHERE c.movie_id = @movieId";
@@ -480,7 +480,8 @@ namespace WinFormsApp1
                             string commentText = reader.GetString("comment_text");
                             string username = reader.GetString("user_name");
                             string profilePicture = reader.GetString("pfp");
-                            comments.Add((username, profilePicture, commentText));
+                            DateTime commentDate = reader.GetDateTime("comment_date");
+                            comments.Add((username, profilePicture, commentText, commentDate));
                         }
                     }
                 }

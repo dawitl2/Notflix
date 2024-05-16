@@ -453,9 +453,8 @@ namespace WinFormsApp1
         }
 
 
-        private void ColorDetectorForm_ColorUpdated(object sender, ColorEventArgs e)
+   private void ColorDetectorForm_ColorUpdated(object sender, ColorEventArgs e)
    {
-       // Update form colors
        UpdateFormColors(e.Color);
    }
 
@@ -487,13 +486,10 @@ namespace WinFormsApp1
             {
                 try
                 {
-                    // Load the image and set it as the background of panel4
-                    panel4.BackgroundImage = System.Drawing.Image.FromFile(imagePath);
+                     panel4.BackgroundImage = System.Drawing.Image.FromFile(imagePath);
 
-                    // Set background image layout to stretch
                     panel4.BackgroundImageLayout = ImageLayout.Stretch;
 
-                    // Add a semi-transparent overlay panel
                     Panel overlayPanel = new Panel();
                     overlayPanel.BackColor = Color.FromArgb(128, Color.Black);
                     overlayPanel.Dock = DockStyle.Fill;
@@ -519,41 +515,33 @@ namespace WinFormsApp1
         private void PopulateMovieDataPanel()
         {
 
-            // Clear existing controls from the data_panel
             data_panel.Controls.Clear();
 
-            // Define the y-coordinate for positioning controls
             int y = 10;
 
-            // Create labels for displaying movie data
             Label titleLabel = new Label();
             Label releaseDateLabel = new Label();
             Label descriptionLabel = new Label();
             Label ratingLabel = new Label();
 
-            // Set properties for the labels
             titleLabel.Text = "Title: " + movie[0]; // Assuming movie[0] contains the movie title
             releaseDateLabel.Text = "Release Date: " + movie[1]; // Get release date for movie
             descriptionLabel.Text = "Description: " + movie[2]; // Get description for movie
             ratingLabel.Text = "Average Rating: " + movie[6]; // Get average rating for movie
 
-            // Set font properties
             titleLabel.ForeColor = Color.White;
             releaseDateLabel.ForeColor = Color.White;
             descriptionLabel.ForeColor = Color.White;
             ratingLabel.ForeColor = Color.White;
 
-            // Set font size
             titleLabel.Font = new System.Drawing.Font("Segoe UI", 15, FontStyle.Bold); // Example font size and style
             releaseDateLabel.Font = new System.Drawing.Font("Segoe UI", 15); // Example font size
             ratingLabel.Font = new System.Drawing.Font("Segoe UI", 15); // Example font size
 
-            // Set label positions
             titleLabel.Location = new Point(10, y);
             releaseDateLabel.Location = new Point(10, y + 30); // Adjust vertical spacing as needed
             ratingLabel.Location = new Point(10, y + 60);
 
-             // Set description label width and enable word wrap
             descriptionLabel.AutoSize = false;
             descriptionLabel.Width = data_panel.Width - 20; // Adjust width as needed
             releaseDateLabel.Width = data_panel.Width - 20; // Adjust width as needed
@@ -565,17 +553,14 @@ namespace WinFormsApp1
             descriptionLabel.Text = "Description: " + movie[2]; // Get description for movie
             descriptionLabel.ForeColor = Color.White;
 
-            // Allow data_panel to adjust its size based on the content
             data_panel.AutoSize = true;
 
-            // Add labels to the data_panel
             data_panel.Controls.Add(releaseDateLabel);
             data_panel.Controls.Add(descriptionLabel);
             data_panel.Controls.Add(ratingLabel);
 
             string PosterImagePath = movie[4];
 
-            // Create a PictureBox to display the wide poster image
             PictureBox widePictureBox = new PictureBox();
             widePictureBox.SizeMode = PictureBoxSizeMode.StretchImage; // Maintain aspect ratio
             widePictureBox.ImageLocation = PosterImagePath; // Set image location to the retrieved image path
@@ -590,13 +575,10 @@ namespace WinFormsApp1
             iconPictureBox_YT.Location = new Point(90, 35);
             iconPictureBox_YT.TabIndex = 13;
 
-
-            // Add PictureBox to the wide_panel
             trailer_panel.Controls.Add(iconPictureBox_YT);
             poster_panel.Controls.Add(widePictureBox);
             string wideImagePath = movie[5];
 
-            // Create a PictureBox to display the wide poster image
             PictureBox widePicture = new PictureBox();
             widePicture.SizeMode = PictureBoxSizeMode.StretchImage; // Maintain aspect ratio
             widePicture.ImageLocation = wideImagePath; // Set image location to the retrieved image path
@@ -638,16 +620,17 @@ namespace WinFormsApp1
 
             ///////// comments //////////////////
             int commentY = 10; // Initial y-coordinate for positioning comments
-            List<(string, string, string)> comments = SqlInstance.GetCommentsForMovie(movieid); // Fetch comments for the movie title
+            List<(string, string, string, DateTime)> comments = SqlInstance.GetCommentsForMovie(movieid); // Fetch comments for the movie title
             foreach (var comment in comments)
             {
                 string username = comment.Item1;
                 string profilePicture = comment.Item2;
                 string commentText = comment.Item3;
+                DateTime commentDate = comment.Item4;
 
-                // Create a custom control for each comment
-                AddComment(username, profilePicture, commentText);
+                AddComment(username, profilePicture, commentText, commentDate);
             }
+
 
 
 
@@ -655,7 +638,8 @@ namespace WinFormsApp1
 
         private int lastCommentBottom = 10; // Initialize with the starting position
 
-        private void AddComment(string username, string profilePicture, string commentText)
+
+        private void AddComment(string username, string profilePicture, string commentText, DateTime commentDate)
         {
             int verticalSpacing = 15; // Adjust the vertical spacing between comments as needed
 
@@ -666,15 +650,11 @@ namespace WinFormsApp1
 
             try
             {
-                // Load the image from the file path
                 System.Drawing.Image image = System.Drawing.Image.FromFile(profilePicture);
                 profilePictureBox.Image = image;
             }
             catch (Exception ex)
             {
-                // Handle the case where the image cannot be loaded
-                // MessageBox.Show($"Error loading profile picture: {ex.Message}");
-                // You might want to set a default image or handle this error differently
             }
 
             Comment_panel.Controls.Add(profilePictureBox);
@@ -687,6 +667,14 @@ namespace WinFormsApp1
             usernameLabel.ForeColor = Color.Teal;
             Comment_panel.Controls.Add(usernameLabel);
 
+            Label dateLabel = new Label();
+            dateLabel.AutoSize = true;
+            dateLabel.Font = new System.Drawing.Font("Segoe UI", 10); // Adjust font and size as needed
+            dateLabel.ForeColor = Color.Silver;
+            dateLabel.Location = new Point(Comment_panel.Width - 150, profilePictureBox.Top); // Position to the right side
+            dateLabel.Text = commentDate.ToString("yyyy-MM-dd HH:mm"); // Format the date as needed
+            Comment_panel.Controls.Add(dateLabel);
+
             Label commentTextLabel = new Label();
             commentTextLabel.AutoSize = true;
             commentTextLabel.Font = new System.Drawing.Font("Segoe UI", 10); // Adjust font and size as needed
@@ -695,18 +683,15 @@ namespace WinFormsApp1
             commentTextLabel.ForeColor = Color.White;
             Comment_panel.Controls.Add(commentTextLabel);
 
-            // Update the lastCommentBottom for the next comment
             lastCommentBottom = commentTextLabel.Bottom + verticalSpacing;
         }
 
 
 
+
         private void DisplayDirectorsAndStars(int movieId)
         {
-            // Get directors and stars from the database
             List<(string, string)> directorsAndStars = SqlInstance.GetMovieDirectorsAndStars(movieId);
-
-            // Separate directors and stars
             List<(string, string)> directors = new List<(string, string)>();
             List<(string, string)> stars = new List<(string, string)>();
 
@@ -714,21 +699,17 @@ namespace WinFormsApp1
             {
                 if (name.StartsWith("Director:"))
                 {
-                    // Remove "Director:" prefix and add to directors list
                     directors.Add((name.Replace("Director:", ""), image));
                 }
                 else
                 {
-                    // Add to stars list
                     stars.Add((name, image));
                 }
             }
 
-            // Display directors
             int verticalPosition = 50; // Initial vertical position for directors
             foreach ((string directorName, string directorImage) in directors)
             {
-                // Create PictureBox and Label controls for each director
                 RoundedPictureBox pictureBox = new RoundedPictureBox();
                 pictureBox.CornerRadius = 30;
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -745,18 +726,14 @@ namespace WinFormsApp1
                 label.Font = new System.Drawing.Font(label.Font.FontFamily, 18, FontStyle.Regular); // Make font bigger and bold
                 label.ForeColor = Color.White; // Make text color white
 
-                // Add PictureBox and Label to redpanel
                 redpanel.Controls.Add(pictureBox);
                 redpanel.Controls.Add(label);
 
-                // Increment vertical position for the next director
                 verticalPosition += 140; // Adjust as needed
             }
 
-            // Add a gap between directors and stars
             verticalPosition += 40; // Adjust as needed
 
-            // Display stars
             foreach ((string starName, string starImage) in stars)
             {
                 // Create PictureBox and Label controls for each star
@@ -776,43 +753,34 @@ namespace WinFormsApp1
                 label.Font = new System.Drawing.Font(label.Font.FontFamily, 18, FontStyle.Regular); // Make font bigger and bold
                 label.ForeColor = Color.White; // Make text color white
 
-                // Add PictureBox and Label to redpanel
                 redpanel.Controls.Add(pictureBox);
                 redpanel.Controls.Add(label);
-
-                // Increment vertical position for the next star
+ 
                 verticalPosition += 140; // Adjust as needed
             }
 
 
         }
 
-
-
         private void AddCommentButton_Click(object sender, EventArgs e)
         {
-            // Handle adding a new comment
             string newComment = newCommentTextBox.Text;
-            SqlInstance.PostComment(movieid, newComment, 1); // Post the comment to the database
+            SqlInstance.PostComment(movieid, newComment, 1); 
 
-            // Clear existing comments from the UI
             Comment_panel.Controls.Clear();
 
-            // Fetch comments again from the database
-            List<(string, string, string)> comments = SqlInstance.GetCommentsForMovie(movieid);
+            List<(string, string, string, DateTime)> comments = SqlInstance.GetCommentsForMovie(movieid);
 
-            // Reset the last comment bottom position
             lastCommentBottom = 10;
 
-            // Iterate over the new comments and add them to the UI
             foreach (var comment in comments)
             {
                 string username = comment.Item1;
                 string profilePicture = comment.Item2;
                 string commentText = comment.Item3;
+                DateTime commentDate = comment.Item4; 
 
-                // Add comment to the UI
-                AddComment(username, profilePicture, commentText);
+                AddComment(username, profilePicture, commentText, commentDate); 
             }
         }
 
@@ -820,42 +788,37 @@ namespace WinFormsApp1
         private void PictureBox_MouseLeave(object sender, EventArgs e)
         {
             PictureBox pictureBox = (PictureBox)sender;
-            pictureBox.Cursor = Cursors.Default; // Revert cursor to default
+            pictureBox.Cursor = Cursors.Default; 
 
         }
 
         private void PictureBox_MouseEnter(object sender, EventArgs e)
         {
             PictureBox pictureBox = (PictureBox)sender;
-            pictureBox.Cursor = Cursors.Hand; // Change cursor to hand pointer
-            pictureBox.Click += WidePictureBox_Click; // Attach Click event handler
+            pictureBox.Cursor = Cursors.Hand;         
+            pictureBox.Click += WidePictureBox_Click; 
         }
 
         private void WidePictureBox_Click(object sender, EventArgs e)
         {
-            string trailerUrl = movie[3]; // Assuming movie[3] contains the YouTube trailer URL
+            string trailerUrl = movie[3]; 
         }
 
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Close the media player
             axWindowsMediaPlayer1.close();
-
-            // Dispose of all controls and clear the form
+            
             foreach (Control control in _form.Controls)
             {
                 control.Dispose();
             }
             _form.Controls.Clear();
 
-            // Create a new instance of the Home class and initialize it
-            Home homePage = new Home(_form);
+             Home homePage = new Home(_form);
 
-            // Ensure the form is set to fullscreen mode
             _form.WindowState = FormWindowState.Maximized;
 
-            // Show and refresh the form
             homePage._form.Show();
             homePage._form.Refresh();
         }
@@ -870,7 +833,6 @@ namespace WinFormsApp1
             PictureBox pictureBox = (PictureBox)sender;
             int starIndex = int.Parse(pictureBox.Tag.ToString());
 
-            // Change the color of stars up to the current one
             for (int i = 1; i <= starIndex; i++)
             {
                 Control[] stars = ((Control)pictureBox.Parent).Controls.Find("star" + i, true);
@@ -884,7 +846,6 @@ namespace WinFormsApp1
             PictureBox pictureBox = (PictureBox)sender;
             currentRating = int.Parse(pictureBox.Tag.ToString());
 
-            // Change the color of stars up to the clicked one
             for (int i = 1; i <= currentRating; i++)
             {
                 Control[] stars = ((Control)pictureBox.Parent).Controls.Find("star" + i, true);
@@ -892,7 +853,6 @@ namespace WinFormsApp1
                 star.ImageLocation = @"C:\Users\enkud\Desktop\Cinema\back_image\y_star.png";
             }
 
-            // Reset the color of stars after the clicked one
             for (int i = currentRating + 1; i <= 5; i++)
             {
                 Control[] stars = ((Control)pictureBox.Parent).Controls.Find("star" + i, true);
@@ -900,7 +860,6 @@ namespace WinFormsApp1
                 star.ImageLocation = @"C:\Users\enkud\Desktop\Cinema\back_image\e_star.png";
             }
 
-            //MessageBox.Show("You rated " + currentRating + " stars.");
         }
 
     }

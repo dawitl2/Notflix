@@ -201,7 +201,8 @@ namespace WinFormsApp1
             roundedPanel1.Size = new Size(519, 44);
             roundedPanel1.TabIndex = 13;
             roundedPanel1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            roundedPanel1.EdgeColor = Color.Teal;
+           // roundedPanel1.EdgeColor = Color.Teal;
+            roundedPanel1.EdgeColor = Color.FromArgb(29, 41, 43);
             // 
             // textBox1
             // 
@@ -1245,6 +1246,10 @@ namespace WinFormsApp1
 
         private void TextBox1_GotFocus(object sender, EventArgs e)
         {
+            roundedPanel1.EdgeColor = Color.Teal;
+            roundedPanel1.Invalidate();
+            roundedPanel1.Update();
+
             if (textBox1.Text == "Search movies...")
             {
                 textBox1.Text = "";

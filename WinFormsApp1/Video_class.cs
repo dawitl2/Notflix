@@ -128,6 +128,7 @@ namespace WinFormsApp1
             panel1.Name = "panel1";
             panel1.Size = new Size(1920, 64);
 
+            // Initialize the textBox1 and its properties
             textBox1.BackColor = Color.FromArgb(29, 41, 43);
             textBox1.BorderStyle = BorderStyle.None;
             textBox1.Font = new System.Drawing.Font("Segoe UI", 15F);
@@ -140,9 +141,14 @@ namespace WinFormsApp1
             textBox1.ForeColor = Color.Gray;
             textBox1.GotFocus += TextBox1_GotFocus;
             textBox1.KeyDown += TextBox1_KeyDown;
-
-             void TextBox1_GotFocus(object sender, EventArgs e)
+          
+            // Define the GotFocus event handler
+            void TextBox1_GotFocus(object sender, EventArgs e)
             {
+                roundedPanelTop.EdgeColor = Color.Teal;
+                roundedPanelTop.Invalidate();
+                roundedPanelTop.Update();
+
                 if (textBox1.Text == "Search movies...")
                 {
                     textBox1.Text = "";
@@ -150,17 +156,21 @@ namespace WinFormsApp1
                 }
             }
 
-             void TextBox1_KeyDown(object sender, KeyEventArgs e)
+            // Define the KeyDown event handler
+            void TextBox1_KeyDown(object sender, KeyEventArgs e)
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-
                     string searchText = textBox1.Text;
                     PerformSearch(searchText);
                 }
             }
 
-             void PerformSearch(string searchText)
+            // Define the TextChanged event handler to change the EdgeColor of roundedPanelTop
+     
+
+            // Define the PerformSearch method
+            void PerformSearch(string searchText)
             {
                 axWindowsMediaPlayer1.close();
 
@@ -180,8 +190,9 @@ namespace WinFormsApp1
                 // Show and refresh the form
                 homePage._form.Show();
                 homePage._form.Refresh();
-             }
+            }
 
+            // Initialize the roundedPanelTop and its properties
             roundedPanelTop.BackColor = Color.FromArgb(29, 41, 43);
             roundedPanelTop.Controls.Add(textBox1);
             roundedPanelTop.CornerRadius = 10;
@@ -190,7 +201,7 @@ namespace WinFormsApp1
             roundedPanelTop.Size = new Size(519, 44);
             roundedPanelTop.TabIndex = 13;
             roundedPanelTop.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            roundedPanelTop.EdgeColor = Color.Teal;
+            roundedPanelTop.EdgeColor = Color.FromArgb(29, 41, 43);
             panel1.Controls.Add(roundedPanelTop);
 
             // button1

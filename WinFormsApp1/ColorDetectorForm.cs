@@ -47,34 +47,19 @@ namespace WinFormsApp1
             ColorUpdated?.Invoke(this, e);
         }
 
-          private Color GetDominantColor()
-          {
-              Rectangle bounds = new Rectangle(381, 170, 450 - 381, 370 - 170); // Define the scanning area bounds
-              using (Bitmap screenshot = new Bitmap(bounds.Width, bounds.Height))
-              {
-                  using (Graphics graphics = Graphics.FromImage(screenshot))
-                  {
-                      graphics.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
-                  }
-
-                  return GetDominantColorFromBitmap(screenshot);
-              }
-          }
-  
-
-    /*    private Color GetDominantColor()
+        private Color GetDominantColor()
         {
-            Rectangle bounds = Screen.GetBounds(Point.Empty);
+            Rectangle bounds = new Rectangle(436, 78, 1101 - 436, 623 - 78); // Updated scanning area bounds
             using (Bitmap screenshot = new Bitmap(bounds.Width, bounds.Height))
             {
                 using (Graphics graphics = Graphics.FromImage(screenshot))
                 {
-                    graphics.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
+                    graphics.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
                 }
 
                 return GetDominantColorFromBitmap(screenshot);
             }
-        }*/
+        }
 
         private Color GetDominantColorFromBitmap(Bitmap bitmap)
         {
@@ -114,7 +99,6 @@ namespace WinFormsApp1
         }
     }
 
-    // Custom event arguments class to hold color data
     public class ColorEventArgs : EventArgs
     {
         public Color Color { get; }

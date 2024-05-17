@@ -1241,7 +1241,7 @@ namespace WinFormsApp1
             _form.Controls.Clear();
             FullScreenForm form = new FullScreenForm();
             form.Show();
-           //_form.Close();
+            _form.Visible = false;
         }
 
         private void TextBox1_GotFocus(object sender, EventArgs e)
@@ -1282,7 +1282,10 @@ namespace WinFormsApp1
             PictureBox iconPicture2 = new PictureBox();
             panel4.Controls.Add(iconPicture2);
 
-            panel1.BackColor = Color.FromArgb(24, 24, 24);
+            //panel1.BackColor = Color.FromArgb(24, 24, 24);
+            panel1.BackColor = Color.Black;
+            //panel.Size = new Size(panel1.Width,panel1.Height + 15);
+            panel1.Height += 20;
             widePictureBox.Visible = false;
             sidepanel.Visible = false;
             label7.Visible = false;

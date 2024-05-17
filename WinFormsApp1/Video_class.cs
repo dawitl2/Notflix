@@ -36,7 +36,6 @@ namespace WinFormsApp1
         private Label label_N;
         private Panel panel3;
         private Panel panel4;
-        private Panel redpanel;
         private RoundedPanel poster_panel;
         private Label label2;
         private PictureBox iconPictureBox;
@@ -94,7 +93,6 @@ namespace WinFormsApp1
             label_N = new Label();
             iconPictureBox = new PictureBox();
             iconPictureBox2 = new PictureBox();
-            iconPictureBox3 = new PictureBox();
             iconPictureBox4 = new PictureBox();
             iconPictureBox5 = new PictureBox();
             iconPictureBox6 = new PictureBox();
@@ -111,22 +109,22 @@ namespace WinFormsApp1
             trailer_panel = new RoundedPanel();
             poster_panel = new RoundedPanel();
             panel4 = new Panel();
-            redpanel = new Panel();
-
+           
             // axWindowsMediaPlayer1
             axWindowsMediaPlayer1.Enabled = true;
-            axWindowsMediaPlayer1.Location = new Point(70, 77);
+            axWindowsMediaPlayer1.Location = new Point(436, 78);
             axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
             axWindowsMediaPlayer1.Size = new Size(1100, 623);
             axWindowsMediaPlayer1.TabIndex = 1;
 
             // panel1
-            panel1.BackColor = Color.FromArgb(24, 24, 24);
+            //panel1.BackColor = Color.FromArgb(24, 24, 24);
+            panel1.BackColor = Color.Black;
             panel1.Controls.Add(button1);
             panel1.Controls.Add(panel2);
             panel1.Dock = DockStyle.Top;
             panel1.Name = "panel1";
-            panel1.Size = new Size(1920, 64);
+            panel1.Size = new Size(1920, 64 + 3);
 
             // Initialize the textBox1 and its properties
             textBox1.BackColor = Color.FromArgb(29, 41, 43);
@@ -237,31 +235,6 @@ namespace WinFormsApp1
             label_N.Text = "NOTFLIX";
             panel2.Controls.Add(label_N);
 
-            // redpanel
-            redpanel.Location = new Point(1200, 77);
-            redpanel.BackColor = Color.Red;
-            redpanel.Name = "start / director panel";
-            redpanel.Size = new Size(700, 623);
-
-            // redLabel
-            Label redLabel = new Label();
-            redLabel.Font = new System.Drawing.Font("Segoe UI", 21F);
-            redLabel.ForeColor = Color.Teal;
-            redLabel.Location = new Point(60, 16);
-            redLabel.Name = "label2";
-            redLabel.Size = new Size(300, 50);
-            redLabel.TabIndex = 5;
-            redLabel.Text = "Director / Stars";
-            redpanel.Controls.Add(redLabel);
-
-            // iconPictureBox3
-            iconPictureBox3.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
-            iconPictureBox3.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\logo.png");
-            iconPictureBox3.Location = new(20, 20);
-            iconPictureBox3.Name = "wide_panel";
-            iconPictureBox3.Size = new Size(20, 30);
-            redpanel.Controls.Add(iconPictureBox3);
-
             // iconPictureBox4
             iconPictureBox4.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox4.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\rate.png");
@@ -272,7 +245,7 @@ namespace WinFormsApp1
             // iconPictureBox5
             iconPictureBox5.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox5.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\mp4_bar.png");
-            iconPictureBox5.Location = new(70, 652);
+            iconPictureBox5.Location = new(436, 653);
             iconPictureBox5.Name = "wide_panel";
             iconPictureBox5.Size = new Size(1100, 48);
             iconPictureBox5.BringToFront();
@@ -432,8 +405,6 @@ namespace WinFormsApp1
             panel4.Location = new Point(0, 64);
             panel4.Name = "panel4";
             panel4.Size = new Size(1920, 650);
-
-            DisplayDirectorsAndStars(movieid);
 
             iconPictureBox69.Controls.Add(iconPictureBox5);
             iconPictureBox69.Controls.Add(axWindowsMediaPlayer1);
@@ -684,82 +655,6 @@ namespace WinFormsApp1
             Comment_panel.Controls.Add(commentTextLabel);
 
             lastCommentBottom = commentTextLabel.Bottom + verticalSpacing;
-        }
-
-
-
-
-        private void DisplayDirectorsAndStars(int movieId)
-        {
-            List<(string, string)> directorsAndStars = SqlInstance.GetMovieDirectorsAndStars(movieId);
-            List<(string, string)> directors = new List<(string, string)>();
-            List<(string, string)> stars = new List<(string, string)>();
-
-            foreach ((string name, string image) in directorsAndStars)
-            {
-                if (name.StartsWith("Director:"))
-                {
-                    directors.Add((name.Replace("Director:", ""), image));
-                }
-                else
-                {
-                    stars.Add((name, image));
-                }
-            }
-
-            int verticalPosition = 50; // Initial vertical position for directors
-            foreach ((string directorName, string directorImage) in directors)
-            {
-                RoundedPictureBox pictureBox = new RoundedPictureBox();
-                pictureBox.CornerRadius = 30;
-                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                pictureBox.ImageLocation = directorImage;
-                pictureBox.Width = 100;
-                pictureBox.Height = 100;
-                pictureBox.Location = new Point(10, verticalPosition); // Set location
-
-                Label label = new Label();
-                label.Text = directorName;
-                label.AutoSize = true; // Automatically adjust label size
-                label.MaximumSize = new Size(500, 0); // Limit maximum width to prevent cutting off
-                label.Location = new Point(120, verticalPosition + 40); // Set location
-                label.Font = new System.Drawing.Font(label.Font.FontFamily, 18, FontStyle.Regular); // Make font bigger and bold
-                label.ForeColor = Color.White; // Make text color white
-
-                redpanel.Controls.Add(pictureBox);
-                redpanel.Controls.Add(label);
-
-                verticalPosition += 140; // Adjust as needed
-            }
-
-            verticalPosition += 40; // Adjust as needed
-
-            foreach ((string starName, string starImage) in stars)
-            {
-                // Create PictureBox and Label controls for each star
-                RoundedPictureBox pictureBox = new RoundedPictureBox();
-                pictureBox.CornerRadius = 50;
-                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                pictureBox.ImageLocation = starImage;
-                pictureBox.Width = 100;
-                pictureBox.Height = 100;
-                pictureBox.Location = new Point(10, verticalPosition); // Set location
-
-                Label label = new Label();
-                label.Text = starName;
-                label.AutoSize = true; // Automatically adjust label size
-                label.MaximumSize = new Size(500, 0); // Limit maximum width to prevent cutting off
-                label.Location = new Point(120, verticalPosition + 40); // Set location
-                label.Font = new System.Drawing.Font(label.Font.FontFamily, 18, FontStyle.Regular); // Make font bigger and bold
-                label.ForeColor = Color.White; // Make text color white
-
-                redpanel.Controls.Add(pictureBox);
-                redpanel.Controls.Add(label);
- 
-                verticalPosition += 140; // Adjust as needed
-            }
-
-
         }
 
         private void AddCommentButton_Click(object sender, EventArgs e)

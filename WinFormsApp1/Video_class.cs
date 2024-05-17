@@ -24,6 +24,7 @@ namespace WinFormsApp1
     public class Video_class
     {
         private readonly Sql SqlInstance = new Sql();
+        private int id;
         private Form _form;
         string[] movie;
         int movieid;
@@ -58,8 +59,9 @@ namespace WinFormsApp1
         private System.Windows.Forms.TextBox newCommentTextBox;
         private ColorDetectorForm _colorDetectorForm;
 
-        public Video_class(Form form, string[] array, int movieid)
+        public Video_class(Form form, string[] array, int movieid, int id)
         {
+            this.id = id;
             _form = form;
             _form.BackColor = Color.Black;
             this.movie = array;
@@ -180,7 +182,7 @@ namespace WinFormsApp1
                 _form.Controls.Clear();
 
                 // Create a new instance of the Home class and initialize it
-                Home homePage = new Home(_form);
+                Home homePage = new Home(_form, id);
                 homePage.PopulateMovie(searchText, 1);
 
                 _form.WindowState = FormWindowState.Maximized;
@@ -485,7 +487,6 @@ namespace WinFormsApp1
 
         private void PopulateMovieDataPanel()
         {
-
             data_panel.Controls.Clear();
 
             int y = 10;
@@ -498,7 +499,9 @@ namespace WinFormsApp1
             titleLabel.Text = "Title: " + movie[0]; // Assuming movie[0] contains the movie title
             releaseDateLabel.Text = "Release Date: " + movie[1]; // Get release date for movie
             descriptionLabel.Text = "Description: " + movie[2]; // Get description for movie
-            ratingLabel.Text = "Average Rating: " + movie[6]; // Get average rating for movie
+
+            double averageRating = SqlInstance.GetAverageRating(movieid);
+            ratingLabel.Text = "Average Rating: " + averageRating.ToString("F1");
 
             titleLabel.ForeColor = Color.White;
             releaseDateLabel.ForeColor = Color.White;
@@ -526,17 +529,19 @@ namespace WinFormsApp1
 
             data_panel.AutoSize = true;
 
+            data_panel.Controls.Add(titleLabel);
             data_panel.Controls.Add(releaseDateLabel);
             data_panel.Controls.Add(descriptionLabel);
             data_panel.Controls.Add(ratingLabel);
 
+            // Adding Poster Image
             string PosterImagePath = movie[4];
 
             PictureBox widePictureBox = new PictureBox();
             widePictureBox.SizeMode = PictureBoxSizeMode.StretchImage; // Maintain aspect ratio
             widePictureBox.ImageLocation = PosterImagePath; // Set image location to the retrieved image path
             widePictureBox.Dock = DockStyle.Fill; // Dock the PictureBox to fill the entire panel
-            
+
             RoundedPictureBox iconPictureBox_YT = new RoundedPictureBox();
             iconPictureBox_YT.CornerRadius = 10;
             iconPictureBox_YT.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -548,6 +553,7 @@ namespace WinFormsApp1
 
             trailer_panel.Controls.Add(iconPictureBox_YT);
             poster_panel.Controls.Add(widePictureBox);
+
             string wideImagePath = movie[5];
 
             PictureBox widePicture = new PictureBox();
@@ -578,9 +584,9 @@ namespace WinFormsApp1
             widePicture.MouseLeave += PictureBox_MouseLeave;
             widePicture.Click += bars_click;
 
-             void bars_click(object sender, EventArgs e)
+            void bars_click(object sender, EventArgs e)
             {
-                  string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+                string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = url,
@@ -589,7 +595,7 @@ namespace WinFormsApp1
                 Process.Start(psi);
             }
 
-            ///////// comments //////////////////
+            ///////// Comments //////////////////
             int commentY = 10; // Initial y-coordinate for positioning comments
             List<(string, string, string, DateTime)> comments = SqlInstance.GetCommentsForMovie(movieid); // Fetch comments for the movie title
             foreach (var comment in comments)
@@ -601,11 +607,10 @@ namespace WinFormsApp1
 
                 AddComment(username, profilePicture, commentText, commentDate);
             }
-
-
-
-
         }
+
+
+
 
         private int lastCommentBottom = 10; // Initialize with the starting position
 
@@ -710,7 +715,7 @@ namespace WinFormsApp1
             }
             _form.Controls.Clear();
 
-             Home homePage = new Home(_form);
+             Home homePage = new Home(_form, id);
 
             _form.WindowState = FormWindowState.Maximized;
 
@@ -739,23 +744,34 @@ namespace WinFormsApp1
         private void Star_MouseClick(object sender, MouseEventArgs e)
         {
             PictureBox pictureBox = (PictureBox)sender;
-            currentRating = int.Parse(pictureBox.Tag.ToString());
+            int starIndex = int.Parse(pictureBox.Tag.ToString());
 
-            for (int i = 1; i <= currentRating; i++)
+            currentRating = starIndex;
+
+            // Update the rating in the database
+            SqlInstance.UpdateMovieRating(movieid, id, currentRating);
+
+            // Fetch the updated average rating and display it
+            double averageRating = SqlInstance.GetAverageRating(movieid);
+            // ratingLabel.Text = "Average Rating: " + averageRating.ToString("F1");
+            MessageBox.Show(averageRating.ToString("F1"));
+
+            // Update star visuals
+            for (int i = 1; i <= starIndex; i++)
             {
                 Control[] stars = ((Control)pictureBox.Parent).Controls.Find("star" + i, true);
                 PictureBox star = (PictureBox)stars[0];
                 star.ImageLocation = @"C:\Users\enkud\Desktop\Cinema\back_image\y_star.png";
             }
 
-            for (int i = currentRating + 1; i <= 5; i++)
+            for (int i = starIndex + 1; i <= 5; i++)
             {
                 Control[] stars = ((Control)pictureBox.Parent).Controls.Find("star" + i, true);
                 PictureBox star = (PictureBox)stars[0];
                 star.ImageLocation = @"C:\Users\enkud\Desktop\Cinema\back_image\e_star.png";
             }
-
         }
+
 
     }
 }

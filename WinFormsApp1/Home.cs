@@ -61,10 +61,12 @@ namespace WinFormsApp1
         private Panel redPanel;
         private FlowLayoutPanel sidepanel;
         private List<(string, string)> movieDataList;
+        private int id;
 
-        public Home(Form form)
+        public Home(Form form, int id)
         {
-            _form = form;
+            this.id = id;
+             _form = form;
             InitializeComponent();
             PopulatewideMovies();
             PopulateMostRatedMovies();
@@ -958,7 +960,7 @@ namespace WinFormsApp1
             string movieId = SqlInstance.GetMovieIdFromImagePath(posterPath);
             string[] movieData = SqlInstance.GetMovieDataById(int.Parse(movieId));
             panel4.Visible = false;
-            Video_class Vid = new Video_class(_form, movieData, int.Parse(movieId));
+            Video_class Vid = new Video_class(_form, movieData, int.Parse(movieId), id);
         }
 
         private List<string[]> topRatedMoviesData;
@@ -1261,8 +1263,8 @@ namespace WinFormsApp1
         {
               if (e.KeyCode == Keys.Enter)
             {
-                
                 string searchText = textBox1.Text;
+                filter_Click(sender, e);
                 PerformSearch(searchText);
             }
         }
@@ -1282,9 +1284,7 @@ namespace WinFormsApp1
             PictureBox iconPicture2 = new PictureBox();
             panel4.Controls.Add(iconPicture2);
 
-            //panel1.BackColor = Color.FromArgb(24, 24, 24);
             panel1.BackColor = Color.Black;
-            //panel.Size = new Size(panel1.Width,panel1.Height + 15);
             panel1.Height += 20;
             widePictureBox.Visible = false;
             sidepanel.Visible = false;
@@ -1424,7 +1424,7 @@ namespace WinFormsApp1
             void back_Click(object sender, EventArgs e)
             {
                 panel4.Visible = false;
-                Home home = new Home(_form);
+                Home home = new Home(_form, id);
             }
         }
 

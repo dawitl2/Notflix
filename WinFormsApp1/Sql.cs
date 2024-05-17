@@ -9,23 +9,34 @@ namespace WinFormsApp1
     internal class Sql
     {
         private string connectionString = "server=localhost;uid=root;pwd=password;database=TestDB";
+        private int id;
 
-        public bool AuthenticateUser(string username, string password)
+        public int AuthenticateUser(string username, string password)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT COUNT(*) FROM User WHERE user_name = @username AND password = @password";
+                string query = "SELECT user_id FROM User WHERE user_name = @username AND password = @password";
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@username", username);
                     command.Parameters.AddWithValue("@password", password);
 
                     connection.Open();
-                    int count = Convert.ToInt32(command.ExecuteScalar());
-                    return count > 0;
+                    object result = command.ExecuteScalar();
+                    if (result != null)
+                    {
+                        // Authentication successful, return the user ID
+                        return Convert.ToInt32(result);
+                    }
+                    else
+                    {
+                        // Authentication failed, return 0 or another designated failure value
+                        return 0;
+                    }
                 }
             }
         }
+
 
         public bool CreateUser(string username, string password, string email, string pfp)
         {
@@ -118,6 +129,80 @@ namespace WinFormsApp1
                 }
             }
         }
+
+
+        public double GetAverageRating(int movieId)
+        {
+            double averageRating = 0;
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT AVG(rating) FROM Rating WHERE movie_id = @movieId";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@movieId", movieId);
+
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    if (result != DBNull.Value)
+                    {
+                        averageRating = Convert.ToDouble(result);
+                    }
+                }
+            }
+            return averageRating;
+        }
+
+
+
+        public void UpdateMovieRating(int movieId, int userId, int rating)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                // Check if the user has already rated this movie
+                string checkQuery = "SELECT COUNT(*) FROM Rating WHERE user_id = @userId AND movie_id = @movieId";
+                using (MySqlCommand checkCommand = new MySqlCommand(checkQuery, connection))
+                {
+                    checkCommand.Parameters.AddWithValue("@userId", userId);
+                    checkCommand.Parameters.AddWithValue("@movieId", movieId);
+
+                    connection.Open();
+                    int ratingCount = Convert.ToInt32(checkCommand.ExecuteScalar());
+                    connection.Close();
+
+                    if (ratingCount > 0)
+                    {
+                        // Update the existing rating
+                        string updateQuery = "UPDATE Rating SET rating = @rating WHERE user_id = @userId AND movie_id = @movieId";
+                        using (MySqlCommand updateCommand = new MySqlCommand(updateQuery, connection))
+                        {
+                            updateCommand.Parameters.AddWithValue("@rating", rating);
+                            updateCommand.Parameters.AddWithValue("@userId", userId);
+                            updateCommand.Parameters.AddWithValue("@movieId", movieId);
+
+                            connection.Open();
+                            updateCommand.ExecuteNonQuery();
+                            connection.Close();
+                        }
+                    }
+                    else
+                    {
+                        // Insert a new rating
+                        string insertQuery = "INSERT INTO Rating (user_id, movie_id, rating) VALUES (@userId, @movieId, @rating)";
+                        using (MySqlCommand insertCommand = new MySqlCommand(insertQuery, connection))
+                        {
+                            insertCommand.Parameters.AddWithValue("@rating", rating);
+                            insertCommand.Parameters.AddWithValue("@userId", userId);
+                            insertCommand.Parameters.AddWithValue("@movieId", movieId);
+
+                            connection.Open();
+                            insertCommand.ExecuteNonQuery();
+                            connection.Close();
+                        }
+                    }
+                }
+            }
+        }
+
 
         public List<(string, string, string, List<string>, int)> GetMovieDetailsWithGenresAndRatings()
         {

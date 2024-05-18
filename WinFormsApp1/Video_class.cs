@@ -17,6 +17,8 @@ using System.Drawing.Drawing2D;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Diagnostics;
 using Org.BouncyCastle.Asn1.X509;
+using Microsoft.VisualBasic.ApplicationServices;
+using System.Reflection;
 //using ScreenColorDetector;
 
 namespace WinFormsApp1
@@ -44,7 +46,6 @@ namespace WinFormsApp1
         private PictureBox iconPictureBox3;
         private PictureBox iconPictureBox4;
         private PictureBox iconPictureBox5;
-        private PictureBox iconPictureBox6;
         private PictureBox iconPictureBox69;
         private RoundedPanel roundedPanelTop;
         private System.Windows.Forms.TextBox textBox1;
@@ -83,7 +84,30 @@ namespace WinFormsApp1
             PlayVideoFromDatabase();
             PopulateMovieDataPanel();
             _form.BackgroundImage = null;
-          
+
+            int rate = SqlInstance.GetUserRating(movieid, id);
+            if (rate > 0)
+            {
+                for (int i = 1; i <= rate; i++)
+                {
+                    Control[] stars = rate_panel.Controls.Find("star" + i, true);
+                    PictureBox star = (PictureBox)stars[0];
+                    star.ImageLocation = @"C:\Users\enkud\Desktop\Cinema\back_image\y_star.png";
+                    star.MouseEnter -= Star_MouseEnter;
+                    star.MouseClick -= Star_MouseClick;
+                }
+                for (int i = rate + 1; i <= 5; i++)
+                {
+                    Control[] stars = rate_panel.Controls.Find("star" + i, true);
+                    PictureBox star = (PictureBox)stars[0];
+                    star.MouseEnter -= Star_MouseEnter;
+                    star.MouseClick -= Star_MouseClick;
+                }
+            }
+
+
+
+
         }
 
         void InitializeComponent()
@@ -97,7 +121,6 @@ namespace WinFormsApp1
             iconPictureBox2 = new PictureBox();
             iconPictureBox4 = new PictureBox();
             iconPictureBox5 = new PictureBox();
-            iconPictureBox6 = new PictureBox();
             roundedPanelTop = new RoundedPanel();
             textBox1 = new System.Windows.Forms.TextBox();
             panel3 = new Panel();
@@ -196,7 +219,7 @@ namespace WinFormsApp1
             roundedPanelTop.BackColor = Color.FromArgb(29, 41, 43);
             roundedPanelTop.Controls.Add(textBox1);
             roundedPanelTop.CornerRadius = 10;
-            roundedPanelTop.Location = new Point(700, 10);
+            roundedPanelTop.Location = new Point(740, 10);
             roundedPanelTop.Name = "roundedPanel1";
             roundedPanelTop.Size = new Size(519, 44);
             roundedPanelTop.TabIndex = 13;
@@ -252,13 +275,6 @@ namespace WinFormsApp1
             iconPictureBox5.Size = new Size(1100, 48);
             iconPictureBox5.BringToFront();
 
-            // iconPictureBox6
-            iconPictureBox6.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
-            iconPictureBox6.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\cast.png");
-            iconPictureBox6.Name = "wide_panel";
-            iconPictureBox6.Size = new Size(700, 623);
-            iconPictureBox6.Location = new Point(1200, 77);
-
             // panel3
             panel3.BackColor = Color.FromArgb(24, 24, 24);
             panel3.Controls.Add(label3);
@@ -284,7 +300,7 @@ namespace WinFormsApp1
             label3.Location = new Point(328, 381);
             label3.Name = "label3";
             label3.Size = new Size(394, 25);
-            label3.Text = "Final movie trailer on youtube //https://gran...";
+            label3.Text = "Final movie trailer on youtube //https://grandrs_usk.com/ by jordan and aly...";
 
             // data_panel
             data_panel.BackColor = Color.FromArgb(24, 24, 24);
@@ -626,11 +642,18 @@ namespace WinFormsApp1
 
             try
             {
+                if (string.IsNullOrEmpty(profilePicture) || !File.Exists(profilePicture))
+                {
+                    // Use the default profile picture if the user's profile picture is missing
+                    profilePicture = "C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\pfp.png";
+                }
+
                 System.Drawing.Image image = System.Drawing.Image.FromFile(profilePicture);
                 profilePictureBox.Image = image;
             }
             catch (Exception ex)
             {
+                MessageBox.Show($"Error loading profile picture: {ex.Message}");
             }
 
             Comment_panel.Controls.Add(profilePictureBox);
@@ -665,22 +688,35 @@ namespace WinFormsApp1
         private void AddCommentButton_Click(object sender, EventArgs e)
         {
             string newComment = newCommentTextBox.Text;
-            SqlInstance.PostComment(movieid, newComment, 1); 
 
-            Comment_panel.Controls.Clear();
-
-            List<(string, string, string, DateTime)> comments = SqlInstance.GetCommentsForMovie(movieid);
-
-            lastCommentBottom = 10;
-
-            foreach (var comment in comments)
+            // Check if the comment is not empty
+            if (!string.IsNullOrWhiteSpace(newComment))
             {
-                string username = comment.Item1;
-                string profilePicture = comment.Item2;
-                string commentText = comment.Item3;
-                DateTime commentDate = comment.Item4; 
+                // Use the actual user ID instead of hardcoding it to 1
+                SqlInstance.PostComment(movieid, newComment, id);
 
-                AddComment(username, profilePicture, commentText, commentDate); 
+                // Clear the new comment text box after posting
+                newCommentTextBox.Clear();
+
+                // Clear the existing comments and refresh the comments panel
+                Comment_panel.Controls.Clear();
+
+                // Retrieve the updated list of comments from the database
+                List<(string, string, string, DateTime)> comments = SqlInstance.GetCommentsForMovie(movieid);
+
+                // Reset the last comment bottom position
+                lastCommentBottom = 10;
+
+                // Add each comment to the panel
+                foreach (var comment in comments)
+                {
+                    string username = comment.Item1;
+                    string profilePicture = comment.Item2;
+                    string commentText = comment.Item3;
+                    DateTime commentDate = comment.Item4;
+
+                    AddComment(username, profilePicture, commentText, commentDate);
+                }
             }
         }
 
@@ -747,14 +783,10 @@ namespace WinFormsApp1
             int starIndex = int.Parse(pictureBox.Tag.ToString());
 
             currentRating = starIndex;
+            MessageBox.Show($"You rated : {currentRating}");
 
             // Update the rating in the database
             SqlInstance.UpdateMovieRating(movieid, id, currentRating);
-
-            // Fetch the updated average rating and display it
-            double averageRating = SqlInstance.GetAverageRating(movieid);
-            // ratingLabel.Text = "Average Rating: " + averageRating.ToString("F1");
-            MessageBox.Show(averageRating.ToString("F1"));
 
             // Update star visuals
             for (int i = 1; i <= starIndex; i++)

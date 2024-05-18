@@ -204,6 +204,34 @@ namespace WinFormsApp1
         }
 
 
+        public int GetUserRating(int movieId, int userId)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT rating FROM Rating WHERE user_id = @userId AND movie_id = @movieId";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@userId", userId);
+                    command.Parameters.AddWithValue("@movieId", movieId);
+
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    connection.Close();
+
+                    if (result != null)
+                    {
+                        return Convert.ToInt32(result);
+                    }
+                    else
+                    {
+                        return 0; // No rating found
+                    }
+                }
+            }
+        }
+
+
+
         public List<(string, string, string, List<string>, int)> GetMovieDetailsWithGenresAndRatings()
         {
             List<(string, string, string, List<string>, int)> movieData = new List<(string, string, string, List<string>, int)>();
@@ -520,7 +548,6 @@ namespace WinFormsApp1
         
         public void PostComment(int movieId, String text, int userId)
         {
-            userId = 1;
             string imagePath = null;
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -608,11 +635,37 @@ namespace WinFormsApp1
 
             return topRatedMoviesData;
         }
-      
-        public List<(string, string)> GetMovieTitlesAndImagesByTitle(string searchText)
-        {
-            List<(string, string)> movieData = new List<(string, string)>();
 
+        /*       public List<(string, string)> GetMovieTitlesAndImagesByTitle(string searchText)
+               {
+                   List<(string, string)> movieData = new List<(string, string)>();
+
+
+                   using (MySqlConnection con = new MySqlConnection(connectionString))
+                   {
+                       string query = "SELECT title, poster_image FROM Movie WHERE title LIKE @searchText";
+                       MySqlCommand cmd = new MySqlCommand(query, con);
+                       cmd.Parameters.AddWithValue("@searchText", "%" + searchText + "%");
+
+                       con.Open();
+                       using (MySqlDataReader reader = cmd.ExecuteReader())
+                       {
+                           while (reader.Read())
+                           {
+                               string title = reader.GetString("title");
+                               string posterPath = reader.GetString("poster_image");
+                               movieData.Add((title, posterPath));
+                           }
+                       }
+                   }
+
+                   return movieData;
+               }*/
+
+
+        public List<(string title, string posterPath)> GetMovieTitlesAndImagesByTitle(string searchText)
+        {
+            List<(string title, string posterPath)> movieData = new List<(string title, string posterPath)>();
 
             using (MySqlConnection con = new MySqlConnection(connectionString))
             {
@@ -634,6 +687,7 @@ namespace WinFormsApp1
 
             return movieData;
         }
+
 
         // Add these methods to the Sql class
 
@@ -661,6 +715,8 @@ namespace WinFormsApp1
 
             return genres;
         }
+
+
 
         public List<string> GetReleaseDates()
         {

@@ -37,6 +37,7 @@ namespace WinFormsApp1
         private TextBox textBox1;
         private Panel panel3;
         private RoundedPanel panel;
+        private RoundedPanel suggestionPanel;
 
         PictureBox widePictureBox;
         PictureBox iconPictureBox;
@@ -106,7 +107,14 @@ namespace WinFormsApp1
             label3 = new Label();
             label7 = new Label();
             label6 = new Label();
-         
+
+            suggestionPanel = new RoundedPanel();
+            suggestionPanel.BackColor = Color.FromArgb(29, 41, 43);
+            suggestionPanel.CornerRadius = 10;
+            suggestionPanel.EdgeColor = Color.FromArgb(29, 41, 43);
+            suggestionPanel.Visible = false; // Initially hidden
+           
+
             panel1.SuspendLayout();
             roundedPanel1.SuspendLayout();
             widePictureBox.SuspendLayout();
@@ -180,6 +188,8 @@ namespace WinFormsApp1
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(24, 24, 24);
+            _form.Controls.Add(suggestionPanel);
+            suggestionPanel.BringToFront();
             panel1.Controls.Add(roundedPanel1);
             panel1.Controls.Add(panel3);
             panel1.Controls.Add(iconPictureBox3);
@@ -194,7 +204,7 @@ namespace WinFormsApp1
             // 
             // roundedPanel1
             // 
-            roundedPanel1.BackColor = Color.FromArgb(29, 41, 43);
+            roundedPanel1.BackColor = Color.FromArgb(29, 41, 43); 
             roundedPanel1.Controls.Add(textBox1);
             roundedPanel1.Controls.Add(button1);
             roundedPanel1.CornerRadius = 10;
@@ -220,6 +230,7 @@ namespace WinFormsApp1
             textBox1.ForeColor = Color.Gray;
             textBox1.GotFocus += TextBox1_GotFocus;
             textBox1.KeyDown += TextBox1_KeyDown;
+            textBox1.TextChanged += TextBox1_TextChanged;
             //
             // button1
             // 
@@ -1275,11 +1286,88 @@ namespace WinFormsApp1
           }
 
 
+        private void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (textBox1.Text.Length >= 3)
+            {
+                List<(string title, string posterPath)> suggestions = GetMovieSuggestions(textBox1.Text);
+                DisplaySuggestions(suggestions);
+            }
+            else
+            {
+                suggestionPanel.Visible = false; // Hide the panel if text length is less than 3
+            }
+        }
+
+        private List<(string title, string posterPath)> GetMovieSuggestions(string searchText)
+        {
+            return SqlInstance.GetMovieTitlesAndImagesByTitle(searchText);
+        }
+
+        private void DisplaySuggestions(List<(string title, string posterPath)> suggestions)
+        {
+            suggestionPanel.Controls.Clear();
+            int suggestionCount = suggestions.Count;
+
+            if (suggestionCount > 0)
+            {
+                int panelWidth = roundedPanel1.Width;
+                int panelHeight = Math.Min(200, suggestionCount * 60); // Adjust height based on the number of suggestions
+                suggestionPanel.Size = new Size(panelWidth, panelHeight);
+                suggestionPanel.Location = new Point(roundedPanel1.Left, roundedPanel1.Bottom + 5); // Position below the search box
+                suggestionPanel.Visible = true;
+
+                for (int i = 0; i < suggestionCount; i++)
+                {
+                    (string title, string posterPath) = suggestions[i];
+
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.Image = System.Drawing.Image.FromFile(posterPath);
+                    pictureBox.Size = new Size(50, 50);
+                    pictureBox.Location = new Point(10, i * 50 + 10);
+
+                    Label titleLabel = new Label();
+                    titleLabel.Text = title;
+                    titleLabel.Font = new System.Drawing.Font("Segoe UI", 18F);
+                    titleLabel.ForeColor = Color.White;
+                    titleLabel.Location = new Point(60, i * 50 + 13);
+                    titleLabel.AutoSize = true;
+
+                    suggestionPanel.Controls.Add(pictureBox);
+                    suggestionPanel.Controls.Add(titleLabel);
+
+                    pictureBox.Click += (sender, e) => PerformSearch(title);
+                    titleLabel.Click += (sender, e) => PerformSearch(title);
+                }
+            }
+            else
+            {
+                suggestionPanel.Visible = false;
+            }
+        }
+
+       /* private void PerformSearch(string searchText)
+        {
+            PopulateMovie(searchText, 1);
+        }
+*/
+
+        /*private List<string> GetMovieSuggestions(string searchText)
+        {
+            Sql sqlInstance = new Sql();
+            List<(string title, string posterPath)> movieData = sqlInstance.GetMovieTitlesAndImagesByTitle(searchText);
+            List<string> suggestions = movieData.Select(md => md.title).ToList();
+            return suggestions;
+        }*/
+
+
+
         ///////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////filter//////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////
 
-        private void filter_Click(object sender, EventArgs e)
+        public void filter_Click(object sender, EventArgs e)
         {
             PictureBox iconPicture2 = new PictureBox();
             panel4.Controls.Add(iconPicture2);

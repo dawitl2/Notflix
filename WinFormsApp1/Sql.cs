@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Text;
 using MySql.Data.MySqlClient;
 
@@ -771,3 +769,21 @@ namespace WinFormsApp1
 
     }
 }
+
+
+
+/* panel3.Controls.Remove(Comment_panel);
+                panel3.Controls.Remove(data_panel);
+                iconPictureBox69.Controls.Add(Comment_panel);
+                panel3.Controls.Add(data_panel);
+
+                // Bring Comment_panel to the front
+                Comment_panel.BringToFront();
+
+                axWindowsMediaPlayer1.Location = new Point(68, 78);
+                iconPictureBox5.Location = new Point(68, 653);
+                Comment_panel.Location = new Point(1247, 122);
+                Comment_panel.Size = new Size(608, 956);
+
+                // Optionally, bring data_pa 
+             */

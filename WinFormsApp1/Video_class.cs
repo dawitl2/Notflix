@@ -1,13 +1,4 @@
-﻿using Org.BouncyCastle.Asn1.Crmf;
-using System;
-using System.Drawing;
-using System.Collections.Generic;
-using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using WinFormsApp;
+﻿using WinFormsApp;
 using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
@@ -19,7 +10,7 @@ using System.Diagnostics;
 using Org.BouncyCastle.Asn1.X509;
 using Microsoft.VisualBasic.ApplicationServices;
 using System.Reflection;
-//using ScreenColorDetector;
+
 
 namespace WinFormsApp1
 {
@@ -30,12 +21,11 @@ namespace WinFormsApp1
         private Form _form;
         string[] movie;
         int movieid;
-        // private System.Windows.Forms.PictureBox pictureBox1;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
-        //private Panel back_panel;
         private Panel panel1;
         private Panel panel2;
         private RoundedButton button1;
+        private RoundedButton more;
         private Label label_N;
         private Panel panel3;
         private Panel panel4;
@@ -78,7 +68,6 @@ namespace WinFormsApp1
             iconPictureBox69.Dock = DockStyle.Fill;
             iconPictureBox69.TabIndex = 13;
             _form.Controls.Add(iconPictureBox69);
-            //_form.BackgroundImage = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\opacity.png");
 
             InitializeComponent();
             PlayVideoFromDatabase();
@@ -104,10 +93,6 @@ namespace WinFormsApp1
                     star.MouseClick -= Star_MouseClick;
                 }
             }
-
-
-
-
         }
 
         void InitializeComponent()
@@ -116,6 +101,7 @@ namespace WinFormsApp1
             panel1 = new Panel();
             panel2 = new Panel();
             button1 = new RoundedButton();
+            more = new RoundedButton();
             label_N = new Label();
             iconPictureBox = new PictureBox();
             iconPictureBox2 = new PictureBox();
@@ -134,7 +120,7 @@ namespace WinFormsApp1
             trailer_panel = new RoundedPanel();
             poster_panel = new RoundedPanel();
             panel4 = new Panel();
-           
+
             // axWindowsMediaPlayer1
             axWindowsMediaPlayer1.Enabled = true;
             axWindowsMediaPlayer1.Location = new Point(436, 78);
@@ -143,7 +129,6 @@ namespace WinFormsApp1
             axWindowsMediaPlayer1.TabIndex = 1;
 
             // panel1
-            //panel1.BackColor = Color.FromArgb(24, 24, 24);
             panel1.BackColor = Color.Black;
             panel1.Controls.Add(button1);
             panel1.Controls.Add(panel2);
@@ -164,7 +149,7 @@ namespace WinFormsApp1
             textBox1.ForeColor = Color.Gray;
             textBox1.GotFocus += TextBox1_GotFocus;
             textBox1.KeyDown += TextBox1_KeyDown;
-          
+
             // Define the GotFocus event handler
             void TextBox1_GotFocus(object sender, EventArgs e)
             {
@@ -189,7 +174,7 @@ namespace WinFormsApp1
                 }
             }
 
-             void PerformSearch(string searchText)
+            void PerformSearch(string searchText)
             {
                 axWindowsMediaPlayer1.close();
 
@@ -205,7 +190,7 @@ namespace WinFormsApp1
                 homePage.TextBox1_KeyDown(new System.Windows.Forms.TextBox { Text = searchText }, keyEventArgs);
 
                 _form.WindowState = FormWindowState.Maximized;
-           
+
                 homePage._form.Show();
                 homePage._form.Refresh();
             }
@@ -236,6 +221,22 @@ namespace WinFormsApp1
             button1.Text = "Back";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
+
+            // more button
+            more.Visible = false;
+            more.BackColor = Color.Teal;
+            more.FlatAppearance.BorderSize = 0;
+            more.CornerRadius = 8;
+            more.FlatStyle = FlatStyle.Flat;
+            more.Font = new System.Drawing.Font("Segoe UI", 14F);
+            more.ForeColor = SystemColors.ButtonHighlight;
+            more.Location = new Point(1721, 24); 
+            more.Name = "more";
+            more.Size = new Size(121, 35);
+            more.TabIndex = 0;
+            more.Text = "More";
+            more.UseVisualStyleBackColor = false;
+            more.Click += more_Click;
 
             // panel2
             panel2.BackColor = Color.Teal;
@@ -280,6 +281,7 @@ namespace WinFormsApp1
             panel3.Controls.Add(iconPictureBox2);
             panel3.Controls.Add(iconPictureBox4);
             panel3.Controls.Add(Comment_panel);
+            panel3.Controls.Add(more);
             panel3.Controls.Add(Trailer);
             panel3.Controls.Add(label1);
             panel3.Controls.Add(trailer_panel);
@@ -304,7 +306,7 @@ namespace WinFormsApp1
             data_panel.Name = "data_panel";
             data_panel.Size = new Size(827, 250);
 
-            // rate_panel
+            // rate_panelcount
             rate_panel.BackColor = Color.Transparent;
             rate_panel.Location = new Point(900, 60);
             rate_panel.Name = "rate_panel";
@@ -436,26 +438,20 @@ namespace WinFormsApp1
             _form.ResumeLayout(false);
         }
 
+        private void ColorDetectorForm_ColorUpdated(object sender, ColorEventArgs e)
+        {
+            UpdateFormColors(e.Color);
+        }
 
-   private void ColorDetectorForm_ColorUpdated(object sender, ColorEventArgs e)
-   {
-       UpdateFormColors(e.Color);
-   }
-
-   private void UpdateFormColors(Color color)
-   {
-       _form.BackColor = color;
-   }
-
+        private void UpdateFormColors(Color color)
+        {
+            _form.BackColor = color;
+        }
 
         private void PlayVideoFromDatabase()
         {
-
             string videoPath = SqlInstance.GetVideoPath(movieid);
             string imagePath = SqlInstance.GetWideImagePath(movieid);
-
-
-
 
             if (!string.IsNullOrEmpty(videoPath))
             {
@@ -470,8 +466,7 @@ namespace WinFormsApp1
             {
                 try
                 {
-                     panel4.BackgroundImage = System.Drawing.Image.FromFile(imagePath);
-
+                    panel4.BackgroundImage = System.Drawing.Image.FromFile(imagePath);
                     panel4.BackgroundImageLayout = ImageLayout.Stretch;
 
                     Panel overlayPanel = new Panel();
@@ -480,9 +475,6 @@ namespace WinFormsApp1
                     panel4.Controls.Add(overlayPanel);
                     overlayPanel.BringToFront(); // Ensure the overlay panel is on top
                     label1.Text = movie[0];
-
-
-                  
                 }
                 catch (Exception ex)
                 {
@@ -492,6 +484,79 @@ namespace WinFormsApp1
             else
             {
                 MessageBox.Show("Image path not found in the database.");
+            }
+        }
+
+        private void ShowCommentCount(int count)
+        {
+            //MessageBox.Show($"Number of comments: {count}");
+
+            if (count > 4)
+            {
+                more.Visible = true;
+            }
+            else
+            {
+                more.Visible = false;
+            }
+        }
+
+        private void more_Click(object sender, EventArgs e)
+        {
+            if (more.Text == "More")
+            {
+                panel3.Controls.Remove(more);
+                iconPictureBox69.Controls.Add(more);
+                more.Location = new Point(1730, 78);
+
+
+                // Remove and re-add Comment_panel to ensure layout updates
+                data_panel.Controls.Remove(Comment_panel);
+                data_panel.Controls.Remove(iconPictureBox);
+
+                // Set new size and location for "More" view
+                Comment_panel.Location = new Point(1247, 122);
+                Comment_panel.Size = new Size(608, 956);
+
+                // Re-add Comment_panel to panel3
+                iconPictureBox69.Controls.Add(Comment_panel);
+                iconPictureBox69.Controls.Add(iconPictureBox);
+                Comment_panel.BringToFront();
+
+                // Adjust other controls
+                axWindowsMediaPlayer1.Location = new Point(68, 78);
+                iconPictureBox5.Location = new Point(68, 653);
+                iconPictureBox.Location = new Point(1247, 78);
+
+                more.Text = "Less";
+            }
+            else
+            {
+                iconPictureBox69.Controls.Remove(more);
+                panel3.Controls.Add(more);
+                more.Location = new Point(1721, 24);
+
+
+                // Remove and re-add Comment_panel to ensure layout updates
+                iconPictureBox69.Controls.Remove(Comment_panel);
+                iconPictureBox69.Controls.Remove(iconPictureBox);
+
+                // Set new size and location for "Less" view
+                Comment_panel.Location = new Point(1244, 75);
+                Comment_panel.Size = new Size(608, 276);
+                iconPictureBox.Location = new Point(1244, 16);
+
+
+                // Re-add Comment_panel to panel3
+                panel3.Controls.Add(Comment_panel);
+                panel3.Controls.Add(iconPictureBox);
+                Comment_panel.BringToFront();
+
+                // Adjust other controls
+                axWindowsMediaPlayer1.Location = new Point(436, 78);
+                iconPictureBox5.Location = new Point(436, 653);
+
+                more.Text = "More";
             }
         }
 
@@ -507,9 +572,9 @@ namespace WinFormsApp1
             Label descriptionLabel = new Label();
             Label ratingLabel = new Label();
 
-            titleLabel.Text = "Title: " + movie[0]; // Assuming movie[0] contains the movie title
-            releaseDateLabel.Text = "Release Date: " + movie[1]; // Get release date for movie
-            descriptionLabel.Text = "Description: " + movie[2]; // Get description for movie
+            titleLabel.Text = "Title: " + movie[0];
+            releaseDateLabel.Text = "Release Date: " + movie[1];
+            descriptionLabel.Text = "Description: " + movie[2];
 
             double averageRating = SqlInstance.GetAverageRating(movieid);
             ratingLabel.Text = "Average Rating: " + averageRating.ToString("F1");
@@ -519,23 +584,22 @@ namespace WinFormsApp1
             descriptionLabel.ForeColor = Color.White;
             ratingLabel.ForeColor = Color.White;
 
-            titleLabel.Font = new System.Drawing.Font("Segoe UI", 15, FontStyle.Bold); // Example font size and style
-            releaseDateLabel.Font = new System.Drawing.Font("Segoe UI", 15); // Example font size
-            ratingLabel.Font = new System.Drawing.Font("Segoe UI", 15); // Example font size
-
+            titleLabel.Font = new System.Drawing.Font("Segoe UI", 15, FontStyle.Bold);
+            releaseDateLabel.Font = new System.Drawing.Font("Segoe UI", 15);
+            ratingLabel.Font = new System.Drawing.Font("Segoe UI", 15);
             titleLabel.Location = new Point(10, y);
-            releaseDateLabel.Location = new Point(10, y + 30); // Adjust vertical spacing as needed
+            releaseDateLabel.Location = new Point(10, y + 30);
             ratingLabel.Location = new Point(10, y + 60);
-
             descriptionLabel.AutoSize = false;
-            descriptionLabel.Width = data_panel.Width - 20; // Adjust width as needed
-            releaseDateLabel.Width = data_panel.Width - 20; // Adjust width as needed
-            ratingLabel.Width = data_panel.Width - 20; // Adjust width as needed
-            descriptionLabel.Height = 100; // Adjust height as needed
-            descriptionLabel.Location = new Point(10, y + 90); // Adjust vertical spacing as needed
-            descriptionLabel.Font = new System.Drawing.Font("Segoe UI", 17); // Example font size
+            descriptionLabel.Width = data_panel.Width - 20;
+            releaseDateLabel.Width = data_panel.Width - 20;
+            ratingLabel.Width = data_panel.Width - 20;
+
+            descriptionLabel.Height = 100;
+            descriptionLabel.Location = new Point(10, y + 90);
+            descriptionLabel.Font = new System.Drawing.Font("Segoe UI", 17);
             descriptionLabel.AutoEllipsis = true;
-            descriptionLabel.Text = "Description: " + movie[2]; // Get description for movie
+            descriptionLabel.Text = "Description: " + movie[2];
             descriptionLabel.ForeColor = Color.White;
 
             data_panel.AutoSize = true;
@@ -549,9 +613,9 @@ namespace WinFormsApp1
             string PosterImagePath = movie[4];
 
             PictureBox widePictureBox = new PictureBox();
-            widePictureBox.SizeMode = PictureBoxSizeMode.StretchImage; // Maintain aspect ratio
-            widePictureBox.ImageLocation = PosterImagePath; // Set image location to the retrieved image path
-            widePictureBox.Dock = DockStyle.Fill; // Dock the PictureBox to fill the entire panel
+            widePictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            widePictureBox.ImageLocation = PosterImagePath;
+            widePictureBox.Dock = DockStyle.Fill;
 
             RoundedPictureBox iconPictureBox_YT = new RoundedPictureBox();
             iconPictureBox_YT.CornerRadius = 10;
@@ -568,9 +632,9 @@ namespace WinFormsApp1
             string wideImagePath = movie[5];
 
             PictureBox widePicture = new PictureBox();
-            widePicture.SizeMode = PictureBoxSizeMode.StretchImage; // Maintain aspect ratio
-            widePicture.ImageLocation = wideImagePath; // Set image location to the retrieved image path
-            widePicture.Dock = DockStyle.Fill; // Dock the PictureBox to fill the entire panel
+            widePicture.SizeMode = PictureBoxSizeMode.StretchImage;
+            widePicture.ImageLocation = wideImagePath;
+            widePicture.Dock = DockStyle.Fill;
 
             widePicture.Paint += (sender, e) =>
             {
@@ -589,9 +653,8 @@ namespace WinFormsApp1
                 }
             };
 
-            // Add PictureBox to the wide_panel
             trailer_panel.Controls.Add(widePicture);
-            widePicture.MouseEnter += PictureBox_MouseEnter; // Attach MouseEnter event handler
+            widePicture.MouseEnter += PictureBox_MouseEnter;
             widePicture.MouseLeave += PictureBox_MouseLeave;
             widePicture.Click += bars_click;
 
@@ -608,7 +671,7 @@ namespace WinFormsApp1
 
             ///////// Comments //////////////////
             int commentY = 10; // Initial y-coordinate for positioning comments
-            List<(string, string, string, DateTime)> comments = SqlInstance.GetCommentsForMovie(movieid); // Fetch comments for the movie title
+            List<(string, string, string, DateTime)> comments = SqlInstance.GetCommentsForMovie(movieid);
             foreach (var comment in comments)
             {
                 string username = comment.Item1;
@@ -618,13 +681,41 @@ namespace WinFormsApp1
 
                 AddComment(username, profilePicture, commentText, commentDate);
             }
+
+            ShowCommentCount(comments.Count);
         }
 
+        private void AddCommentButton_Click(object sender, EventArgs e)
+        {
+            string newComment = newCommentTextBox.Text;
 
+            if (!string.IsNullOrWhiteSpace(newComment))
+            {
+                SqlInstance.PostComment(movieid, newComment, id);
 
+                newCommentTextBox.Clear();
 
-        private int lastCommentBottom = 10; // Initialize with the starting position
+                Comment_panel.Controls.Clear();
 
+                List<(string, string, string, DateTime)> comments = SqlInstance.GetCommentsForMovie(movieid);
+
+                lastCommentBottom = 10;
+
+                foreach (var comment in comments)
+                {
+                    string username = comment.Item1;
+                    string profilePicture = comment.Item2;
+                    string commentText = comment.Item3;
+                    DateTime commentDate = comment.Item4;
+
+                    AddComment(username, profilePicture, commentText, commentDate);
+                }
+
+                ShowCommentCount(comments.Count);
+            }
+        }
+
+        private int lastCommentBottom = 10;
 
         private void AddComment(string username, string profilePicture, string commentText, DateTime commentDate)
         {
@@ -680,78 +771,51 @@ namespace WinFormsApp1
             lastCommentBottom = commentTextLabel.Bottom + verticalSpacing;
         }
 
-        private void AddCommentButton_Click(object sender, EventArgs e)
-        {
-            string newComment = newCommentTextBox.Text;
-
-            // Check if the comment is not empty
-            if (!string.IsNullOrWhiteSpace(newComment))
-            {
-                // Use the actual user ID instead of hardcoding it to 1
-                SqlInstance.PostComment(movieid, newComment, id);
-
-                // Clear the new comment text box after posting
-                newCommentTextBox.Clear();
-
-                // Clear the existing comments and refresh the comments panel
-                Comment_panel.Controls.Clear();
-
-                // Retrieve the updated list of comments from the database
-                List<(string, string, string, DateTime)> comments = SqlInstance.GetCommentsForMovie(movieid);
-
-                // Reset the last comment bottom position
-                lastCommentBottom = 10;
-
-                // Add each comment to the panel
-                foreach (var comment in comments)
-                {
-                    string username = comment.Item1;
-                    string profilePicture = comment.Item2;
-                    string commentText = comment.Item3;
-                    DateTime commentDate = comment.Item4;
-
-                    AddComment(username, profilePicture, commentText, commentDate);
-                }
-            }
-        }
-
-
         private void PictureBox_MouseLeave(object sender, EventArgs e)
         {
             PictureBox pictureBox = (PictureBox)sender;
-            pictureBox.Cursor = Cursors.Default; 
-
+            pictureBox.Cursor = Cursors.Default;
         }
 
         private void PictureBox_MouseEnter(object sender, EventArgs e)
         {
             PictureBox pictureBox = (PictureBox)sender;
-            pictureBox.Cursor = Cursors.Hand;         
-            pictureBox.Click += WidePictureBox_Click; 
+            pictureBox.Cursor = Cursors.Hand;
+            pictureBox.Click += WidePictureBox_Click;
         }
 
         private void WidePictureBox_Click(object sender, EventArgs e)
         {
-            string trailerUrl = movie[3]; 
+            string trailerUrl = movie[3];
         }
-
 
         private void button1_Click(object sender, EventArgs e)
         {
-            axWindowsMediaPlayer1.close();
-            
-            foreach (Control control in _form.Controls)
+            try
             {
-                control.Dispose();
+                axWindowsMediaPlayer1.close();
+
+                // Create a new form and set it up
+                Form f = new Form();
+                f.StartPosition = FormStartPosition.Manual;
+                f.Location = new Point(0, 0);
+                f.FormBorderStyle = FormBorderStyle.None;
+                f.WindowState = FormWindowState.Maximized;
+
+
+                // Initialize the Home page with the new form
+                Home homePage = new Home(f, id);
+
+                // Show the new form
+                f.Show();
+
+                // Close the current form
+                _form.Hide();
             }
-            _form.Controls.Clear();
-
-             Home homePage = new Home(_form, id);
-
-            _form.WindowState = FormWindowState.Maximized;
-
-            homePage._form.Show();
-            homePage._form.Refresh();
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 
@@ -798,7 +862,8 @@ namespace WinFormsApp1
                 star.ImageLocation = @"C:\Users\enkud\Desktop\Cinema\back_image\e_star.png";
             }
         }
-
-
     }
 }
+
+
+

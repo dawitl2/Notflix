@@ -1,28 +1,7 @@
-﻿using Org.BouncyCastle.Asn1.Crmf;
-using System;
-using System.Drawing;
-using System.Collections.Generic;
-using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using WinFormsApp;
-using static System.Net.Mime.MediaTypeNames;
-using System.Windows.Forms;
+﻿using WinFormsApp;
 using System.Drawing.Drawing2D;
 using FullScreenApp;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Google.Protobuf.WellKnownTypes;
-using System.IO;
 using System.Diagnostics;
-using System.Timers;
-using System.Windows.Forms;
-using System.Web;
-//using ScreenColorDetector;
-
-
-
 
 namespace WinFormsApp1
 {

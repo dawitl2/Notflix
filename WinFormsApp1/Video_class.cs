@@ -189,28 +189,23 @@ namespace WinFormsApp1
                 }
             }
 
-            // Define the TextChanged event handler to change the EdgeColor of roundedPanelTop
-     
-
-            // Define the PerformSearch method
-            void PerformSearch(string searchText)
+             void PerformSearch(string searchText)
             {
                 axWindowsMediaPlayer1.close();
 
-                // Dispose of all controls and clear the form
                 foreach (Control control in _form.Controls)
                 {
                     control.Dispose();
                 }
                 _form.Controls.Clear();
 
-                // Create a new instance of the Home class and initialize it
                 Home homePage = new Home(_form, id);
-                homePage.PopulateMovie(searchText, 1);
+                homePage.str = searchText;
+                KeyEventArgs keyEventArgs = new KeyEventArgs(Keys.Enter);
+                homePage.TextBox1_KeyDown(new System.Windows.Forms.TextBox { Text = searchText }, keyEventArgs);
 
                 _form.WindowState = FormWindowState.Maximized;
-
-                // Show and refresh the form
+           
                 homePage._form.Show();
                 homePage._form.Refresh();
             }

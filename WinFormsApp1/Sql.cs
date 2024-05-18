@@ -451,6 +451,32 @@ namespace WinFormsApp1
 
             return movieId;
         }
+        
+
+        public string GetMovieIdFromImagePathwide(string imagePath)
+        {
+            string movieId = null;
+
+            // Connect to the database and execute the query to retrieve the movie ID
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT movie_id FROM Movie WHERE wide_poster_image = @imagePath"; // Assuming 'id' is the column name for movie ID
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@imagePath", imagePath); // Add parameter to prevent SQL injection
+
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    if (result != null)
+                    {
+                        movieId = result.ToString();
+                    }
+                }
+            }
+
+            return movieId;
+        }
 
 
 

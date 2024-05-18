@@ -18,6 +18,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Timers;
 using System.Windows.Forms;
+using System.Web;
 //using ScreenColorDetector;
 
 
@@ -63,7 +64,7 @@ namespace WinFormsApp1
         private FlowLayoutPanel sidepanel;
         private List<(string, string)> movieDataList;
         private int id;
-
+       
         public Home(Form form, int id)
         {
             this.id = id;
@@ -229,7 +230,7 @@ namespace WinFormsApp1
             textBox1.Text = "Search movies...";
             textBox1.ForeColor = Color.Gray;
             textBox1.GotFocus += TextBox1_GotFocus;
-            textBox1.KeyDown += TextBox1_KeyDown;
+             textBox1.KeyDown += TextBox1_KeyDown;
             textBox1.TextChanged += TextBox1_TextChanged;
             //
             // button1
@@ -592,8 +593,17 @@ namespace WinFormsApp1
                         }
                     }
                 };
-
+            
                 pictureBox.Cursor = Cursors.Hand; // Change cursor to hand pointer
+                pictureBox.MouseClick += (sender, e) => back_Click(sender, e);
+
+                void back_Click(object sender, EventArgs e)
+                {
+                    string movieId = SqlInstance.GetMovieIdFromImagePathwide(posterPath);
+                    string[] movieData = SqlInstance.GetMovieDataById(int.Parse(movieId));
+                    panel4.Visible = false;
+                    Video_class Vid = new Video_class(_form, movieData, int.Parse(movieId), id);
+                }
 
                 sidepanel.Controls.Add(pictureBox);
 
@@ -602,6 +612,7 @@ namespace WinFormsApp1
 
         }
 
+        
 
 
 
@@ -1270,11 +1281,26 @@ namespace WinFormsApp1
             }
         }
 
-        private void TextBox1_KeyDown(object sender, KeyEventArgs e)
+        public string str = "none";
+
+        public void TextBox1_KeyDown(object sender, KeyEventArgs e)
         {
-              if (e.KeyCode == Keys.Enter)
+            suggestionPanel.Visible = false;
+            if (e.KeyCode == Keys.Enter)
             {
-                string searchText = textBox1.Text;
+                string searchText;
+
+                 if(str == "none")
+                  {
+                       searchText = textBox1.Text;
+
+                  }
+                  else
+                  {
+                      searchText = str;
+
+                  }
+
                 filter_Click(sender, e);
                 PerformSearch(searchText);
             }
@@ -1346,22 +1372,6 @@ namespace WinFormsApp1
                 suggestionPanel.Visible = false;
             }
         }
-
-       /* private void PerformSearch(string searchText)
-        {
-            PopulateMovie(searchText, 1);
-        }
-*/
-
-        /*private List<string> GetMovieSuggestions(string searchText)
-        {
-            Sql sqlInstance = new Sql();
-            List<(string title, string posterPath)> movieData = sqlInstance.GetMovieTitlesAndImagesByTitle(searchText);
-            List<string> suggestions = movieData.Select(md => md.title).ToList();
-            return suggestions;
-        }*/
-
-
 
         ///////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////filter//////////////////////////////////////
@@ -1549,3 +1559,5 @@ namespace WinFormsApp1
 
     }
 }
+
+//its not lossing focus and the suggesting panel is not going too:

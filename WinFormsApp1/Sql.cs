@@ -230,30 +230,35 @@ namespace WinFormsApp1
 
 
 
-        public List<(string, string, string, List<string>, int)> GetMovieDetailsWithGenresAndRatings()
+        public List<(string, string, string, List<string>, int)> GetMostRecentMovieDetailsWithGenresAndRatings()
         {
             List<(string, string, string, List<string>, int)> movieData = new List<(string, string, string, List<string>, int)>();
 
             using (MySqlConnection con = new MySqlConnection(connectionString))
             {
                 string query = @"
-            SELECT 
-                m.title, 
-                m.wide_poster_image, 
-                m.duration, 
-                GROUP_CONCAT(DISTINCT g.genre_name SEPARATOR ',') AS genres,
-                AVG(r.rating) AS average_rating
-            FROM 
-                Movie m
-            LEFT JOIN 
-                MovieGenre mg ON m.movie_id = mg.movie_id
-            LEFT JOIN 
-                Genre g ON mg.genre_id = g.genre_id
-            LEFT JOIN 
-                Rating r ON m.movie_id = r.movie_id
-            GROUP BY 
-                m.movie_id, m.title, m.wide_poster_image, m.duration
-        ";
+        SELECT 
+            m.title, 
+            m.wide_poster_image, 
+            m.duration, 
+            GROUP_CONCAT(DISTINCT g.genre_name SEPARATOR ',') AS genres,
+            AVG(r.rating) AS average_rating
+        FROM 
+            Movie m
+        LEFT JOIN 
+            MovieGenre mg ON m.movie_id = mg.movie_id
+        LEFT JOIN 
+            Genre g ON mg.genre_id = g.genre_id
+        LEFT JOIN 
+            Rating r ON m.movie_id = r.movie_id
+        WHERE 
+            m.release_date <= CURDATE()
+        GROUP BY 
+            m.movie_id, m.title, m.wide_poster_image, m.duration
+        ORDER BY 
+            m.release_date DESC
+        LIMIT 10 -- Fetch the top 10 most recent movies
+    ";
 
                 MySqlCommand cmd = new MySqlCommand(query, con);
                 con.Open();
@@ -767,23 +772,56 @@ namespace WinFormsApp1
             return releaseDates;
         }
 
+        public void SaveWatchProgress(int userId, int movieId, TimeSpan stoppedAt)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = @"
+                INSERT INTO UserWatchProgress (user_id, movie_id, stopped_at)
+                VALUES (@userId, @movieId, @stoppedAt)
+                ON DUPLICATE KEY UPDATE stopped_at = @stoppedAt, stopped_on = CURRENT_TIMESTAMP";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@userId", userId);
+                    command.Parameters.AddWithValue("@movieId", movieId);
+                    command.Parameters.AddWithValue("@stoppedAt", stoppedAt);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+        }
+
+        public TimeSpan? GetWatchProgress(int userId, int movieId)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT stopped_at FROM UserWatchProgress WHERE user_id = @userId AND movie_id = @movieId";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@userId", userId);
+                    command.Parameters.AddWithValue("@movieId", movieId);
+
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    connection.Close();
+
+                    if (result != null)
+                    {
+                        return TimeSpan.Parse(result.ToString());
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
+
+
     }
 }
 
-
-
-/* panel3.Controls.Remove(Comment_panel);
-                panel3.Controls.Remove(data_panel);
-                iconPictureBox69.Controls.Add(Comment_panel);
-                panel3.Controls.Add(data_panel);
-
-                // Bring Comment_panel to the front
-                Comment_panel.BringToFront();
-
-                axWindowsMediaPlayer1.Location = new Point(68, 78);
-                iconPictureBox5.Location = new Point(68, 653);
-                Comment_panel.Location = new Point(1247, 122);
-                Comment_panel.Size = new Size(608, 956);
-
-                // Optionally, bring data_pa 
-             */

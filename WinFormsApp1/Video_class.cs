@@ -230,7 +230,7 @@ namespace WinFormsApp1
             more.FlatStyle = FlatStyle.Flat;
             more.Font = new System.Drawing.Font("Segoe UI", 14F);
             more.ForeColor = SystemColors.ButtonHighlight;
-            more.Location = new Point(1721, 24); 
+            more.Location = new Point(1721, 24);
             more.Name = "more";
             more.Size = new Size(121, 35);
             more.TabIndex = 0;

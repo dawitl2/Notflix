@@ -483,7 +483,7 @@ namespace WinFormsApp1
 
         private void PopulatewideMovies()
         {
-            List<(string name, string posterPath, string man, List<string> genres, int rating)> movies = SqlInstance.GetMovieDetailsWithGenresAndRatings();
+            List<(string name, string posterPath, string duration, List<string> genres, int rating)> movies = SqlInstance.GetMostRecentMovieDetailsWithGenresAndRatings();
 
             int pictureBoxWidth = 400;
             int pictureBoxHeight = 136;
@@ -1538,5 +1538,3 @@ namespace WinFormsApp1
 
     }
 }
-
-//its not lossing focus and the suggesting panel is not going too:

@@ -448,14 +448,88 @@ namespace WinFormsApp1
             _form.BackColor = color;
         }
 
+
         private void PlayVideoFromDatabase()
         {
             string videoPath = SqlInstance.GetVideoPath(movieid);
             string imagePath = SqlInstance.GetWideImagePath(movieid);
-
             if (!string.IsNullOrEmpty(videoPath))
             {
-                axWindowsMediaPlayer1.URL = videoPath;
+                // Retrieve the watch progress from the database
+                TimeSpan? watchProgress = SqlInstance.GetWatchProgress(id, movieid);
+
+                if (watchProgress.HasValue)
+                {
+                    // Custom dialog for resume playback
+                    using (Form customDialog = new Form())
+                    {
+                        customDialog.FormBorderStyle = FormBorderStyle.None; // Remove the title bar
+                        customDialog.StartPosition = FormStartPosition.CenterParent;
+                        customDialog.BackColor = Color.Teal;
+                        customDialog.Size = new Size(400, 200);
+                        customDialog.MinimizeBox = false;
+                        customDialog.MaximizeBox = false;
+                        customDialog.ShowIcon = false;
+                        customDialog.ShowInTaskbar = false;
+
+                        Label messageLabel = new Label()
+                        {
+                            Text = "Do you want to resume from where you left off?",
+                            ForeColor = Color.White,
+                            Font = new System.Drawing.Font("Arial", 12, FontStyle.Bold),
+                            AutoSize = true,
+                            Location = new Point(10, 50),
+                            BackColor = Color.Teal
+                        };
+                        customDialog.Controls.Add(messageLabel);
+
+                        System.Windows.Forms.Button yesButton = new System.Windows.Forms.Button()
+                        {
+                            BackColor = Color.White,
+                            Text = "Yes",
+                            Font = new System.Drawing.Font("Arial", 12, FontStyle.Bold),
+                            DialogResult = DialogResult.Yes,
+                            Size = new Size(100, 40),
+                            Location = new Point(90, 100)
+                        };
+                        customDialog.Controls.Add(yesButton);
+
+                        System.Windows.Forms.Button noButton = new System.Windows.Forms.Button()
+                        {
+                            BackColor = Color.White,
+                            Text = "No",
+                            Font = new System.Drawing.Font("Arial", 12, FontStyle.Bold),
+                            DialogResult = DialogResult.No,
+                            Size = new Size(100, 40),
+                            Location = new Point(210, 100)
+                        };
+                        customDialog.Controls.Add(noButton);
+
+                        customDialog.AcceptButton = yesButton;
+                        customDialog.CancelButton = noButton;
+
+                        DialogResult result = customDialog.ShowDialog();
+
+                        if (result == DialogResult.Yes)
+                        {
+                            // Set the media player's URL to the video path
+                            axWindowsMediaPlayer1.URL = videoPath;
+
+                            // Set the media player's position to the saved watch progress
+                            axWindowsMediaPlayer1.Ctlcontrols.currentPosition = watchProgress.Value.TotalSeconds;
+                        }
+                        else
+                        {
+                            // Set the media player's URL to the video path and start from the beginning
+                            axWindowsMediaPlayer1.URL = videoPath;
+                        }
+                    }
+                }
+                else
+                {
+                    // Set the media player's URL to the video path and start from the beginning
+                    axWindowsMediaPlayer1.URL = videoPath;
+                }
             }
             else
             {
@@ -487,10 +561,10 @@ namespace WinFormsApp1
             }
         }
 
-        private void ShowCommentCount(int count)
-        {
-            //MessageBox.Show($"Number of comments: {count}");
 
+
+        private void ShowCommentCount(int count)
+        { 
             if (count > 4)
             {
                 more.Visible = true;
@@ -790,32 +864,32 @@ namespace WinFormsApp1
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        { 
+            if (axWindowsMediaPlayer1.currentMedia != null)
+            { 
+                string mediaDuration = axWindowsMediaPlayer1.currentMedia.durationString;
+                string mediaInfo =  mediaDuration;
+                //MessageBox.Show(mediaInfo, "Current Media Info");
+                TimeSpan stoppedAt = TimeSpan.FromSeconds(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
+                SqlInstance.SaveWatchProgress(id, movieid, stoppedAt);
                 axWindowsMediaPlayer1.close();
-
-                // Create a new form and set it up
-                Form f = new Form();
-                f.StartPosition = FormStartPosition.Manual;
-                f.Location = new Point(0, 0);
-                f.FormBorderStyle = FormBorderStyle.None;
-                f.WindowState = FormWindowState.Maximized;
-
-
-                // Initialize the Home page with the new form
-                Home homePage = new Home(f, id);
-
-                // Show the new form
-                f.Show();
-
-                // Close the current form
-                _form.Hide();
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                 MessageBox.Show("No media is currently playing.", "Error");
             }
+
+            Form f = new Form();
+            f.StartPosition = FormStartPosition.Manual;
+            f.Location = new Point(0, 0);
+            f.FormBorderStyle = FormBorderStyle.None;
+            f.WindowState = FormWindowState.Maximized;
+
+            Home homePage = new Home(f, id);
+            f.Show();
+
+            _form.Hide();
+
         }
 
 

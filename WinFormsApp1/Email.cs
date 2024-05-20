@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace WinFormsApp
 {
-    public partial class Email
+    public partial class Email 
     {
         public int code;
         private string adress;
@@ -29,9 +29,9 @@ namespace WinFormsApp
             try
             {
                   
-                var fromAddress = new MailAddress("enkudawit@gmail.com", "NOTFLIX");
+                var fromAddress = new MailAddress("email", "NOTFLIX");
                 var toAddress = new MailAddress(adress, name);
-                const string fromPassword = "222";
+                const string fromPassword = "password";
                 const string subject = "Password reset verification";
                 string body = $"Your verification code is: {verificationCode}";
 

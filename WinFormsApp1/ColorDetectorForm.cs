@@ -14,14 +14,14 @@ namespace WinFormsApp1
 
         public ColorDetectorForm()
         {
-            InitializeComponents();
+            Initialize();
             timer = new System.Windows.Forms.Timer();
             timer.Interval = 100; // Set the interval to 100 milliseconds
             timer.Tick += Timer_Tick;
             timer.Start();
         }
 
-        private void InitializeComponents()
+        private void Initialize()
         {
             // Remove any panel creation or usage from here
             this.StartPosition = FormStartPosition.Manual;

@@ -23,17 +23,60 @@ namespace WinFormsApp1
                     object result = command.ExecuteScalar();
                     if (result != null)
                     {
-                        // Authentication successful, return the user ID
-                        return Convert.ToInt32(result);
+                         return Convert.ToInt32(result);
                     }
                     else
                     {
-                        // Authentication failed, return 0 or another designated failure value
                         return 0;
                     }
                 }
             }
         }
+
+        public bool ChangePassword(string username, string newPassword)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "UPDATE User SET password = @newPassword WHERE user_name = @username";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@newPassword", newPassword);
+
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+        }
+
+        public (bool exists, string email) CheckUserExists(string username)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT email FROM User WHERE user_name = @username";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+
+                    connection.Open();
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            string email = reader.GetString("email");
+                            return (true, email);
+                        }
+                        else
+                        {
+                            return (false, null);
+                        }
+                    }
+                }
+            }
+        }
+
+
 
 
         public bool CreateUser(string username, string password, string email, string pfp)
@@ -664,32 +707,6 @@ namespace WinFormsApp1
 
             return topRatedMoviesData;
         }
-
-        /*       public List<(string, string)> GetMovieTitlesAndImagesByTitle(string searchText)
-               {
-                   List<(string, string)> movieData = new List<(string, string)>();
-
-
-                   using (MySqlConnection con = new MySqlConnection(connectionString))
-                   {
-                       string query = "SELECT title, poster_image FROM Movie WHERE title LIKE @searchText";
-                       MySqlCommand cmd = new MySqlCommand(query, con);
-                       cmd.Parameters.AddWithValue("@searchText", "%" + searchText + "%");
-
-                       con.Open();
-                       using (MySqlDataReader reader = cmd.ExecuteReader())
-                       {
-                           while (reader.Read())
-                           {
-                               string title = reader.GetString("title");
-                               string posterPath = reader.GetString("poster_image");
-                               movieData.Add((title, posterPath));
-                           }
-                       }
-                   }
-
-                   return movieData;
-               }*/
 
 
         public List<(string title, string posterPath)> GetMovieTitlesAndImagesByTitle(string searchText)

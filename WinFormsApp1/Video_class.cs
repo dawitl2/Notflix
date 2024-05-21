@@ -236,12 +236,13 @@ namespace WinFormsApp1
             server.UseVisualStyleBackColor = false;
             server.Click += server_Click;
             
-            local.BackColor = Color.FromArgb(24, 24, 24);
-            local.FlatAppearance.BorderSize = 0;
+            //local.BackColor = Color.FromArgb(24, 24, 24);
+            local.BackColor = Color.Teal;
+             local.FlatAppearance.BorderSize = 0;
             local.CornerRadius = 7;
             local.FlatStyle = FlatStyle.Flat;
             local.Font = new System.Drawing.Font("Segoe UI", 14F);
-            local.ForeColor = SystemColors.ButtonHighlight;
+            local.ForeColor = Color.Black;
             local.Location = new Point(15, 12);
             local.Name = "server 1";
             local.Size = new Size(100, 40);
@@ -884,7 +885,12 @@ namespace WinFormsApp1
 
          private void server_Click(object sender, EventArgs e)
          {
-             if (IsInternetAvailable())
+            local.BackColor = Color.FromArgb(24, 24, 24);
+            server.BackColor = Color.Teal;
+            server.ForeColor = Color.Black;
+            local.ForeColor = Color.White;
+
+            if (IsInternetAvailable())
              {
                  string backupVideoPath = SqlInstance.GetBackupVideoPath(movieid);
                  if (!string.IsNullOrEmpty(backupVideoPath))
@@ -905,6 +911,10 @@ namespace WinFormsApp1
 
         private void local_Click(object sender, EventArgs e)
         {
+            server.BackColor = Color.FromArgb(24, 24, 24);
+            local.BackColor = Color.Teal;
+            server.ForeColor = Color.White;
+            local.ForeColor = Color.Black;
             PlayVideoFromDatabase();
         }
 

@@ -11,7 +11,6 @@ using Org.BouncyCastle.Asn1.X509;
 using Microsoft.VisualBasic.ApplicationServices;
 using System.Reflection;
 
-
 namespace WinFormsApp1
 {
     public class Video_class
@@ -23,10 +22,10 @@ namespace WinFormsApp1
         int movieid;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
         private Panel panel1;
-        private Panel panel2;
         private RoundedButton button1;
+        private RoundedButton server;
+        private RoundedButton local;
         private RoundedButton more;
-        private Label label_N;
         private Panel panel3;
         private Panel panel4;
         private RoundedPanel poster_panel;
@@ -99,10 +98,10 @@ namespace WinFormsApp1
         {
             axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             panel1 = new Panel();
-            panel2 = new Panel();
             button1 = new RoundedButton();
+            server = new RoundedButton();
+            local = new RoundedButton();
             more = new RoundedButton();
-            label_N = new Label();
             iconPictureBox = new PictureBox();
             iconPictureBox2 = new PictureBox();
             iconPictureBox4 = new PictureBox();
@@ -131,7 +130,8 @@ namespace WinFormsApp1
             // panel1
             panel1.BackColor = Color.Black;
             panel1.Controls.Add(button1);
-            panel1.Controls.Add(panel2);
+            panel1.Controls.Add(server);
+            panel1.Controls.Add(local);
             panel1.Dock = DockStyle.Top;
             panel1.Name = "panel1";
             panel1.Size = new Size(1920, 64 + 3);
@@ -221,6 +221,34 @@ namespace WinFormsApp1
             button1.Text = "Back";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
+            
+            server.BackColor = Color.FromArgb(24, 24, 24);
+            server.FlatAppearance.BorderSize = 0;
+            server.CornerRadius = 7;
+            server.FlatStyle = FlatStyle.Flat;
+            server.Font = new System.Drawing.Font("Segoe UI", 14F);
+            server.ForeColor = SystemColors.ButtonHighlight;
+            server.Location = new Point(125, 12);
+            server.Name = "server";
+            server.Size = new Size(100, 40);
+            server.TabIndex = 0;
+            server.Text = "server";
+            server.UseVisualStyleBackColor = false;
+            server.Click += server_Click;
+            
+            local.BackColor = Color.FromArgb(24, 24, 24);
+            local.FlatAppearance.BorderSize = 0;
+            local.CornerRadius = 7;
+            local.FlatStyle = FlatStyle.Flat;
+            local.Font = new System.Drawing.Font("Segoe UI", 14F);
+            local.ForeColor = SystemColors.ButtonHighlight;
+            local.Location = new Point(15, 12);
+            local.Name = "local";
+            local.Size = new Size(100, 40);
+            local.TabIndex = 0;
+            local.Text = "local";
+            local.UseVisualStyleBackColor = false;
+            local.Click += local_Click;
 
             // more button
             more.Visible = false;
@@ -237,24 +265,6 @@ namespace WinFormsApp1
             more.Text = "More";
             more.UseVisualStyleBackColor = false;
             more.Click += more_Click;
-
-            // panel2
-            panel2.BackColor = Color.Teal;
-            panel2.Controls.Add(label1);
-            panel2.Enabled = false;
-            panel2.Location = new Point(20, 10);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(174, 50);
-
-            // label_N
-            label_N.AutoSize = true;
-            label_N.Font = new System.Drawing.Font("Impact", 26.25F);
-            label_N.ForeColor = Color.White;
-            label_N.Location = new Point(21, 3);
-            label_N.Name = "label1";
-            label_N.Size = new Size(130, 43);
-            label_N.Text = "NOTFLIX";
-            panel2.Controls.Add(label_N);
 
             // iconPictureBox4
             iconPictureBox4.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
@@ -892,8 +902,45 @@ namespace WinFormsApp1
 
         }
 
+         private void server_Click(object sender, EventArgs e)
+         {
+             if (IsInternetAvailable())
+             {
+                 string backupVideoPath = SqlInstance.GetBackupVideoPath(movieid);
+                 if (!string.IsNullOrEmpty(backupVideoPath))
+                 {
+                     axWindowsMediaPlayer1.URL = backupVideoPath;
+                 }
+                 else
+                 {
+                     MessageBox.Show("Server currently unavelable!");
+                 }
+             }
+             else
+             {
+                 MessageBox.Show("No internet connection!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+             }
+         }
 
+        private void local_Click(object sender, EventArgs e)
+        {
+            PlayVideoFromDatabase();
+        }
+
+        private bool IsInternetAvailable()
+        {
+            try
+            {
+                using (var client = new System.Net.WebClient())
+                using (client.OpenRead("http://www.google.com"))
+                    return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         int currentRating = 0;
         /////////////////////// rate ////////////////////////////

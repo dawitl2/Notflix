@@ -20,8 +20,6 @@ CREATE TABLE User (
   pfp VARCHAR(500) NOT NULL
 );
 
-
-
 -- Create the Genre table
 CREATE TABLE Genre (
   genre_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -41,6 +39,13 @@ CREATE TABLE Movie (
   video VARCHAR(225) NOT NULL
 );
 
+-- Create the MovieBackup table
+CREATE TABLE MovieBackup (
+  backup_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  movie_id INT NOT NULL,
+  backup_url VARCHAR(500) NOT NULL,
+  FOREIGN KEY (movie_id) REFERENCES Movie(movie_id)
+);
 
 -- Create the MovieGenre table
 CREATE TABLE MovieGenre (
@@ -84,11 +89,9 @@ CREATE TABLE UserWatchProgress (
   UNIQUE KEY unique_user_movie (user_id, movie_id)
 );
 
-
-
 -- Insert a sample user into the User table
 INSERT INTO User (user_name, password, email, pfp) VALUES (
-  'dawitl2', 'pass', 'pass', 'C:\\Users\\enkud\\Desktop\\man.png'
+  'admin', 'admin', 'enkudawit@gmail.com', 'C:\\Users\\enkud\\Desktop\\man.png'
 );
 
 INSERT INTO Genre (genre_name) VALUES
@@ -99,7 +102,7 @@ INSERT INTO Genre (genre_name) VALUES
 
 -- Insert data into the Movie table
 INSERT INTO Movie (title, release_date, duration, description, trailer_URL, poster_image, wide_poster_image, average_rating, video) VALUES 
-('Superbad', '2007-08-17', 113, 'Two co-dependent high school seniors are forced to deal with separation .', 'https:\\www.youtube.com\\watch?v=4eaZ_48ZYog', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\Superbad.png',        'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\Superbad.png', 4, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\dune.mp4'),
+('Superbad', '2007-08-17', 113, 'Two co-dependent high school seniors are forced to deal with separation .', 'https:\\www.youtube.com\\watch?v=4eaZ_48ZYog', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\Superbad.png',        'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\Superbad.png', 4, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\6.mp4'),
 ('The Hangover', '2009-06-05', 100, 'A Las Vegas-set comedy centered around three groomsmen.', 'https:\\www.youtube.com\\watch?v=tcdUhdOlz9M',               'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\The Hangover.png',                  'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\The Hangover.png', 5, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\5.mp4'),
 ('Bridesmaids', '2011-05-13', 125, 'Competition between the maid of honor and a bridesmaid.', 'https:\\www.youtube.com\\watch?v=FNppLrmdyug',                'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\bridesmaids.png',                    'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\bridesmaids.png', 4, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\1.mp4'),
 ('Poor Things', '2010-05-13', 125, 'An account of the fantastical evolution of Bella Baxter.', 'https:\\www.youtube.com\\watch?v=FNppLrmdyug',                'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\Poor Things.png',                    'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\Poor Things.png', 5, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\3.mp4'),
@@ -110,13 +113,29 @@ INSERT INTO Movie (title, release_date, duration, description, trailer_URL, post
 ('Deadpool', '2011-05-13', 125, 'A wisecracking mercenary gets experimented on and becomes immortal but ugly.', 'https:\\www.youtube.com\\watch?v=Xithigfg7dA', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\Deadpool.png',     'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\Deadpool_wide.png', 2, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\dune.mp4'),
 ('Wonka', '2011-05-13', 225, 'Competition between the maid of honor and a bridesmaid, over who is the bride''s best friends.', 'https:\\www.youtube.com\\watch?v=otNh9bTjXWg', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\Wonka.png', 'C:\\Users\\enkud\\Desktop\\Cinema\\movie_poster_images\\0_wide\\Wonka_wide.png', 1, 'C:\\Users\\enkud\\Desktop\\Cinema\\video\\dune.mp4');
 
+-- Insert data into the Movie table
+INSERT INTO MovieBackup (movie_id, backup_url) VALUES 
+(1, 'https://drive.google.com/uc?export=download&id=11d3bIH1p8B3recwmbOSNsTwK2AoQ1R5b'),
+(2, 'https://drive.google.com/uc?export=download&id=16nVu812nNR45mxZxwc5JHzN0N9cUbkYB'),
+(3, 'https://drive.google.com/uc?export=download&id=19xYl4Ip5dGLk3rRooBS_xnHUqFvLZcg4'),
+(4, 'https://drive.google.com/uc?export=download&id=17iJLR7Cec0RX-4o-YsXLPINdyFHfH84E'),
+(5, 'https://drive.google.com/uc?export=download&id=1XhNdxMUDYSBMV_Bj75QTxR4iC59Rtszc'),
+(6, 'https://drive.google.com/uc?export=download&id=1_LhNjqvvZw3YALZZLshqnmmUAdcZAUS0'),
+(7, 'https://drive.google.com/uc?export=download&id=1QEBYCdpbh41QlLj0vGdRZ73795xZ7QDk'),
+(8, 'https://drive.google.com/uc?export=download&id=1_LhNjqvvZw3YALZZLshqnmmUAdcZAUS0'),
+(9, 'https://drive.google.com/uc?export=download&id=1_LhNjqvvZw3YALZZLshqnmmUAdcZAUS0'),
+(10, 'https://drive.google.com/uc?export=download&id=1_LhNjqvvZw3YALZZLshqnmmUAdcZAUS0');
 
 -- Insert data into the Comment table
-INSERT INTO Comment (user_id, movie_id, comment_text) VALUES (
-  1,
-  1,
-  'This movie was great! I really enjoyed it.'
-);
+INSERT INTO Comment (user_id, movie_id, comment_text) VALUES 
+(1, 1, 'This movie was great! I really enjoyed it.'),
+(1, 1, 'The CGI in that space battle was mind-blowing! They ve really come.'),
+(1, 1, 'That plot twist totally caught me off guard. I did not see that coming!'),
+(1, 1, 'Not sure I entirely followed the ending.  Maybe I need to watch it again?'),
+(1, 1, 'This movie was great! I really enjoyed it.'),
+(1, 1, 'The soundtrack for this movie is fantastic. It really adds to the atmosphere.'),
+(1, 1, 'I laughed so hard during that scene, I nearly cried.');
+
 
 -- Inserting MovieGenre mappings
 -- Superbad: Comedy
@@ -140,7 +159,7 @@ VALUES
 (4, 1),
 (4, 3);
 
--- Kung Fu Panda: Comedy, Action
+-- Kung Fu Panda: Comedy, Actions
 INSERT INTO MovieGenre (movie_id, genre_id) 
 VALUES 
 (5, 1),

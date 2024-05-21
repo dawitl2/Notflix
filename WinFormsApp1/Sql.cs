@@ -838,6 +838,33 @@ namespace WinFormsApp1
             }
         }
 
+        public string GetBackupVideoPath(int movieId)
+        {
+            string backupVideoPath = null;
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT backup_url FROM MovieBackup WHERE movie_id = @movieId";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@movieId", movieId);
+
+                    connection.Open();
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            backupVideoPath = reader.GetString("backup_url");
+                        }
+                    }
+                }
+            }
+
+            return backupVideoPath;
+        }
+
+
 
     }
 }

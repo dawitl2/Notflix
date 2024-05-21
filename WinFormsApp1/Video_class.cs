@@ -229,10 +229,10 @@ namespace WinFormsApp1
             server.Font = new System.Drawing.Font("Segoe UI", 14F);
             server.ForeColor = SystemColors.ButtonHighlight;
             server.Location = new Point(125, 12);
-            server.Name = "server";
+            server.Name = "server 2";
             server.Size = new Size(100, 40);
             server.TabIndex = 0;
-            server.Text = "server";
+            server.Text = "server 2";
             server.UseVisualStyleBackColor = false;
             server.Click += server_Click;
             
@@ -243,10 +243,10 @@ namespace WinFormsApp1
             local.Font = new System.Drawing.Font("Segoe UI", 14F);
             local.ForeColor = SystemColors.ButtonHighlight;
             local.Location = new Point(15, 12);
-            local.Name = "local";
+            local.Name = "server 1";
             local.Size = new Size(100, 40);
             local.TabIndex = 0;
-            local.Text = "local";
+            local.Text = "server 1";
             local.UseVisualStyleBackColor = false;
             local.Click += local_Click;
 
@@ -465,12 +465,10 @@ namespace WinFormsApp1
             string imagePath = SqlInstance.GetWideImagePath(movieid);
             if (!string.IsNullOrEmpty(videoPath))
             {
-                // Retrieve the watch progress from the database
                 TimeSpan? watchProgress = SqlInstance.GetWatchProgress(id, movieid);
 
                 if (watchProgress.HasValue)
                 {
-                    // Custom dialog for resume playback
                     using (Form customDialog = new Form())
                     {
                         customDialog.FormBorderStyle = FormBorderStyle.None; // Remove the title bar
@@ -522,22 +520,18 @@ namespace WinFormsApp1
 
                         if (result == DialogResult.Yes)
                         {
-                            // Set the media player's URL to the video path
-                            axWindowsMediaPlayer1.URL = videoPath;
+                             axWindowsMediaPlayer1.URL = videoPath;
 
-                            // Set the media player's position to the saved watch progress
                             axWindowsMediaPlayer1.Ctlcontrols.currentPosition = watchProgress.Value.TotalSeconds;
                         }
                         else
                         {
-                            // Set the media player's URL to the video path and start from the beginning
-                            axWindowsMediaPlayer1.URL = videoPath;
+                             axWindowsMediaPlayer1.URL = videoPath;
                         }
                     }
                 }
                 else
                 {
-                    // Set the media player's URL to the video path and start from the beginning
                     axWindowsMediaPlayer1.URL = videoPath;
                 }
             }
@@ -593,21 +587,16 @@ namespace WinFormsApp1
                 iconPictureBox69.Controls.Add(more);
                 more.Location = new Point(1730, 78);
 
-
-                // Remove and re-add Comment_panel to ensure layout updates
                 data_panel.Controls.Remove(Comment_panel);
                 data_panel.Controls.Remove(iconPictureBox);
 
-                // Set new size and location for "More" view
                 Comment_panel.Location = new Point(1247, 122);
                 Comment_panel.Size = new Size(608, 956);
 
-                // Re-add Comment_panel to panel3
                 iconPictureBox69.Controls.Add(Comment_panel);
                 iconPictureBox69.Controls.Add(iconPictureBox);
                 Comment_panel.BringToFront();
 
-                // Adjust other controls
                 axWindowsMediaPlayer1.Location = new Point(68, 78);
                 iconPictureBox5.Location = new Point(68, 653);
                 iconPictureBox.Location = new Point(1247, 78);
@@ -620,23 +609,17 @@ namespace WinFormsApp1
                 panel3.Controls.Add(more);
                 more.Location = new Point(1721, 24);
 
-
-                // Remove and re-add Comment_panel to ensure layout updates
                 iconPictureBox69.Controls.Remove(Comment_panel);
                 iconPictureBox69.Controls.Remove(iconPictureBox);
 
-                // Set new size and location for "Less" view
                 Comment_panel.Location = new Point(1244, 75);
                 Comment_panel.Size = new Size(608, 276);
                 iconPictureBox.Location = new Point(1244, 16);
 
-
-                // Re-add Comment_panel to panel3
                 panel3.Controls.Add(Comment_panel);
                 panel3.Controls.Add(iconPictureBox);
                 Comment_panel.BringToFront();
 
-                // Adjust other controls
                 axWindowsMediaPlayer1.Location = new Point(436, 78);
                 iconPictureBox5.Location = new Point(436, 653);
 
@@ -754,7 +737,7 @@ namespace WinFormsApp1
             }
 
             ///////// Comments //////////////////
-            int commentY = 10; // Initial y-coordinate for positioning comments
+            int commentY = 10;
             List<(string, string, string, DateTime)> comments = SqlInstance.GetCommentsForMovie(movieid);
             foreach (var comment in comments)
             {
@@ -803,19 +786,17 @@ namespace WinFormsApp1
 
         private void AddComment(string username, string profilePicture, string commentText, DateTime commentDate)
         {
-            int verticalSpacing = 15; // Adjust the vertical spacing between comments as needed
-
+            int verticalSpacing = 15;
             PictureBox profilePictureBox = new PictureBox();
-            profilePictureBox.Size = new Size(50, 50); // Adjust size as needed
+            profilePictureBox.Size = new Size(50, 50); 
             profilePictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-            profilePictureBox.Location = new Point(10, lastCommentBottom); // Use the last comment bottom as the top position
+            profilePictureBox.Location = new Point(10, lastCommentBottom);
 
             try
             {
                 if (string.IsNullOrEmpty(profilePicture) || !File.Exists(profilePicture))
                 {
-                    // Use the default profile picture if the user's profile picture is missing
-                    profilePicture = "C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\pfp.png";
+                     profilePicture = "C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\pfp.png";
                 }
 
                 System.Drawing.Image image = System.Drawing.Image.FromFile(profilePicture);
@@ -830,24 +811,24 @@ namespace WinFormsApp1
 
             Label usernameLabel = new Label();
             usernameLabel.AutoSize = true;
-            usernameLabel.Font = new System.Drawing.Font("Segoe UI", 13, FontStyle.Bold); // Adjust font and size as needed
-            usernameLabel.Location = new Point(profilePictureBox.Right + 10, profilePictureBox.Top); // Adjust location as needed
+            usernameLabel.Font = new System.Drawing.Font("Segoe UI", 13, FontStyle.Bold);
+            usernameLabel.Location = new Point(profilePictureBox.Right + 10, profilePictureBox.Top); 
             usernameLabel.Text = username;
             usernameLabel.ForeColor = Color.Teal;
             Comment_panel.Controls.Add(usernameLabel);
 
             Label dateLabel = new Label();
             dateLabel.AutoSize = true;
-            dateLabel.Font = new System.Drawing.Font("Segoe UI", 10); // Adjust font and size as needed
+            dateLabel.Font = new System.Drawing.Font("Segoe UI", 10);
             dateLabel.ForeColor = Color.Silver;
-            dateLabel.Location = new Point(Comment_panel.Width - 150, profilePictureBox.Top); // Position to the right side
-            dateLabel.Text = commentDate.ToString("yyyy-MM-dd HH:mm"); // Format the date as needed
+            dateLabel.Location = new Point(Comment_panel.Width - 150, profilePictureBox.Top);
+            dateLabel.Text = commentDate.ToString("yyyy-MM-dd HH:mm"); 
             Comment_panel.Controls.Add(dateLabel);
 
             Label commentTextLabel = new Label();
             commentTextLabel.AutoSize = true;
-            commentTextLabel.Font = new System.Drawing.Font("Segoe UI", 10); // Adjust font and size as needed
-            commentTextLabel.Location = new Point(profilePictureBox.Right + 10, usernameLabel.Bottom + 5); // Adjust location as needed
+            commentTextLabel.Font = new System.Drawing.Font("Segoe UI", 10); 
+            commentTextLabel.Location = new Point(profilePictureBox.Right + 10, usernameLabel.Bottom + 5); 
             commentTextLabel.Text = commentText;
             commentTextLabel.ForeColor = Color.White;
             Comment_panel.Controls.Add(commentTextLabel);
@@ -879,7 +860,6 @@ namespace WinFormsApp1
             { 
                 string mediaDuration = axWindowsMediaPlayer1.currentMedia.durationString;
                 string mediaInfo =  mediaDuration;
-                //MessageBox.Show(mediaInfo, "Current Media Info");
                 TimeSpan stoppedAt = TimeSpan.FromSeconds(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
                 SqlInstance.SaveWatchProgress(id, movieid, stoppedAt);
                 axWindowsMediaPlayer1.close();
@@ -965,10 +945,8 @@ namespace WinFormsApp1
             currentRating = starIndex;
             MessageBox.Show($"You rated : {currentRating}");
 
-            // Update the rating in the database
-            SqlInstance.UpdateMovieRating(movieid, id, currentRating);
+             SqlInstance.UpdateMovieRating(movieid, id, currentRating);
 
-            // Update star visuals
             for (int i = 1; i <= starIndex; i++)
             {
                 Control[] stars = ((Control)pictureBox.Parent).Controls.Find("star" + i, true);

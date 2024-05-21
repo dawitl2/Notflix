@@ -7,7 +7,6 @@ namespace WinFormsApp1
 {
     public class ColorDetectorForm : Form
     {
-        // Define event for RGB value update
         public event EventHandler<ColorEventArgs> ColorUpdated;
 
         private System.Windows.Forms.Timer timer;
@@ -23,10 +22,8 @@ namespace WinFormsApp1
 
         private void Initialize()
         {
-            // Remove any panel creation or usage from here
             this.StartPosition = FormStartPosition.Manual;
-            // Adjust the location to the center of the screen
-            this.Location = new Point((Screen.PrimaryScreen.Bounds.Width - 150) / 2, (Screen.PrimaryScreen.Bounds.Height - 50) / 2);
+             this.Location = new Point((Screen.PrimaryScreen.Bounds.Width - 150) / 2, (Screen.PrimaryScreen.Bounds.Height - 50) / 2);
             this.Size = new Size(150, 50);
             this.FormBorderStyle = FormBorderStyle.None;
             this.TopMost = true; // Set to true to keep the form on top of other windows
@@ -35,11 +32,9 @@ namespace WinFormsApp1
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            // Get the dominant color
             Color dominantColor = GetDominantColor();
 
-            // Raise event to notify subscribers about color update
-            OnColorUpdated(new ColorEventArgs(dominantColor));
+             OnColorUpdated(new ColorEventArgs(dominantColor));
         }
 
         protected virtual void OnColorUpdated(ColorEventArgs e)

@@ -158,7 +158,7 @@ namespace WinFormsApp1
                     genreLabel.MouseClick += (sender, e) => GenreLabel_Click(sender, e, genreLabel);
                 }
 
-                yPos += 40; // Increase Y position for the next pair
+                yPos += 40; 
             }
 
 
@@ -514,14 +514,14 @@ namespace WinFormsApp1
                 {
                     pictureBox.Size = hoverSize;
                     pictureBox.Margin = hoverMargin;
-                    pictureBox.Refresh(); // Force refresh to update the appearance
+                    pictureBox.Refresh();   
                 };
 
                 pictureBox.MouseLeave += (sender, e) =>
                 {
                     pictureBox.Size = normalSize;
                     pictureBox.Margin = normalMargin;
-                    pictureBox.Refresh(); // Force refresh to update the appearance
+                    pictureBox.Refresh(); 
                 };
 
                 pictureBox.Paint += (sender, e) =>
@@ -1113,11 +1113,7 @@ namespace WinFormsApp1
 
             Bitmap resizedImage = new Bitmap(widePictureBox.Image, new Size(100, 100));
 
-            // Analyze the resized image to find the majority color
-             majorityColor = FindMajorityColor(resizedImage);
-
-            // Display the majority color in a message box
-            // MessageBox.Show($"The majority color of the movie image is: {majorityColor}");
+            majorityColor = FindMajorityColor(resizedImage);
             topFadingPanel.Paint += (sender, e) =>
             {
 
@@ -1142,9 +1138,7 @@ namespace WinFormsApp1
 
         private Color FindMajorityColor(Bitmap image)
         {
-            // Here, you can implement the logic to analyze the image and find the majority color.
-            // For simplicity, let's just get the average color of the entire image.
-            int totalRed = 0, totalGreen = 0, totalBlue = 0;
+              int totalRed = 0, totalGreen = 0, totalBlue = 0;
             int pixelCount = 0;
 
             for (int x = 0; x < image.Width; x++)
@@ -1300,7 +1294,7 @@ namespace WinFormsApp1
             }
             else
             {
-                suggestionPanel.Visible = false; // Hide the panel if text length is less than 3
+                suggestionPanel.Visible = false; 
             }
         }
 
@@ -1317,9 +1311,9 @@ namespace WinFormsApp1
             if (suggestionCount > 0)
             {
                 int panelWidth = roundedPanel1.Width;
-                int panelHeight = Math.Min(200, suggestionCount * 60); // Adjust height based on the number of suggestions
+                int panelHeight = Math.Min(200, suggestionCount * 60); 
                 suggestionPanel.Size = new Size(panelWidth, panelHeight);
-                suggestionPanel.Location = new Point(roundedPanel1.Left, roundedPanel1.Bottom + 5); // Position below the search box
+                suggestionPanel.Location = new Point(roundedPanel1.Left, roundedPanel1.Bottom + 5); 
                 suggestionPanel.Visible = true;
 
                 for (int i = 0; i < suggestionCount; i++)

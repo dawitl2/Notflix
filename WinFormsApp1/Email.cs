@@ -29,9 +29,9 @@ namespace WinFormsApp
             try
             {
                   
-                var fromAddress = new MailAddress("email", "NOTFLIX");
+                var fromAddress = new MailAddress("big802240@gmail.com", "NOTFLIX");
                 var toAddress = new MailAddress(adress, name);
-                const string fromPassword = "password";
+                const string fromPassword = "hsip tral jxqu hhrq";
                 const string subject = "Password reset verification";
                 string body = $"Your verification code is: {verificationCode}";
 

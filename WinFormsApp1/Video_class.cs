@@ -134,6 +134,7 @@ namespace WinFormsApp1
             axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
             axWindowsMediaPlayer1.Size = new Size(1100, 623);
             axWindowsMediaPlayer1.TabIndex = 1;
+            axWindowsMediaPlayer1.ClickEvent += new AxWMPLib._WMPOCXEvents_ClickEventHandler(axWindowsMediaPlayer1_Click);
 
             // panel1
             panel1.BackColor = Color.Black;
@@ -266,7 +267,7 @@ namespace WinFormsApp1
             full.Text = "";
             full.UseVisualStyleBackColor = false;
             full.Click += full_Click;
-            
+          
             play.BackColor = Color.Transparent;
             play.FlatAppearance.BorderSize = 0;
             play.CornerRadius = 7;
@@ -280,7 +281,7 @@ namespace WinFormsApp1
             play.Text = "";
             play.UseVisualStyleBackColor = false;
             play.Click += play_Click;
-            
+         
             server.BackColor = Color.FromArgb(24, 24, 24);
             server.FlatAppearance.BorderSize = 0;
             server.CornerRadius = 7;
@@ -294,7 +295,8 @@ namespace WinFormsApp1
             server.Text = "server 2";
             server.UseVisualStyleBackColor = false;
             server.Click += server_Click;
-            
+
+
             //local.BackColor = Color.FromArgb(24, 24, 24);
             local.BackColor = Color.Teal;
             local.FlatAppearance.BorderSize = 0;
@@ -309,6 +311,7 @@ namespace WinFormsApp1
             local.Text = "server 1";
             local.UseVisualStyleBackColor = false;
             local.Click += local_Click;
+
 
             // more button
             more.Visible = false;
@@ -325,7 +328,7 @@ namespace WinFormsApp1
             more.Text = "More";
             more.UseVisualStyleBackColor = false;
             more.Click += more_Click;
-
+      
             // iconPictureBox4
             iconPictureBox4.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox4.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\rate.png");
@@ -801,7 +804,8 @@ namespace WinFormsApp1
                 Process.Start(psi);
             }
 
-            ///////// Comments //////////////////
+            ////////////// Comments //////////////////
+           
             int commentY = 10;
             List<(string, string, string, DateTime)> comments = SqlInstance.GetCommentsForMovie(movieid);
             foreach (var comment in comments)
@@ -947,6 +951,22 @@ namespace WinFormsApp1
 
         }
 
+        private void axWindowsMediaPlayer1_Click(object sender, AxWMPLib._WMPOCXEvents_ClickEvent e)
+        {
+            if (axWindowsMediaPlayer1 != null)
+            {
+                 if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPlaying)
+                {
+                    axWindowsMediaPlayer1.Ctlcontrols.pause();
+                }
+                else if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPaused ||
+                         axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsStopped)
+                {
+                    axWindowsMediaPlayer1.Ctlcontrols.play();
+                }
+            }
+        }
+
         private void full_Click(object sender, EventArgs e)
         {
             if (axWindowsMediaPlayer1 != null)
@@ -1042,7 +1062,7 @@ namespace WinFormsApp1
             PictureBox pictureBox = (PictureBox)sender;
             pictureBox.Cursor = Cursors.Default;
         }
-   
+        
         private void bars_click(object sender, EventArgs e)
         {
             if (axWindowsMediaPlayer1.currentMedia != null)

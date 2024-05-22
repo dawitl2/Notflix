@@ -23,6 +23,9 @@ namespace WinFormsApp1
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
         private Panel panel1;
         private RoundedButton button1;
+        private RoundedButton sound;
+        private RoundedButton full;
+        private RoundedButton play;
         private RoundedButton server;
         private RoundedButton local;
         private RoundedButton more;
@@ -48,6 +51,7 @@ namespace WinFormsApp1
         private System.Threading.Timer timer;
         private System.Windows.Forms.TextBox newCommentTextBox;
         private ColorDetectorForm _colorDetectorForm;
+        private Home h;
 
         public Video_class(Form form, string[] array, int movieid, int id)
         {
@@ -99,6 +103,9 @@ namespace WinFormsApp1
             axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             panel1 = new Panel();
             button1 = new RoundedButton();
+            sound = new RoundedButton();
+            full = new RoundedButton();
+            play = new RoundedButton();
             server = new RoundedButton();
             local = new RoundedButton();
             more = new RoundedButton();
@@ -107,6 +114,7 @@ namespace WinFormsApp1
             iconPictureBox4 = new PictureBox();
             iconPictureBox5 = new PictureBox();
             roundedPanelTop = new RoundedPanel();
+            iconPictureBox3 = new PictureBox();
             textBox1 = new System.Windows.Forms.TextBox();
             panel3 = new Panel();
             label3 = new Label();
@@ -129,9 +137,8 @@ namespace WinFormsApp1
 
             // panel1
             panel1.BackColor = Color.Black;
+            panel1.Controls.Add(iconPictureBox3);
             panel1.Controls.Add(button1);
-            panel1.Controls.Add(server);
-            panel1.Controls.Add(local);
             panel1.Dock = DockStyle.Top;
             panel1.Name = "panel1";
             panel1.Size = new Size(1920, 64 + 3);
@@ -149,6 +156,16 @@ namespace WinFormsApp1
             textBox1.ForeColor = Color.Gray;
             textBox1.GotFocus += TextBox1_GotFocus;
             textBox1.KeyDown += TextBox1_KeyDown;
+
+            iconPictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
+            iconPictureBox3.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\notflix.png");
+            iconPictureBox3.Location = new Point(30, 13);
+            iconPictureBox3.Name = "wide_panel";
+            iconPictureBox3.Size = new Size(160, 45);
+            iconPictureBox3.TabIndex = 13;
+            iconPictureBox3.MouseEnter += bars_MouseEnter;
+            iconPictureBox3.MouseLeave += bars_MouseLeave;
+            iconPictureBox3.Click += bars_click;
 
             // Define the GotFocus event handler
             void TextBox1_GotFocus(object sender, EventArgs e)
@@ -221,16 +238,58 @@ namespace WinFormsApp1
             button1.Text = "Back";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
+
+            sound.BackColor = Color.Transparent;
+            sound.FlatAppearance.BorderSize = 0;
+            sound.CornerRadius = 7;
+            sound.FlatStyle = FlatStyle.Flat;
+            sound.Font = new System.Drawing.Font("Segoe UI", 9F);
+            sound.ForeColor = SystemColors.ButtonHighlight;
+            sound.Location = new Point(1040, 15);
+            sound.Name = "";
+            sound.Size = new Size(18, 19);
+            sound.TabIndex = 0;
+            sound.Text = "";
+            sound.UseVisualStyleBackColor = false;
+            sound.Click += sound_Click;
+            
+            full.BackColor = Color.Transparent;
+            full.FlatAppearance.BorderSize = 0;
+            full.CornerRadius = 7;
+            full.FlatStyle = FlatStyle.Flat;
+            full.Font = new System.Drawing.Font("Segoe UI", 9F);
+            full.ForeColor = SystemColors.ButtonHighlight;
+            full.Location = new Point(1064, 15);
+            full.Name = "";
+            full.Size = new Size(18, 19);
+            full.TabIndex = 0;
+            full.Text = "";
+            full.UseVisualStyleBackColor = false;
+            full.Click += full_Click;
+            
+            play.BackColor = Color.Transparent;
+            play.FlatAppearance.BorderSize = 0;
+            play.CornerRadius = 7;
+            play.FlatStyle = FlatStyle.Flat;
+            play.Font = new System.Drawing.Font("Segoe UI", 9F);
+            play.ForeColor = SystemColors.ButtonHighlight;
+            play.Location = new Point(537, 12);
+            play.Name = "";
+            play.Size = new Size(26, 24);
+            play.TabIndex = 0;
+            play.Text = "";
+            play.UseVisualStyleBackColor = false;
+            play.Click += play_Click;
             
             server.BackColor = Color.FromArgb(24, 24, 24);
             server.FlatAppearance.BorderSize = 0;
             server.CornerRadius = 7;
             server.FlatStyle = FlatStyle.Flat;
-            server.Font = new System.Drawing.Font("Segoe UI", 14F);
+            server.Font = new System.Drawing.Font("Segoe UI", 9F);
             server.ForeColor = SystemColors.ButtonHighlight;
-            server.Location = new Point(125, 12);
+            server.Location = new Point(106, 12);
             server.Name = "server 2";
-            server.Size = new Size(100, 40);
+            server.Size = new Size(76, 25);
             server.TabIndex = 0;
             server.Text = "server 2";
             server.UseVisualStyleBackColor = false;
@@ -238,14 +297,14 @@ namespace WinFormsApp1
             
             //local.BackColor = Color.FromArgb(24, 24, 24);
             local.BackColor = Color.Teal;
-             local.FlatAppearance.BorderSize = 0;
+            local.FlatAppearance.BorderSize = 0;
             local.CornerRadius = 7;
             local.FlatStyle = FlatStyle.Flat;
-            local.Font = new System.Drawing.Font("Segoe UI", 14F);
+            local.Font = new System.Drawing.Font("Segoe UI", 9F);
             local.ForeColor = Color.Black;
-            local.Location = new Point(15, 12);
+            local.Location = new Point(21, 12);
             local.Name = "server 1";
-            local.Size = new Size(100, 40);
+            local.Size = new Size(76, 25);
             local.TabIndex = 0;
             local.Text = "server 1";
             local.UseVisualStyleBackColor = false;
@@ -280,6 +339,11 @@ namespace WinFormsApp1
             iconPictureBox5.Location = new(436, 653);
             iconPictureBox5.Name = "wide_panel";
             iconPictureBox5.Size = new Size(1100, 48);
+            iconPictureBox5.Controls.Add(local);
+            iconPictureBox5.Controls.Add(sound);
+            iconPictureBox5.Controls.Add(full);
+            iconPictureBox5.Controls.Add(play);
+            iconPictureBox5.Controls.Add(server);
             iconPictureBox5.BringToFront();
 
             // panel3
@@ -883,7 +947,42 @@ namespace WinFormsApp1
 
         }
 
-         private void server_Click(object sender, EventArgs e)
+        private void full_Click(object sender, EventArgs e)
+        {
+            if (axWindowsMediaPlayer1 != null)
+            {
+                axWindowsMediaPlayer1.fullScreen = true;
+            }
+        }
+
+        private void sound_Click(object sender, EventArgs e)
+        {
+            if (axWindowsMediaPlayer1 != null)
+            { 
+                axWindowsMediaPlayer1.settings.mute = !axWindowsMediaPlayer1.settings.mute;
+            }
+        }
+
+
+        private void play_Click(object sender, EventArgs e)
+        {
+            if (axWindowsMediaPlayer1 != null)
+            {
+                // Check if the player is currently playing or paused
+                if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPlaying)
+                {
+                    axWindowsMediaPlayer1.Ctlcontrols.pause();
+                }
+                else if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPaused ||
+                         axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsStopped)
+                {
+                    axWindowsMediaPlayer1.Ctlcontrols.play();
+                }
+            }
+        }
+
+
+        private void server_Click(object sender, EventArgs e)
          {
             local.BackColor = Color.FromArgb(24, 24, 24);
             server.BackColor = Color.Teal;
@@ -932,8 +1031,50 @@ namespace WinFormsApp1
             }
         }
 
-        int currentRating = 0;
+        private void bars_MouseEnter(object sender, EventArgs e)
+        {
+            PictureBox pictureBox = (PictureBox)sender;
+            pictureBox.Cursor = Cursors.Hand;
+        }
+
+        private void bars_MouseLeave(object sender, EventArgs e)
+        {
+            PictureBox pictureBox = (PictureBox)sender;
+            pictureBox.Cursor = Cursors.Default;
+        }
+   
+        private void bars_click(object sender, EventArgs e)
+        {
+            if (axWindowsMediaPlayer1.currentMedia != null)
+            {
+                string mediaDuration = axWindowsMediaPlayer1.currentMedia.durationString;
+                string mediaInfo = mediaDuration;
+                TimeSpan stoppedAt = TimeSpan.FromSeconds(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
+                SqlInstance.SaveWatchProgress(id, movieid, stoppedAt);
+                axWindowsMediaPlayer1.close();
+            }
+            else
+            {
+                MessageBox.Show("No media is currently playing.", "Error");
+            }
+
+            Form f = new Form();
+            f.StartPosition = FormStartPosition.Manual;
+            f.Location = new Point(0, 0);
+            f.FormBorderStyle = FormBorderStyle.None;
+            f.WindowState = FormWindowState.Maximized;
+
+            Home homePage = new Home(f, id);
+            f.Show();
+
+            _form.Hide();
+        }
+
+
+            int currentRating = 0;
+
         /////////////////////// rate ////////////////////////////
+        
         private void Star_MouseEnter(object sender, EventArgs e)
         {
             PictureBox pictureBox = (PictureBox)sender;

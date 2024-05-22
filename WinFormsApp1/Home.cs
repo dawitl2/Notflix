@@ -22,7 +22,7 @@ namespace WinFormsApp1
         PictureBox widePictureBox;
         PictureBox iconPictureBox;
         PictureBox iconPictureBox2;
-        PictureBox iconPictureBox3;
+        public PictureBox iconPictureBox3;
         PictureBox iconPictureBox4;
         private Label discription_label;
         private Label title_label;
@@ -53,7 +53,7 @@ namespace WinFormsApp1
             PopulateMostRatedMovies();
             PopulateMovies();
 
-        }
+        } 
 
         private void InitializeComponent()
         {

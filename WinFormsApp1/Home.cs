@@ -247,14 +247,6 @@ namespace WinFormsApp1
             button2.Text = "Exit";
             button2.UseVisualStyleBackColor = false;
             button2.Location = new Point(panel1.Width - 130, 21);
-            button2.MouseEnter += (sender, e) =>
-            {
-                AnimateButtonColor(button2, Color.Red);
-            };
-            button2.MouseLeave += (sender, e) =>
-            {
-                AnimateButtonColor(button2, Color.Teal);
-            };
             button2.MouseClick += (sender, e) => exit_Click(sender, e);
 
             // right //
@@ -1048,19 +1040,11 @@ namespace WinFormsApp1
             watchButton.TabIndex = 7;
             watchButton.Text = "Watch";
             watchButton.UseVisualStyleBackColor = false;
-            watchButton.MouseEnter += (sender, e) =>
-            {
-                AnimateButtonColor(watchButton, Color.Green);
-            };
-            watchButton.MouseLeave += (sender, e) =>
-            {
-                AnimateButtonColor(watchButton, Color.Teal);
-            };
             watchButton.Enter += (sender, e) =>
             {
                  PictureBox_Click(sender, e, "name", "duration", path);
             };
-       
+
             RoundedButton trailerButton = new RoundedButton();
             trailerButton.BackColor = Color.Teal;
             trailerButton.BackgroundImageLayout = ImageLayout.None;
@@ -1075,14 +1059,7 @@ namespace WinFormsApp1
             trailerButton.TabIndex = 7;
             trailerButton.Text = "Trailer";
             trailerButton.UseVisualStyleBackColor = false;
-            trailerButton.MouseEnter += (sender, e) =>
-            {
-                AnimateButtonColor(trailerButton, Color.Red);
-            };
-            trailerButton.MouseLeave += (sender, e) =>
-            {
-                AnimateButtonColor(trailerButton, Color.Teal);
-            };
+           
             trailerButton.Enter += (sender, e) =>
             {
                 string url = movieData[3];
@@ -1159,40 +1136,6 @@ namespace WinFormsApp1
             int avgBlue = totalBlue / pixelCount;
 
             return Color.FromArgb(avgRed, avgGreen, avgBlue);
-        }
-
-
-
-
-
-
-        // ///////////////////// //////////////////////////////////////////
-        // ///////////////////// //////////////////////////////////////////
-
-
-
-
-
-
-        private async void AnimateButtonColor(RoundedButton button, Color targetColor)
-        {
-            int steps = 20;
-            int duration = 400; // in milliseconds
-
-            Color initialColor = button.BackColor;
-            for (int i = 1; i <= steps; i++)
-            {
-                float ratio = (float)i / steps;
-                int R = (int)(initialColor.R + ratio * (targetColor.R - initialColor.R));
-                int G = (int)(initialColor.G + ratio * (targetColor.G - initialColor.G));
-                int B = (int)(initialColor.B + ratio * (targetColor.B - initialColor.B));
-
-                button.BackColor = Color.FromArgb(R, G, B);
-
-                await Task.Delay(duration / steps);
-            }
-
-            button.BackColor = targetColor;
         }
 
         private void left_Click(object sender, EventArgs e)

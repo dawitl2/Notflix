@@ -22,6 +22,7 @@ namespace WinFormsApp1
         int movieid;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
         private Panel panel1;
+        private RoundedPanel morePanel;
         private RoundedButton button1;
         private RoundedButton sound;
         private RoundedButton full;
@@ -126,6 +127,7 @@ namespace WinFormsApp1
             label1 = new Label();
             trailer_panel = new RoundedPanel();
             poster_panel = new RoundedPanel();
+            morePanel = new RoundedPanel();
             panel4 = new Panel();
 
             // axWindowsMediaPlayer1
@@ -492,6 +494,17 @@ namespace WinFormsApp1
             poster_panel.Location = new Point(66, 18);
             poster_panel.Name = "poster_panel";
             poster_panel.Size = new Size(241, 312);
+            
+            // more_panel
+            morePanel.BackColor = Color.FromArgb(24, 24, 24);
+            morePanel.EdgeColor = Color.FromArgb(29, 41, 43);
+            //morePanel.BackColor = Color.Teal;
+            //morePanel.EdgeColor = Color.Teal;
+            morePanel.Location = new Point(1247, 77);
+            morePanel.Name = "more_panel";
+            morePanel.Size = new Size(608, 43);
+            morePanel.BringToFront();
+            morePanel.Visible = false;
 
             // panel4
             panel4.Dock = DockStyle.Fill;
@@ -501,6 +514,7 @@ namespace WinFormsApp1
 
             iconPictureBox69.Controls.Add(iconPictureBox5);
             iconPictureBox69.Controls.Add(axWindowsMediaPlayer1);
+            iconPictureBox69.Controls.Add(morePanel);
             iconPictureBox69.Controls.Add(panel3);
             iconPictureBox69.Controls.Add(panel1);
 
@@ -651,9 +665,11 @@ namespace WinFormsApp1
         {
             if (more.Text == "More")
             {
+                more.BackColor = Color.Teal;
+                morePanel.Visible = true;
                 panel3.Controls.Remove(more);
-                iconPictureBox69.Controls.Add(more);
-                more.Location = new Point(1730, 78);
+                morePanel.Controls.Add(more);
+                more.Location = new Point(483, 4);
 
                 data_panel.Controls.Remove(Comment_panel);
                 data_panel.Controls.Remove(iconPictureBox);
@@ -662,17 +678,18 @@ namespace WinFormsApp1
                 Comment_panel.Size = new Size(608, 956);
 
                 iconPictureBox69.Controls.Add(Comment_panel);
-                iconPictureBox69.Controls.Add(iconPictureBox);
+                morePanel.Controls.Add(iconPictureBox);
                 Comment_panel.BringToFront();
 
                 axWindowsMediaPlayer1.Location = new Point(68, 78);
                 iconPictureBox5.Location = new Point(68, 653);
-                iconPictureBox.Location = new Point(1247, 78);
+                iconPictureBox.Location = new Point(4, 3);
 
                 more.Text = "Less";
             }
             else
             {
+                morePanel.Visible = false;
                 iconPictureBox69.Controls.Remove(more);
                 panel3.Controls.Add(more);
                 more.Location = new Point(1721, 24);

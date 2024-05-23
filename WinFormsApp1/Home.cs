@@ -1105,16 +1105,13 @@ namespace WinFormsApp1
             panel1.BackColor = majorityColor;
         }
 
-        // ///////////////////// //////////////////////////////////////////
-        // ///////////////////// //////////////////////////////////////////
-
-
-
+        /////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////
 
 
         private Color FindMajorityColor(Bitmap image)
         {
-              int totalRed = 0, totalGreen = 0, totalBlue = 0;
+            int totalRed = 0, totalGreen = 0, totalBlue = 0;
             int pixelCount = 0;
 
             for (int x = 0; x < image.Width; x++)

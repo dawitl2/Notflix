@@ -53,6 +53,7 @@ namespace WinFormsApp1
         private System.Windows.Forms.TextBox newCommentTextBox;
         private ColorDetectorForm _colorDetectorForm;
         private Home h;
+        private Wikipedia wiki;
 
         public Video_class(Form form, string[] array, int movieid, int id)
         {
@@ -97,6 +98,8 @@ namespace WinFormsApp1
                     star.MouseClick -= Star_MouseClick;
                 }
             }
+
+            wiki = new Wikipedia(movie[0]);
         }
 
         void InitializeComponent()
@@ -718,48 +721,56 @@ namespace WinFormsApp1
             data_panel.Controls.Clear();
 
             int y = 10;
+            int labelHeight = 30;
+            int labelSpacing = 10;
 
-            Label titleLabel = new Label();
             Label releaseDateLabel = new Label();
-            Label descriptionLabel = new Label();
             Label ratingLabel = new Label();
+            Label castLabel = new Label();
+            Label descriptionLabel = new Label();
 
-            titleLabel.Text = "Title: " + movie[0];
             releaseDateLabel.Text = "Release Date: " + movie[1];
-            descriptionLabel.Text = "Description: " + movie[2];
-
             double averageRating = SqlInstance.GetAverageRating(movieid);
             ratingLabel.Text = "Average Rating: " + averageRating.ToString("F1");
 
-            titleLabel.ForeColor = Color.White;
             releaseDateLabel.ForeColor = Color.White;
-            descriptionLabel.ForeColor = Color.White;
             ratingLabel.ForeColor = Color.White;
+            castLabel.ForeColor = Color.White;
+            descriptionLabel.ForeColor = Color.White;
 
-            titleLabel.Font = new System.Drawing.Font("Segoe UI", 15, FontStyle.Bold);
             releaseDateLabel.Font = new System.Drawing.Font("Segoe UI", 15);
             ratingLabel.Font = new System.Drawing.Font("Segoe UI", 15);
-            titleLabel.Location = new Point(10, y);
-            releaseDateLabel.Location = new Point(10, y + 30);
-            ratingLabel.Location = new Point(10, y + 60);
+            castLabel.Font = new System.Drawing.Font("Segoe UI", 15);
+            descriptionLabel.Font = new System.Drawing.Font("Segoe UI", 15);
+
+            releaseDateLabel.Location = new Point(10, y);
+            releaseDateLabel.Size = new Size(data_panel.Width - 20, labelHeight);
+
+            y += labelHeight + labelSpacing;
+            ratingLabel.Location = new Point(10, y);
+            ratingLabel.Size = new Size(data_panel.Width - 20, labelHeight);
+
+            // Adding cast names
+            Wikipedia wiki = new Wikipedia(movie[0]);
+            string[] castNames = wiki.GetCastNames();
+            castLabel.Text = "Cast: " + string.Join(", ", castNames);
+
+            y += labelHeight + labelSpacing;
+            castLabel.Location = new Point(10, y);
+            castLabel.AutoSize = true;
+
+            y += castLabel.Height + labelSpacing;
+            descriptionLabel.Text = "Description: " + movie[2];
             descriptionLabel.AutoSize = false;
             descriptionLabel.Width = data_panel.Width - 20;
-            releaseDateLabel.Width = data_panel.Width - 20;
-            ratingLabel.Width = data_panel.Width - 20;
-
             descriptionLabel.Height = 100;
-            descriptionLabel.Location = new Point(10, y + 90);
-            descriptionLabel.Font = new System.Drawing.Font("Segoe UI", 17);
+            descriptionLabel.Location = new Point(10, y+7);
             descriptionLabel.AutoEllipsis = true;
-            descriptionLabel.Text = "Description: " + movie[2];
-            descriptionLabel.ForeColor = Color.White;
 
-            data_panel.AutoSize = true;
-
-            data_panel.Controls.Add(titleLabel);
             data_panel.Controls.Add(releaseDateLabel);
-            data_panel.Controls.Add(descriptionLabel);
             data_panel.Controls.Add(ratingLabel);
+            data_panel.Controls.Add(castLabel);
+            data_panel.Controls.Add(descriptionLabel);
 
             // Adding Poster Image
             string PosterImagePath = movie[4];
@@ -810,19 +821,8 @@ namespace WinFormsApp1
             widePicture.MouseLeave += PictureBox_MouseLeave;
             widePicture.Click += bars_click;
 
-            void bars_click(object sender, EventArgs e)
-            {
-                string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-                ProcessStartInfo psi = new ProcessStartInfo
-                {
-                    FileName = url,
-                    UseShellExecute = true
-                };
-                Process.Start(psi);
-            }
-
             ////////////// Comments //////////////////
-           
+
             int commentY = 10;
             List<(string, string, string, DateTime)> comments = SqlInstance.GetCommentsForMovie(movieid);
             foreach (var comment in comments)
@@ -837,6 +837,9 @@ namespace WinFormsApp1
 
             ShowCommentCount(comments.Count);
         }
+
+
+
 
         private void AddCommentButton_Click(object sender, EventArgs e)
         {

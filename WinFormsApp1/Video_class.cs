@@ -941,18 +941,19 @@ namespace WinFormsApp1
         }
 
         private void button1_Click(object sender, EventArgs e)
-        { 
+        {
             if (axWindowsMediaPlayer1.currentMedia != null)
-            { 
+            {
                 string mediaDuration = axWindowsMediaPlayer1.currentMedia.durationString;
-                string mediaInfo =  mediaDuration;
+                string mediaInfo = mediaDuration;
                 TimeSpan stoppedAt = TimeSpan.FromSeconds(axWindowsMediaPlayer1.Ctlcontrols.currentPosition);
                 SqlInstance.SaveWatchProgress(id, movieid, stoppedAt);
                 axWindowsMediaPlayer1.close();
             }
             else
             {
-                 MessageBox.Show("No media is currently playing.", "Error");
+                MessageBox.Show("No media is currently playing.", "Error");
+                return;
             }
 
             Form f = new Form();
@@ -962,10 +963,11 @@ namespace WinFormsApp1
             f.WindowState = FormWindowState.Maximized;
 
             Home homePage = new Home(f, id);
+            f.Load += (s, args) =>
+            {
+                _form.Hide();
+            };
             f.Show();
-
-            _form.Hide();
-
         }
 
         private void axWindowsMediaPlayer1_Click(object sender, AxWMPLib._WMPOCXEvents_ClickEvent e)

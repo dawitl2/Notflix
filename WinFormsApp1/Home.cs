@@ -231,7 +231,6 @@ namespace WinFormsApp1
             button1.UseVisualStyleBackColor = false;
             button1.MouseClick += (sender, e) => filter_Click(sender, e);
 
-
             // button 2 //
             button2.BackColor = Color.Teal;
             button2.CornerRadius = 7;

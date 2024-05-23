@@ -37,11 +37,13 @@ namespace WinFormsApp1
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
+                string hashedPassword = PasswordHelper.HashPassword(newPassword);
+
                 string query = "UPDATE User SET password = @newPassword WHERE user_name = @username";
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@username", username);
-                    command.Parameters.AddWithValue("@newPassword", newPassword);
+                    command.Parameters.AddWithValue("@newPassword", hashedPassword);
 
                     connection.Open();
                     int rowsAffected = command.ExecuteNonQuery();

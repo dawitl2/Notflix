@@ -13,6 +13,7 @@ using System.Reflection;
 
 namespace WinFormsApp1
 {
+
     public class Video_class
     {
         private readonly Sql SqlInstance = new Sql();
@@ -258,7 +259,7 @@ namespace WinFormsApp1
             sound.Text = "";
             sound.UseVisualStyleBackColor = false;
             sound.Click += sound_Click;
-            
+
             full.BackColor = Color.Transparent;
             full.FlatAppearance.BorderSize = 0;
             full.CornerRadius = 7;
@@ -272,7 +273,7 @@ namespace WinFormsApp1
             full.Text = "";
             full.UseVisualStyleBackColor = false;
             full.Click += full_Click;
-          
+
             play.BackColor = Color.Transparent;
             play.FlatAppearance.BorderSize = 0;
             play.CornerRadius = 7;
@@ -286,7 +287,7 @@ namespace WinFormsApp1
             play.Text = "";
             play.UseVisualStyleBackColor = false;
             play.Click += play_Click;
-         
+
             server.BackColor = Color.FromArgb(24, 24, 24);
             server.FlatAppearance.BorderSize = 0;
             server.CornerRadius = 7;
@@ -333,7 +334,7 @@ namespace WinFormsApp1
             more.Text = "More";
             more.UseVisualStyleBackColor = false;
             more.Click += more_Click;
-      
+
             // iconPictureBox4
             iconPictureBox4.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
             iconPictureBox4.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\rate.png");
@@ -497,7 +498,7 @@ namespace WinFormsApp1
             poster_panel.Location = new Point(66, 18);
             poster_panel.Name = "poster_panel";
             poster_panel.Size = new Size(241, 312);
-            
+
             // more_panel
             morePanel.BackColor = Color.FromArgb(24, 24, 24);
             morePanel.EdgeColor = Color.FromArgb(29, 41, 43);
@@ -605,13 +606,13 @@ namespace WinFormsApp1
 
                         if (result == DialogResult.Yes)
                         {
-                             axWindowsMediaPlayer1.URL = videoPath;
+                            axWindowsMediaPlayer1.URL = videoPath;
 
                             axWindowsMediaPlayer1.Ctlcontrols.currentPosition = watchProgress.Value.TotalSeconds;
                         }
                         else
                         {
-                             axWindowsMediaPlayer1.URL = videoPath;
+                            axWindowsMediaPlayer1.URL = videoPath;
                         }
                     }
                 }
@@ -653,7 +654,7 @@ namespace WinFormsApp1
 
 
         private void ShowCommentCount(int count)
-        { 
+        {
             if (count > 4)
             {
                 more.Visible = true;
@@ -729,6 +730,18 @@ namespace WinFormsApp1
             Label castLabel = new Label();
             Label descriptionLabel = new Label();
 
+            if (IsInternetAvailable())
+            {
+                Wikipedia wiki = new Wikipedia(movie[0]);
+                string[] castNames = wiki.GetCastNames();
+                castLabel.Text = "Cast: " + string.Join(", ", castNames);
+
+            }
+            else
+            {
+                castLabel.Text = "Couldn't load cast from Wikipedia!";
+            }
+
             releaseDateLabel.Text = "Release Date: " + movie[1];
             double averageRating = SqlInstance.GetAverageRating(movieid);
             ratingLabel.Text = "Average Rating: " + averageRating.ToString("F1");
@@ -751,10 +764,6 @@ namespace WinFormsApp1
             ratingLabel.Size = new Size(data_panel.Width - 20, labelHeight);
 
             // Adding cast names
-            Wikipedia wiki = new Wikipedia(movie[0]);
-            string[] castNames = wiki.GetCastNames();
-            castLabel.Text = "Cast: " + string.Join(", ", castNames);
-
             y += labelHeight + labelSpacing;
             castLabel.Location = new Point(10, y);
             castLabel.AutoSize = true;
@@ -764,7 +773,7 @@ namespace WinFormsApp1
             descriptionLabel.AutoSize = false;
             descriptionLabel.Width = data_panel.Width - 20;
             descriptionLabel.Height = 100;
-            descriptionLabel.Location = new Point(10, y+7);
+            descriptionLabel.Location = new Point(10, y + 7);
             descriptionLabel.AutoEllipsis = true;
 
             data_panel.Controls.Add(releaseDateLabel);
@@ -877,7 +886,7 @@ namespace WinFormsApp1
         {
             int verticalSpacing = 15;
             PictureBox profilePictureBox = new PictureBox();
-            profilePictureBox.Size = new Size(50, 50); 
+            profilePictureBox.Size = new Size(50, 50);
             profilePictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             profilePictureBox.Location = new Point(10, lastCommentBottom);
 
@@ -885,7 +894,7 @@ namespace WinFormsApp1
             {
                 if (string.IsNullOrEmpty(profilePicture) || !File.Exists(profilePicture))
                 {
-                     profilePicture = "C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\pfp.png";
+                    profilePicture = "C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\pfp.png";
                 }
 
                 System.Drawing.Image image = System.Drawing.Image.FromFile(profilePicture);
@@ -901,7 +910,7 @@ namespace WinFormsApp1
             Label usernameLabel = new Label();
             usernameLabel.AutoSize = true;
             usernameLabel.Font = new System.Drawing.Font("Segoe UI", 13, FontStyle.Bold);
-            usernameLabel.Location = new Point(profilePictureBox.Right + 10, profilePictureBox.Top); 
+            usernameLabel.Location = new Point(profilePictureBox.Right + 10, profilePictureBox.Top);
             usernameLabel.Text = username;
             usernameLabel.ForeColor = Color.Teal;
             Comment_panel.Controls.Add(usernameLabel);
@@ -911,13 +920,13 @@ namespace WinFormsApp1
             dateLabel.Font = new System.Drawing.Font("Segoe UI", 10);
             dateLabel.ForeColor = Color.Silver;
             dateLabel.Location = new Point(Comment_panel.Width - 150, profilePictureBox.Top);
-            dateLabel.Text = commentDate.ToString("yyyy-MM-dd HH:mm"); 
+            dateLabel.Text = commentDate.ToString("yyyy-MM-dd HH:mm");
             Comment_panel.Controls.Add(dateLabel);
 
             Label commentTextLabel = new Label();
             commentTextLabel.AutoSize = true;
-            commentTextLabel.Font = new System.Drawing.Font("Segoe UI", 10); 
-            commentTextLabel.Location = new Point(profilePictureBox.Right + 10, usernameLabel.Bottom + 5); 
+            commentTextLabel.Font = new System.Drawing.Font("Segoe UI", 10);
+            commentTextLabel.Location = new Point(profilePictureBox.Right + 10, usernameLabel.Bottom + 5);
             commentTextLabel.Text = commentText;
             commentTextLabel.ForeColor = Color.White;
             Comment_panel.Controls.Add(commentTextLabel);
@@ -977,7 +986,7 @@ namespace WinFormsApp1
         {
             if (axWindowsMediaPlayer1 != null)
             {
-                 if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPlaying)
+                if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPlaying)
                 {
                     axWindowsMediaPlayer1.Ctlcontrols.pause();
                 }
@@ -1000,7 +1009,7 @@ namespace WinFormsApp1
         private void sound_Click(object sender, EventArgs e)
         {
             if (axWindowsMediaPlayer1 != null)
-            { 
+            {
                 axWindowsMediaPlayer1.settings.mute = !axWindowsMediaPlayer1.settings.mute;
             }
         }
@@ -1025,30 +1034,30 @@ namespace WinFormsApp1
 
 
         private void server_Click(object sender, EventArgs e)
-         {
+        {
             local.BackColor = Color.FromArgb(24, 24, 24);
             server.BackColor = Color.Teal;
             server.ForeColor = Color.Black;
             local.ForeColor = Color.White;
 
             if (IsInternetAvailable())
-             {
-                 string backupVideoPath = SqlInstance.GetBackupVideoPath(movieid);
-                 if (!string.IsNullOrEmpty(backupVideoPath))
-                 {
-                     axWindowsMediaPlayer1.URL = backupVideoPath;
-                 }
-                 else
-                 {
-                     MessageBox.Show("Server currently unavelable!");
-                 }
-             }
-             else
-             {
-                 MessageBox.Show("No internet connection!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            {
+                string backupVideoPath = SqlInstance.GetBackupVideoPath(movieid);
+                if (!string.IsNullOrEmpty(backupVideoPath))
+                {
+                    axWindowsMediaPlayer1.URL = backupVideoPath;
+                }
+                else
+                {
+                    MessageBox.Show("Server currently unavelable!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("No internet connection!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-             }
-         }
+            }
+        }
 
         private void local_Click(object sender, EventArgs e)
         {
@@ -1084,7 +1093,7 @@ namespace WinFormsApp1
             PictureBox pictureBox = (PictureBox)sender;
             pictureBox.Cursor = Cursors.Default;
         }
-        
+
         private void bars_click(object sender, EventArgs e)
         {
             if (axWindowsMediaPlayer1.currentMedia != null)
@@ -1112,11 +1121,10 @@ namespace WinFormsApp1
             _form.Hide();
         }
 
-
-            int currentRating = 0;
+        int currentRating = 0;
 
         /////////////////////// rate ////////////////////////////
-        
+
         private void Star_MouseEnter(object sender, EventArgs e)
         {
             PictureBox pictureBox = (PictureBox)sender;
@@ -1138,7 +1146,7 @@ namespace WinFormsApp1
             currentRating = starIndex;
             MessageBox.Show($"You rated : {currentRating}");
 
-             SqlInstance.UpdateMovieRating(movieid, id, currentRating);
+            SqlInstance.UpdateMovieRating(movieid, id, currentRating);
 
             for (int i = 1; i <= starIndex; i++)
             {
@@ -1156,6 +1164,3 @@ namespace WinFormsApp1
         }
     }
 }
-
-
-

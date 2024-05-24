@@ -10,6 +10,7 @@ using System.Diagnostics;
 using Org.BouncyCastle.Asn1.X509;
 using Microsoft.VisualBasic.ApplicationServices;
 using System.Reflection;
+using FullScreenApp;
 
 namespace WinFormsApp1
 {
@@ -26,6 +27,7 @@ namespace WinFormsApp1
         private RoundedPanel morePanel;
         private RoundedButton button1;
         private RoundedButton sound;
+        private RoundedButton face;
         private RoundedButton full;
         private RoundedButton play;
         private RoundedButton server;
@@ -55,6 +57,9 @@ namespace WinFormsApp1
         private ColorDetectorForm _colorDetectorForm;
         private Home h;
         private Wikipedia wiki;
+        private FaceDetectionService faceDetectionService;
+        private bool isPlaying;
+        private bool isFaceDetectionActive;
 
         public Video_class(Form form, string[] array, int movieid, int id)
         {
@@ -63,6 +68,8 @@ namespace WinFormsApp1
             _form.BackColor = Color.Black;
             this.movie = array;
             this.movieid = movieid;
+            isPlaying = false; // Initialize isPlaying
+            isFaceDetectionActive = false; // Initialize isFaceDetectionActive
 
             _colorDetectorForm = new ColorDetectorForm();
             _colorDetectorForm.ColorUpdated += ColorDetectorForm_ColorUpdated;
@@ -87,7 +94,7 @@ namespace WinFormsApp1
                 {
                     Control[] stars = rate_panel.Controls.Find("star" + i, true);
                     PictureBox star = (PictureBox)stars[0];
-                    star.ImageLocation = @"C:\Users\enkud\Desktop\Cinema\back_image\y_star.png";
+                    star.ImageLocation = @"C:\Users\\back_image\y_star.png";
                     star.MouseEnter -= Star_MouseEnter;
                     star.MouseClick -= Star_MouseClick;
                 }
@@ -103,12 +110,15 @@ namespace WinFormsApp1
             wiki = new Wikipedia(movie[0]);
         }
 
+
+
         void InitializeComponent()
         {
             axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             panel1 = new Panel();
             button1 = new RoundedButton();
             sound = new RoundedButton();
+            face = new RoundedButton();
             full = new RoundedButton();
             play = new RoundedButton();
             server = new RoundedButton();
@@ -260,6 +270,20 @@ namespace WinFormsApp1
             sound.UseVisualStyleBackColor = false;
             sound.Click += sound_Click;
 
+            face.BackColor = Color.Red;
+            face.FlatAppearance.BorderSize = 0;
+            face.CornerRadius = 7;
+            face.FlatStyle = FlatStyle.Flat;
+            face.Font = new System.Drawing.Font("Segoe UI", 9F);
+            face.ForeColor = Color.White;
+            face.Location = new Point(1018, 15);
+            face.Name = "face";
+            face.Size = new Size(18, 19);
+            face.TabIndex = 0;
+            face.Text = "face";
+            face.UseVisualStyleBackColor = false;
+            face.Click += face_Click;
+
             full.BackColor = Color.Transparent;
             full.FlatAppearance.BorderSize = 0;
             full.CornerRadius = 7;
@@ -353,6 +377,7 @@ namespace WinFormsApp1
             iconPictureBox5.Controls.Add(full);
             iconPictureBox5.Controls.Add(play);
             iconPictureBox5.Controls.Add(server);
+            iconPictureBox5.Controls.Add(face);
             iconPictureBox5.BringToFront();
 
             // panel3
@@ -954,7 +979,14 @@ namespace WinFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (axWindowsMediaPlayer1.currentMedia != null)
+            if (isFaceDetectionActive)
+            {
+                faceDetectionService.StopDetection();
+                isFaceDetectionActive = false;
+            }
+
+
+                if (axWindowsMediaPlayer1.currentMedia != null)
             {
                 string mediaDuration = axWindowsMediaPlayer1.currentMedia.durationString;
                 string mediaInfo = mediaDuration;
@@ -1011,6 +1043,44 @@ namespace WinFormsApp1
             if (axWindowsMediaPlayer1 != null)
             {
                 axWindowsMediaPlayer1.settings.mute = !axWindowsMediaPlayer1.settings.mute;
+            }
+        }
+
+        private void face_Click(object sender, EventArgs e)
+        {
+            if (isFaceDetectionActive)
+            {
+                faceDetectionService.StopDetection();
+                isFaceDetectionActive = false;
+                face.BackColor = Color.Red; 
+            }
+            else
+            {
+                faceDetectionService = new FaceDetectionService();
+                faceDetectionService.FaceDetected += OnFaceDetected;
+                faceDetectionService.FaceNotDetected += OnFaceNotDetected;
+                faceDetectionService.StartDetection();
+                isFaceDetectionActive = true;
+                face.BackColor = Color.Green; 
+            }
+        }
+
+
+        private void OnFaceDetected()
+        {
+            if (!isPlaying)
+            {
+                axWindowsMediaPlayer1.Ctlcontrols.play();
+                isPlaying = true;
+            }
+        }
+
+        private void OnFaceNotDetected()
+        {
+            if (isPlaying)
+            {
+                axWindowsMediaPlayer1.Ctlcontrols.pause();
+                isPlaying = false;
             }
         }
 
@@ -1096,6 +1166,11 @@ namespace WinFormsApp1
 
         private void bars_click(object sender, EventArgs e)
         {
+            if (isFaceDetectionActive)
+            {
+                faceDetectionService.StopDetection();
+                isFaceDetectionActive = false;
+            }
             if (axWindowsMediaPlayer1.currentMedia != null)
             {
                 string mediaDuration = axWindowsMediaPlayer1.currentMedia.durationString;

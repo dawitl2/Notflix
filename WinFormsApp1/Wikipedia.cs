@@ -16,7 +16,7 @@ namespace WinFormsApp1
             movieTitle = title;
             url = $"https://en.wikipedia.org/wiki/{movieTitle.Replace(" ", "_")}";
             castNames = new List<string>();
-            scrape3(movieTitle, url);
+            scrape1(movieTitle, url);
         }
 
         void scrape1(string movieTitle, string url)

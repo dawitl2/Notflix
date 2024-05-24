@@ -12,6 +12,7 @@ using Microsoft.VisualBasic.ApplicationServices;
 using System.Reflection;
 using FullScreenApp;
 
+
 namespace WinFormsApp1
 {
 
@@ -43,6 +44,7 @@ namespace WinFormsApp1
         private PictureBox iconPictureBox4;
         private PictureBox iconPictureBox5;
         private PictureBox iconPictureBox69;
+        private PictureBox loading;
         private RoundedPanel roundedPanelTop;
         private System.Windows.Forms.TextBox textBox1;
         private RoundedPanel Comment_panel;
@@ -60,6 +62,7 @@ namespace WinFormsApp1
         private FaceDetectionService faceDetectionService;
         private bool isPlaying;
         private bool isFaceDetectionActive;
+
 
         public Video_class(Form form, string[] array, int movieid, int id)
         {
@@ -82,6 +85,15 @@ namespace WinFormsApp1
             iconPictureBox69.TabIndex = 13;
             _form.Controls.Add(iconPictureBox69);
 
+            loading = new PictureBox();
+            loading.SizeMode = PictureBoxSizeMode.Zoom; // Maintain aspect ratio
+            loading.Image = System.Drawing.Image.FromFile("C:\\Users\\enkud\\Desktop\\Cinema\\back_image\\face_loading.png");
+            loading.Name = "loading";
+            loading.Dock = DockStyle.Fill;
+            loading.TabIndex = 14; // Ensure the TabIndex is higher than other controls
+            loading.Visible = false;
+            iconPictureBox69.Controls.Add(loading);
+
             InitializeComponent();
             PlayVideoFromDatabase();
             PopulateMovieDataPanel();
@@ -94,7 +106,7 @@ namespace WinFormsApp1
                 {
                     Control[] stars = rate_panel.Controls.Find("star" + i, true);
                     PictureBox star = (PictureBox)stars[0];
-                    star.ImageLocation = @"C:\Users\\back_image\y_star.png";
+                    star.ImageLocation = @"C:\Users\enkud\Desktop\Cinema\back_image\y_star.png";
                     star.MouseEnter -= Star_MouseEnter;
                     star.MouseClick -= Star_MouseClick;
                 }
@@ -143,6 +155,7 @@ namespace WinFormsApp1
             poster_panel = new RoundedPanel();
             morePanel = new RoundedPanel();
             panel4 = new Panel();
+            
 
             // axWindowsMediaPlayer1
             axWindowsMediaPlayer1.Enabled = true;
@@ -272,13 +285,13 @@ namespace WinFormsApp1
 
             face.BackColor = Color.Red;
             face.FlatAppearance.BorderSize = 0;
-            face.CornerRadius = 7;
+            face.CornerRadius = 6;
             face.FlatStyle = FlatStyle.Flat;
             face.Font = new System.Drawing.Font("Segoe UI", 9F);
             face.ForeColor = Color.White;
-            face.Location = new Point(1018, 15);
+            face.Location = new Point(953, 12);
             face.Name = "face";
-            face.Size = new Size(18, 19);
+            face.Size = new Size(54, 24);
             face.TabIndex = 0;
             face.Text = "face";
             face.UseVisualStyleBackColor = false;
@@ -1052,22 +1065,26 @@ namespace WinFormsApp1
             {
                 faceDetectionService.StopDetection();
                 isFaceDetectionActive = false;
-                face.BackColor = Color.Red; 
+                face.BackColor = Color.Red;
             }
             else
             {
+                loading.Visible = true;
                 faceDetectionService = new FaceDetectionService();
+                loading.BringToFront(); 
                 faceDetectionService.FaceDetected += OnFaceDetected;
                 faceDetectionService.FaceNotDetected += OnFaceNotDetected;
                 faceDetectionService.StartDetection();
                 isFaceDetectionActive = true;
-                face.BackColor = Color.Green; 
+                face.BackColor = Color.Green;
             }
         }
 
 
+
         private void OnFaceDetected()
         {
+            loading.Visible = false;
             if (!isPlaying)
             {
                 axWindowsMediaPlayer1.Ctlcontrols.play();
@@ -1077,6 +1094,7 @@ namespace WinFormsApp1
 
         private void OnFaceNotDetected()
         {
+            loading.Visible = false;
             if (isPlaying)
             {
                 axWindowsMediaPlayer1.Ctlcontrols.pause();

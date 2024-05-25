@@ -866,6 +866,146 @@ namespace WinFormsApp1
             return backupVideoPath;
         }
 
+        public List<string> GetAllMovieNames()
+        {
+            List<string> movieNames = new List<string>();
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT title FROM Movie";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    connection.Open();
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            movieNames.Add(reader.GetString("title"));
+                        }
+                    }
+                }
+            }
+            return movieNames;
+        }
+
+        public List<string> GetAllGenres()
+        {
+            List<string> genres = new List<string>();
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT genre_name FROM Genre";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    connection.Open();
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            genres.Add(reader.GetString("genre_name"));
+                        }
+                    }
+                }
+            }
+            return genres;
+        }
+        public bool DeleteMovie(string title)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                // Get the movie ID for the given title
+                string queryGetMovieId = "SELECT movie_id FROM Movie WHERE title = @title";
+                int movieId;
+                using (MySqlCommand command = new MySqlCommand(queryGetMovieId, connection))
+                {
+                    command.Parameters.AddWithValue("@title", title);
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    if (result != null)
+                    {
+                        movieId = Convert.ToInt32(result);
+                    }
+                    else
+                    {
+                        return false; // Movie not found
+                    }
+                }
+
+                // Delete related rows in UserWatchProgress
+                bool deletedProgress = DeleteWatchProgressForMovie(movieId);
+                if (!deletedProgress)
+                {
+                    return false; // Failed to delete related rows
+                }
+
+                // Delete the movie
+                string queryDeleteMovie = "DELETE FROM Movie WHERE movie_id = @movieId";
+                using (MySqlCommand command = new MySqlCommand(queryDeleteMovie, connection))
+                {
+                    command.Parameters.AddWithValue("@movieId", movieId);
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+        }
+
+
+
+        public bool AddMovie(string title, DateTime releaseDate, int duration, string description, string trailerURL, string posterImage, string widePosterImage, int averageRating, string video)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "INSERT INTO Movie (title, release_date, duration, description, trailer_URL, poster_image, wide_poster_image, average_rating, video) " +
+                               "VALUES (@title, @releaseDate, @duration, @description, @trailerURL, @posterImage, @widePosterImage, @averageRating, @video)";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@title", title);
+                    command.Parameters.AddWithValue("@releaseDate", releaseDate);
+                    command.Parameters.AddWithValue("@duration", duration);
+                    command.Parameters.AddWithValue("@description", description);
+                    command.Parameters.AddWithValue("@trailerURL", trailerURL);
+                    command.Parameters.AddWithValue("@posterImage", posterImage);
+                    command.Parameters.AddWithValue("@widePosterImage", widePosterImage);
+                    command.Parameters.AddWithValue("@averageRating", averageRating);
+                    command.Parameters.AddWithValue("@video", video);
+
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+        }
+
+
+        public bool AddGenre(string genreName)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "INSERT INTO Genre (genre_name) VALUES (@genreName)";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@genreName", genreName);
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+        }
+
+        public bool DeleteWatchProgressForMovie(int movieId)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = "DELETE FROM UserWatchProgress WHERE movie_id = @movieId";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@movieId", movieId);
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+        }
+
+
     }
 }
 

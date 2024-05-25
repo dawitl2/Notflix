@@ -7,59 +7,69 @@ namespace WinFormsApp
 {
     public partial class Email
     {
-        public int code;
-        private string adress;
-        private string name;
+        public int Code { get; private set; }
+        private readonly string _address;
+        private readonly string _name;
 
-
-        public Email(string adress, string name)
+        public Email(string address, string name)
         {
-            this.adress = adress;
-            this.name = name;
+            _address = address;
+            _name = name;
             Initialize();
         }
 
         private void Initialize()
         {
-            Random rand = new Random();
-            int verificationCode = rand.Next(1000, 10000);
-            code = verificationCode;
-
-
+            Code = GenerateVerificationCode();
             try
             {
-
-                var fromAddress = new MailAddress("big802240@gmail.com", "NOTFLIX");
-                var toAddress = new MailAddress(adress, name);
-                const string fromPassword = "hsip tral jxqu hhrq";
-                const string subject = "Password reset verification";
-                string body = $"Your verification code is: {verificationCode}";
-
-                var smtp = new SmtpClient
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-                };
-
-                using (var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = subject,
-                    Body = body
-                })
-                {
-                    smtp.Send(message);
-                }
-
-                //MessageBox.Show("Email sent successfully!");
+                SendEmail(_address, _name, Code);
+                MessageBox.Show("Email sent successfully!");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to send email. Error: {ex.Message}");
             }
+        }
+
+        private int GenerateVerificationCode()
+        {
+            Random rand = new Random();
+            return rand.Next(1000, 10000);
+        }
+
+        private void SendEmail(string toAddress, string toName, int verificationCode)
+        {
+            string fromAddress = "big802240@gmail.com";
+            string fromName = "Notflix";
+            string fromPassword = GetEmailPassword(); // Fetch from config or environment variable
+            string subject = "Password reset verification";
+            string body = $"Your verification code is: {verificationCode}";
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress, fromPassword)
+            };
+
+            using (var message = new MailMessage(new MailAddress(fromAddress, fromName), new MailAddress(toAddress, toName))
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
+        }
+
+        private string GetEmailPassword()
+        {
+            // Ideally, this should be fetched from a secure location, like a configuration file or environment variable
+            return "tzix uyio cfje erjo";
         }
     }
 }

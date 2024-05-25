@@ -42,7 +42,7 @@ namespace WinFormsApp
         {
             string fromAddress = "big802240@gmail.com";
             string fromName = "Notflix";
-            string fromPassword = GetEmailPassword(); // Fetch from config or environment variable
+            string fromPassword = "tzix uyio cfje erjo";
             string subject = "Password reset verification";
             string body = $"Your verification code is: {verificationCode}";
 
@@ -64,12 +64,6 @@ namespace WinFormsApp
             {
                 smtp.Send(message);
             }
-        }
-
-        private string GetEmailPassword()
-        {
-            // Ideally, this should be fetched from a secure location, like a configuration file or environment variable
-            return "tzix uyio cfje erjo";
         }
     }
 }

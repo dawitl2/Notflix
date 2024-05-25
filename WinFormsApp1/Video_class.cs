@@ -93,7 +93,7 @@ namespace WinFormsApp1
             loading.TabIndex = 14; // Ensure the TabIndex is higher than other controls
             loading.Visible = false;
             iconPictureBox69.Controls.Add(loading);
-
+         
             InitializeComponent();
             PlayVideoFromDatabase();
             PopulateMovieDataPanel();
@@ -1085,7 +1085,7 @@ namespace WinFormsApp1
         private void OnFaceDetected()
         {
             loading.Visible = false;
-            if (!isPlaying)
+             if (!isPlaying)
             {
                 axWindowsMediaPlayer1.Ctlcontrols.play();
                 isPlaying = true;

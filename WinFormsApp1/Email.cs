@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace WinFormsApp
 {
-    public partial class Email 
+    public partial class Email
     {
         public int code;
         private string adress;
@@ -28,7 +28,7 @@ namespace WinFormsApp
 
             try
             {
-                  
+
                 var fromAddress = new MailAddress("big802240@gmail.com", "NOTFLIX");
                 var toAddress = new MailAddress(adress, name);
                 const string fromPassword = "hsip tral jxqu hhrq";

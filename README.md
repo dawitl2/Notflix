@@ -1,6 +1,6 @@
     # Notflix
 
-![App Screenshot](./back_image/home_figma.png)
+
 
 Notflix is a comprehensive Netflix clone designed to provide an engaging and seamless movie streaming experience. This project includes an administration page for managing content and a user page for a personalized viewing experience.
 This is a turm project for windows programming made 100% with c#.

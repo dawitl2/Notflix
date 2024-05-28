@@ -371,7 +371,7 @@ namespace WinFormsApp1
                                                         FROM Movie m
                                                         INNER JOIN MovieGenre mg ON m.movie_id = mg.movie_id
                                                         INNER JOIN Genre g ON mg.genre_id = g.genre_id
-                                                        LEFT JOIN Rating r ON m.movie_id = r.movie_id
+                                                        INNER JOIN Rating r ON m.movie_id = r.movie_id
                                                         WHERE 1=1");
 
                 if (!string.IsNullOrEmpty(genre))
